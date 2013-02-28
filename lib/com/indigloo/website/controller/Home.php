@@ -9,8 +9,8 @@ namespace com\indigloo\website\controller{
         }
 
         function process($params,$options) {
-             print_r($params);
-             print_r($options);
+            $view = APP_WEB_DIR. '/themes/vanilla/home.tmpl' ;
+            include ($view);
         }
         
     }
