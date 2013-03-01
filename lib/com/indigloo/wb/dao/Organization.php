@@ -1,6 +1,6 @@
 <?php
 
-namespace com\indigloo\website\dao {
+namespace com\indigloo\wb\dao {
 
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger as Logger ;

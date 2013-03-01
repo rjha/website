@@ -1,5 +1,5 @@
 <?php
-namespace com\indigloo\website\controller{
+namespace com\indigloo\wb\controller{
 
 
     class Http400 {

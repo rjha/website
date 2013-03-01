@@ -1,6 +1,6 @@
 <?php
 
-namespace com\indigloo\website\auth {
+namespace com\indigloo\wb\auth {
 
     use \com\indigloo\Url as Url;
     use \com\indigloo\Util as Util;

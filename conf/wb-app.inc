@@ -13,7 +13,7 @@
 
 	define("APP_CLASS_LOADER", G_CODE_ROOT."/webgloo/lib/com/indigloo/class_loader.inc") ;
 
-	define("APP_CONFIG_PATH", "/var/www/apps/website_config.ini");
+	define("APP_CONFIG_PATH", "/var/www/apps/wb_config.ini");
 	define("APP_WEB_DIR", "/var/www/htdocs") ;
 	define("WEBGLOO_LIB_ROOT", G_CODE_ROOT."/webgloo/lib");
 ?>

@@ -1,5 +1,5 @@
 <?php
-namespace com\indigloo\website  {
+namespace com\indigloo\wb  {
 
     class Constants {
 

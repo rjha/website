@@ -1,5 +1,5 @@
 <?php
-namespace com\indigloo\website\util{
+namespace com\indigloo\wb\util{
 
     use \com\indigloo\Configuration as Config ;
 

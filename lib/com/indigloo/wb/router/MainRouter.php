@@ -1,6 +1,6 @@
 <?php
 
-    namespace com\indigloo\website\router {
+    namespace com\indigloo\wb\router {
         
         use \com\indigloo\Configuration as Config ;
         use \com\indigloo\Logger  as Logger ;
@@ -9,7 +9,7 @@
 
             function __construct() {
                 // construct routing table
-                $this->createRule('^/$', 'com\indigloo\website\controller\Home');
+                $this->createRule('^/$', 'com\indigloo\wb\controller\Home');
             }
 
             function route() {
@@ -34,7 +34,7 @@
                     $message = sprintf("No route for path %s",$requestURI);
                     Logger::getInstance()->error($message);
 
-                    $controller = new \com\indigloo\website\controller\Http404();
+                    $controller = new \com\indigloo\wb\controller\Http404();
                     $controller->process();
                     exit;
 

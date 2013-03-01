@@ -12,10 +12,10 @@
         $files[] = "bootstrap/2.1.1/js/bootstrap.js" ;
 
         $appFiles = array();
-        $appFiles[] = "js/website.js" ;
+        $appFiles[] = "js/wb.js" ;
         
         //output file name
-        $bundle = "website-bundle.js" ;
+        $bundle = "wb-bundle.js" ;
         $fp = fopen($bundle,"w");
 
 
@@ -29,7 +29,7 @@
         for($i = 0 ; $i < sizeof($appFiles) ;  $i++ ) {
             $glob = file_get_contents($rootApp.$appFiles[$i]);
             fwrite($fp,$glob);
-            $separator = sprintf("\n\n /* cat:website:file:%d:%s */ \n\n",$i+1,$appFiles[$i]);
+            $separator = sprintf("\n\n /* cat:wb:file:%d:%s */ \n\n",$i+1,$appFiles[$i]);
             fwrite($fp,$separator);
         }
 
@@ -43,10 +43,10 @@
         $files[] = "bootstrap/2.1.1/css/bootstrap.css" ;
        
         $appFiles = array();
-        $appFiles[] = "css/website.css" ;
+        $appFiles[] = "css/wb.css" ;
 
         //output file name
-        $bundle = "website-bundle.css" ;
+        $bundle = "wb-bundle.css" ;
         $fp = fopen($bundle,"w");
 
 
@@ -60,7 +60,7 @@
         for($i = 0 ; $i < sizeof($appFiles) ;  $i++ ) {
             $glob = file_get_contents($rootApp.$appFiles[$i]);
             fwrite($fp,$glob);
-            $separator = sprintf("\n\n /* cat:website:file:%d:%s */ \n\n",$i+1,$appFiles[$i]);
+            $separator = sprintf("\n\n /* cat:wb:file:%d:%s */ \n\n",$i+1,$appFiles[$i]);
             fwrite($fp,$separator);
         }
 
