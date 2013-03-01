@@ -926,7 +926,7 @@ to{background-position:0 0}
 .affix{position:fixed}
 html,html#nojs{height:100%}
 html#js{height:100%}
-body{font-size:13px;font-family:"HelveticaNeue","Helvetica Neue",Helvetica,Verdana,Arial,sans-serif;position:relative;background-color:white;padding-top:1px}
+body{font-size:18px;font-family:"Georgia","Times New Roman",arial,serif;line-height:24px;position:relative;background-color:white;padding-top:1px}
 a:hover{text-decoration:none}
 a img{border:0}
 form{margin:0;padding:0}
@@ -1045,6 +1045,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .form-table textarea{word-spacing:1px;line-height:1.8em;color:#333;border:1px solid #ccc;width:400px;height:110px;padding-top:10px}
 #footer{padding-top:60px;font-size:12px;text-align:center;line-height:18px}
 .form-actions .btn-mobikwik-wallet{background:url('http://merchant.mobikwik.com/static/paywith.png') no-repeat center center;width:260px;height:73px;color:transparent;background-color:#f7f7f7}
+.tile{width:204px;margin:4px 2px 4px 2px;float:left;padding:8px;background-color:white;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);border:1px solid #ccc;min-height:60px}
 .beta{font-size:11px;vertical-align:sub}
 .navbar-inner{border:0;border-radius:0;border-bottom:1px solid #d5d5d5}
 .navbar .brand{padding:10px 20px 10px 80px}

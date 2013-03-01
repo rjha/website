@@ -50,8 +50,13 @@
         <div class="container mh600">
 
             <div class="row">
-                <div class="span11 offset1">
-                  <h1> Page Content </h1>
+                <div class="span8 offset1">
+                   <?php
+                        foreach($widgetDBRows as $widgetDBRow) {
+                            $html = \com\indigloo\wb\html\Application::getWidget($widgetDBRow);
+                            echo $html ;
+                        }
+                    ?>
                 </div>
             </div> <!-- row:content -->
 

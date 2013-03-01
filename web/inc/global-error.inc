@@ -25,7 +25,7 @@ function send_mail($message) {
 
 function get_user_diagnostics() {
     /* diagnostic info */
-    $login = \com\indigloo\website\auth\Login::tryLoginInSession();
+    $login = \com\indigloo\wb\auth\Login::tryLoginInSession();
     $name = (is_null($login)) ? "_N_" : sprintf("%s :: %s ",$login->id,$login->name) ;
 
     $message = "\n + URL = {%s}\n + IP = {%s}\n + agent = {%s}\n + login = {%s} \n";

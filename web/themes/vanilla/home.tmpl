@@ -2,13 +2,14 @@
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
 
+
 ?>
 
 <!DOCTYPE html>
 <html>
 
     <head>
-        <title> page title </title>
+        <title> Home page </title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="keywords" content="website builder app">
@@ -18,7 +19,6 @@
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-
 
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
@@ -47,16 +47,26 @@
             </div>
         </div> <!-- default toolbar -->
         
-        <div class="container mh600">
+        <div class="container">
 
             <div class="row">
                 <div class="span11 offset1">
-                  <h1> Page Content </h1>
+                    <div id="tiles">
+                        <?php
+                            foreach($pageDBRows as $pageDBRow) {
+                                $html = \com\indigloo\wb\html\Page::getTile($pageDBRow);
+                                echo $html ;
+                            }
+                        ?>
+                    </div>
+                
                 </div>
-            </div> <!-- row:content -->
-
+            </div> <!-- row:1 -->
+            <div id="scroll-loading"> </div>
 
         </div>   <!-- container -->
+        
+        <?php $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>
 
         <div class="row">
 
@@ -72,6 +82,51 @@
                 </div>
             </div>
         </div> <!-- footer -->
+
+        <?php echo \com\indigloo\wb\util\Asset::version("/js/wb-bundle.js"); ?>
+         <script type="text/javascript">
+
+            $(function(){
+
+                var $container = $('#tiles');
+
+                $container.imagesLoaded(function(){
+                    $container.isotope({ itemSelector: '.tile', layoutMode: 'masonry'});
+                });
+
+                $container.infinitescroll(
+                    {
+                        navSelector     : '.pager',
+                        nextSelector    : '.pager a[rel="next"]',
+                        itemSelector : '.tile',
+                        bufferPx : 30,
+
+                        loading : {
+                            selector : "#scroll-loading",
+                            img : "/css/asset/wb/round_loader.gif",
+                            msgText: "<em>Please wait. Loading more items...</em>",
+                            finishedMsg : "<b> You have reached the end of this page </b>",
+                            speed: "slow"
+
+                        }
+
+                    },
+
+                    function( newElements ) {
+                         // hide new items while they are loading
+                        var $newElems = $(newElements).css({ opacity: 0 });
+                        $newElems.imagesLoaded(function(){
+                            $newElems.css({ opacity: 1 });
+                            $container.isotope('appended', $newElems);
+                            $("#infscr-loading").fadeOut("slow");
+                        });
+
+                    }
+                );
+
+            });
+
+        </script>
 
     </body>
 </html>

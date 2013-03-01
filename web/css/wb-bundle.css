@@ -5788,8 +5788,9 @@ a.badge:hover {
     }
 
     body {
-        font-size: 13px;
-        font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif ;
+        font-size: 18px;
+        font-family: "Georgia","Times New Roman", arial,serif ;
+        line-height: 24px; 
         position: relative;
         background-color:white  ;
         padding-top:1px;
@@ -6385,6 +6386,20 @@ a.badge:hover {
         background-color: #f7f7f7;
     }
 
+    .tile {
+        width:204px;
+        margin:4px 2px 4px 2px;
+        float:left ;
+        padding:8px;
+        background-color: white;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0px 10px rgba(0, 0, 0, 0.1); 
+        border: 1px solid #ccc ;
+        /* box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4); */
+        min-height:60px;
+
+    }
+
+   
 
     /* @imp : last section - override 3rd party libraries */
     /* bootstrap css */

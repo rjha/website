@@ -9,6 +9,8 @@
         $files = array();
         $files[] = "jquery/jquery-1.8.2.js" ;
         $files[] = "jquery/jquery.validate.1.10.0.js" ;
+        $files[] = "jquery/isotope/jquery.isotope.js" ;
+        $files[] = "jquery/infinite/jquery.infinitescroll.hacked.js" ;
         $files[] = "bootstrap/2.1.1/js/bootstrap.js" ;
 
         $appFiles = array();
