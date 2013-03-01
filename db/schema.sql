@@ -8,9 +8,8 @@ CREATE TABLE  sc_php_session  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-
-DROP TABLE IF EXISTS  fs_login ;
-CREATE TABLE  fs_login (
+DROP TABLE IF EXISTS  wb_login ;
+CREATE TABLE  wb_login (
    id  int NOT NULL AUTO_INCREMENT,
    name  varchar(32) NOT NULL,
    source  int default 1,
@@ -26,8 +25,8 @@ CREATE TABLE  fs_login (
 
 
 
-DROP TABLE IF EXISTS  fs_facebook_user ;
-CREATE TABLE  fs_facebook_user  (
+DROP TABLE IF EXISTS  wb_facebook_user ;
+CREATE TABLE  wb_facebook_user  (
    id  int NOT NULL AUTO_INCREMENT,
    facebook_id  varchar(64) NOT NULL ,
    login_id  int(11) NOT NULL,
@@ -44,162 +43,38 @@ CREATE TABLE  fs_facebook_user  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS  fs_source ;
-CREATE TABLE  fs_source  (
+DROP TABLE IF EXISTS  wb_page ;
+CREATE TABLE  wb_page  (
    id  int(11) NOT NULL AUTO_INCREMENT,
-   login_id int not null,
-   source_id  varchar(64) NOT NULL ,
-   type int default 1,
-   token text,
-   name varchar(64) not null,
-   last_stream_ts int, 
-   is_default int default 0,
+   org_id int not null,
+   title varchar(256) not null,
+   seo_title varchar(320) not null,
+   seo_title_hash varchar(32) not null,
+   random_key varchar(16) not null,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (id),
-  UNIQUE KEY  uniq_id  (source_id)
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+alter table wb_page add constraint unique uniq_page_key(org_id,random_key);
+alter table wb_page add constraint unique uniq_page_name(org_id,seo_title_hash);
 
-DROP TABLE IF EXISTS  fs_stream ;
-CREATE TABLE  fs_stream  (
-   id  int NOT NULL AUTO_INCREMENT,
-   source_id  varchar(64) NOT NULL ,
-   post_id  varchar(64) NOT NULL ,
-   last_stream_ts int, 
-   next_stream_ts int,
-   version int default 1,
-   op_bit int default 1 ,
+
+DROP TABLE IF EXISTS  wb_page_content ;
+CREATE TABLE  wb_page_content  (
+   id  int(11) NOT NULL AUTO_INCREMENT,
+   org_id int not null,
+   page_id int not null,
+   row_number int not null,
+   title varchar(256) not null,
+   widget_type int not null,
+   widget_html text,
+   widget_code text,
+   widget_markdown text,
+   widget_media text,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (id),
-  UNIQUE KEY uniq_post(post_id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
- 
-
-DROP TABLE IF EXISTS  fs_post ;
-CREATE TABLE  fs_post  (
-  id  int NOT NULL AUTO_INCREMENT,
-  source_id  varchar(64) NOT NULL ,
-  post_id  varchar(64) NOT NULL ,
-  from_id varchar(64) , 
-  picture text,
-  link text,
-  object_id varchar(64),
-  message varchar(256),
-  unit_price decimal(11,2) not null,
-  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (id),
-  UNIQUE KEY uniq_post(post_id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-
-
-DROP TABLE IF EXISTS  fs_comment ;
-CREATE TABLE  fs_comment  (
-  id  int NOT NULL AUTO_INCREMENT,
-  source_id  varchar(64) NOT NULL ,
-  post_id  varchar(64) NOT NULL ,
-  from_id varchar(64) ,
-  comment_id varchar(64) not null,
-  user_name varchar(64) not null,
-  message varchar(256),
-  dup_count int default 0,
-  verb int default 0,
-  has_invoice int default 0,
-  created_ts int not null,
-  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (id) ,
-  UNIQUE KEY uniq_comment(comment_id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-
-DROP TABLE IF EXISTS  fs_invoice ;
-CREATE TABLE  fs_invoice  (
-  login_id int not null,
-  id  int(11) NOT NULL AUTO_INCREMENT,
-  p_order_id int default 0,
-  comment_id varchar(64) not null,
-  source_id varchar(64) not null,
-  source_name varchar(64) not null,
-  post_id varchar(64) not null,
-  name varchar(64) not null,
-  email varchar(64) not null,
-  unit_price decimal(11,2) not null,
-  total_price decimal(11,2) not null,
-  quantity int not null,
-  seller_info varchar(512),
-  op_bit int default 1,
-  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
-
--- 
--- Jan 15, 2012
---
-
-
-DROP TABLE IF EXISTS  fs_order ;
-CREATE TABLE  fs_order  (
- 
-  id  int NOT NULL AUTO_INCREMENT,
-  invoice_id int not null,
-  
-  first_name varchar(30) not null,
-  last_name varchar(30) not null,
-  email varchar(64) not null,
-  phone varchar(16) not null,
-  total_price decimal(11,2) not null,
-  currency varchar(8) not null,
-  ip_address varchar(46) not null,
-
-  item_description varchar(100) not null,
-  billing_address varchar(100) not null,
-  billing_city varchar(30) not null,
-  billing_state varchar(50) not null,
-  billing_pincode varchar(12) not null,
-  billing_country varchar(16) not null,
-  
-  shipping_first_name varchar(30) not null,
-  shipping_last_name varchar(30) not null,
-  shipping_address varchar(100) not null,
-  shipping_city varchar(30) not null,
-  shipping_state varchar(50) not null,
-  shipping_pincode varchar(12) not null,
-  shipping_country varchar(16) not null,
-  shipping_phone varchar(16) not null,
-  courier_info varchar(512) ,
-  courier_link varchar(512),
-
-  op_bit int default 1,
-  tx_date timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-
-
-DROP TABLE IF EXISTS  fs_hash_table ;
-
-CREATE TABLE  fs_hash_table (
-  t_key varchar(64) not null,
-  t_value text not null,
-  PRIMARY KEY (t_key)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-
---
--- Patch 20 Feb. 2013
--- 
--- 
-
-alter table fs_stream add column op_bit int default 1 ;
-alter table fs_stream  add index idx_op_bit (op_bit) ;
