@@ -21,7 +21,7 @@
     a:hover { text-decoration:none ; }
     a img { border: 0; }
     form { margin: 0; padding: 0; }
-
+    p { text-align: justify; }
 
     /* + Common classes */
 
@@ -200,6 +200,8 @@
         /* word-wrap: break-word; */
         /* text-indent :20px; */
     }
+
+    
 
     /* + link and image previews */
 
@@ -621,7 +623,35 @@
 
     }
 
-   
+    
+    .tile .photo {
+        padding:3px;
+        width:190px;
+    }
+
+    .tile .photo img {
+        max-width:190px;
+        margin :0px;
+    }
+
+    .tile a {
+        color : #333 ;
+    }
+
+    .page-title {
+        padding-bottom:15px;
+        margin-bottom : 20px;
+        
+    }
+
+    .menu .item a {
+        color: #0f2d5f ;
+    }
+
+    .menu .item {
+        padding-bottom: 4px; 
+    }
+
 
     /* @imp : last section - override 3rd party libraries */
     /* bootstrap css */

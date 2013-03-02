@@ -33,6 +33,11 @@ namespace com\indigloo\wb\dao {
             $rows = mysql\Page::getWidgetsOnHash($hash);
             return $rows ;
         }
+
+        function getLinks($limit) {
+            $rows = mysql\Page::getLinks($limit);
+            return $rows ;
+        }
     }
 }
 

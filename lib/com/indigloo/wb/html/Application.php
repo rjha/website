@@ -35,6 +35,16 @@ namespace com\indigloo\wb\html {
             return $html ;
         }
 
+        static function getLinks($links) {
+            $html = NULL ;
+            $template = "/fragments/links.tmpl" ;
+            $view = new \stdClass;
+            
+            $view->links = $links ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
     }
 
 }

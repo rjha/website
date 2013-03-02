@@ -10,8 +10,10 @@
             function __construct() {
                 // construct routing table
                 $this->createRule('^/$', 'com\indigloo\wb\controller\Home');
+
                 $this->createRule('^(?P<token>[-\w]+)$','com\indigloo\wb\controller\Page');
                 $this->createRule('^(?P<randomKey>[\w]+)/(?P<token>[-\w]+)$','com\indigloo\wb\controller\Page');
+                $this->createRule('^sitemap$', 'com\indigloo\wb\controller\Sitemap');
 
             }
 

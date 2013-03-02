@@ -61,6 +61,16 @@ namespace com\indigloo\wb\mysql {
             return $rows ;
 
         }
+
+        static function getLinks($limit) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            $sql = " select title,seo_title from wb_page order by id limit %d " ;
+            $sql = sprintf($sql,$limit);
+
+            $rows = MySQL\Helper::fetchRows($mysqli,$sql);
+            return $rows ;
+        }
     }
 
 }
