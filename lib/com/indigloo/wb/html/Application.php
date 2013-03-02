@@ -11,13 +11,23 @@ namespace com\indigloo\wb\html {
     	static function getPageTile($pageDBRow) {
 
             $html = NULL ;
-            $template = "/fragments/page/tile.tmpl" ;
+            $template = 
             $view = new \stdClass;
 
             $view->title = $pageDBRow['title'] ;
             $view->id = $pageDBRow['id'] ;
             $view->link = $pageDBRow['seo_title'];
-          	
+          	$view->hasImage = false ;
+
+            $strMediaJson = $pageDBRow['media_json'];
+            $mediaVO = json_decode($strMediaJson);
+            if(sizeof($mediaVO) > 0 ) {
+                $element = $mediaVO[0];
+                $view->srcImage = $element->address; 
+                $view->hasImage = true ;
+            }
+
+            $template = ($view->hasImage) ? "/fragments/tiles/image.tmpl" : "/fragments/tiles/text.tmpl";
             $html = Template::render($template,$view);
             return $html ;
 

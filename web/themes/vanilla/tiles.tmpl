@@ -54,7 +54,7 @@
                     <div id="tiles">
                         <?php
                             foreach($pageDBRows as $pageDBRow) {
-                                $html = \com\indigloo\wb\html\Page::getTile($pageDBRow);
+                                $html = \com\indigloo\wb\html\Application::getPageTile($pageDBRow);
                                 echo $html ;
                             }
                         ?>

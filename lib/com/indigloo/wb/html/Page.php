@@ -8,20 +8,7 @@ namespace com\indigloo\wb\html {
 
     class Page {
     	
-    	static function getTile($pageDBRow) {
-
-            $html = NULL ;
-            $template = "/fragments/page/tile.tmpl" ;
-            $view = new \stdClass;
-
-            $view->title = $pageDBRow['title'] ;
-            $view->id = $pageDBRow['id'] ;
-            $view->link = $pageDBRow['seo_title'];
-          	
-            $html = Template::render($template,$view);
-            return $html ;
-
-        }
+    	
 
     }
 

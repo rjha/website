@@ -51,6 +51,7 @@ CREATE TABLE  wb_page  (
    seo_title varchar(320) not null,
    seo_title_hash varchar(32) not null,
    random_key varchar(16) not null,
+   media_json text ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
