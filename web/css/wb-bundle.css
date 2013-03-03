@@ -5796,10 +5796,28 @@ a.badge:hover {
         padding-top:1px;
     }
 
+    header {
+        background-color: #333;
+        margin: 0 ;
+        border :0 ;
+        padding-top:30px;
+        padding-bottom: 30px;
+        padding-left:55px;
+        padding-right:55px;
+        color : #f7f7f7; 
+        vertical-align: baseline ;
+    }
+
+    body>header h1 a, body>header h1 a:hover {
+        color: #f2f2f2 ;
+        font-family: "Lato","Verdana",sans-serif;
+    }
+
+
     a:hover { text-decoration:none ; }
     a img { border: 0; }
     form { margin: 0; padding: 0; }
-    p { text-align: justify; }
+    p { text-align: left; }
 
     /* + Common classes */
 
@@ -6369,10 +6387,10 @@ a.badge:hover {
     }
 
     #footer {
-        padding-top:60px;
-        font-size: 12px;
+        margin-top:30px;
+        padding-top:30px;
         text-align:center;
-        line-height:18px;
+        border-top:1px solid #d5d5d5;
     }
 
     #footer a {
@@ -6401,31 +6419,7 @@ a.badge:hover {
 
     }
 
-    .tile .options {
-        position:absolute ;
-        overflow:hidden ;
-        z-index:100;
-        display:none ;
-        background-color: #F7F7F7;
-        margin:0px;
-        padding:0px;
-        top:0px;
-        left:0px;
-        height:30px;
-        width:100%;
-    }
-
-    .tile .options .links {
-        padding : 5px 5px 10px 30px;
-        font-size:11px;
-        line-height:16px;
-    }
-
-    .tile .options .links a {
-        color : #2B2B2B;
-        font-weight:bold;
-    }
-
+    
     .tile .photo {
         padding:3px;
         width:190px;
@@ -6439,11 +6433,11 @@ a.badge:hover {
     .tile a {
         color : #333 ;
     }
-    
+
     .page-title {
         padding-bottom:15px;
         margin-bottom : 20px;
-        
+        border-bottom: 1px dashed #eaeaea ;
     }
 
     .menu .item a {

@@ -28,14 +28,14 @@ namespace com\indigloo\wb\dao {
             return $rows ;
         }
 
-        function getWidgetsOnSeoTile($seoTitle) {
+        function getWidgetsOnSeoTitle($seoTitle) {
             $hash = md5($seoTitle);
             $rows = mysql\Page::getWidgetsOnHash($hash);
             return $rows ;
         }
 
-        function getLinks($limit) {
-            $rows = mysql\Page::getLinks($limit);
+        function getRandom($limit) {
+            $rows = mysql\Page::getRandom($limit);
             return $rows ;
         }
     }

@@ -26,6 +26,14 @@
     </head>
 
      <body>
+
+        <header role="banner">
+            <hgroup>
+                <h1> <a href="/">The converse shoes</a> </h1>
+            </hgroup>
+
+        </header>
+
         <div class="navbar">
             <div class="navbar-inner">
                 <div class="container">
@@ -38,7 +46,8 @@
 
                     <div class="nav-collapse">
                         <ul class="nav">
-                            <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
+                            <li> <a href="/"><i class="icon icon-home"></i>&nbsp;Home</a></li>
+                            <li> <a href="/sitemap"><i class="icon icon-list"></i>&nbsp;View all posts</a></li>
                         </ul>
                         
                     </div>
@@ -46,13 +55,16 @@
                 </div>
 
             </div>
-        </div> <!-- default toolbar -->
+        </div> <!-- toolbar -->
         
         <div class="container">
 
             <div class="row">
-                <div class="span8 offset1">
+                <div class="span7 offset1">
+                 
+
                     <div id="page-content">
+
                        <?php
                             foreach($widgetDBRows as $widgetDBRow) {
                                 $html = \com\indigloo\wb\html\Application::getWidget($widgetDBRow);
@@ -60,10 +72,30 @@
                             }
                         ?>
                     </div>
-                    
+                    <div class="pt20">
+                        <!-- AddThis Button BEGIN -->
+                        <div class="addthis_toolbox addthis_default_style ">
+                            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                            <a class="addthis_button_tweet"></a>
+                            <a class="addthis_button_pinterest_pinit"></a>
+                            <a class="addthis_counter addthis_pill_style"></a>
+                        </div>
+                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4e57380d63c7f2a1"></script>
+                        <!-- AddThis Button END -->
+                    </div> <!-- share links -->
                 </div>
-                <div class="span3">
-                    <?php echo \com\indigloo\wb\html\Application::getLinks($gMenulinks); ?>
+                <div class="span3 offset1">
+                    <?php
+                        foreach($gMenulinks as $gMenulink) {
+                           $html = \com\indigloo\wb\html\Application::getPageTile($gMenulink);
+                           echo $html ;
+                        }
+                    ?>
+                    <div class="p20">
+                        <a href="/sitemap">View all Posts &gt;</a>
+                    </div>
+                    
                 </div>
 
             </div> <!-- row:content -->
@@ -72,19 +104,21 @@
         </div>   <!-- container -->
 
         <div class="row">
-
-            <div class="span8 offset1">
-                <div class="floatr">
-                    <div id="footer">
-                        <ul class="nav nav-pills">
-                            <li> <a href="/"> Home </a> </li>
-                             
-                            
-                        </ul>
-                    </div>
+            <div id="footer">
+                <div class="span12">
+                    <ul class="nav nav-pills">
+                        <li> <a href="/"> Home </a> </li>
+                    </ul>
                 </div>
             </div>
-        </div> <!-- footer -->
+        </div> <!-- row:footer -->
+
+        <div class="row">
+            <div class="span3 offset1">
+                <?php echo \com\indigloo\wb\html\Application::getLinks($gMenulinks); ?>
+            </div>
+
+        </div> <!-- row:links -->
 
     </body>
 </html>

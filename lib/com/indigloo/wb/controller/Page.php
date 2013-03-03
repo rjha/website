@@ -14,8 +14,8 @@ namespace com\indigloo\wb\controller{
             
             $seo_title = $params["token"];
             $pageDao = new \com\indigloo\wb\dao\Page();
-            $gMenulinks = $pageDao->getLinks(10);
-            $widgetDBRows = $pageDao->getWidgetsOnSeoTile($seo_title);
+            $gMenulinks = $pageDao->getRandom(7);
+            $widgetDBRows = $pageDao->getWidgetsOnSeoTitle($seo_title);
 
             $view = APP_WEB_DIR. "/themes/vanilla/page.tmpl" ;
             include ($view);
