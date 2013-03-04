@@ -6469,11 +6469,7 @@ a.badge:hover {
 
     
     /* bootstrap pager - make rectangular */
-    .pager a,.pager span{
-        -webkit-border-radius: 0 ;
-        -moz-border-radius: 0;
-        border-radius: 0;
-    }
+    
     
     .page-header {
         padding-bottom: 29px;

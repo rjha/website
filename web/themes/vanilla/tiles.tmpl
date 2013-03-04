@@ -9,50 +9,16 @@
 <html>
 
     <head>
-        <title> Home page </title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="keywords" content="website builder app">
-        <meta name="description" content="website builder app description">
-
-        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-
+        <title><?php echo $gPageTitle ; ?></title>
+        <?php include("meta.inc") ?>
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
 
     </head>
 
      <body>
-         <header role="banner">
-            <hgroup>
-                <h1> <a href="/">The converse shoes</a> </h1>
-            </hgroup>
 
-        </header>
-        <div class="navbar">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a> <!-- 3bars for smaller screens -->
-
-                    <div class="nav-collapse">
-                        <ul class="nav">
-                            <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
-                        </ul>
-                        
-                    </div>
-
-                </div>
-
-            </div>
-        </div> <!-- default toolbar -->
-        
+       <?php include("header.inc") ?>
         <div class="container">
 
             <div class="row">
@@ -72,22 +38,10 @@
 
         </div>   <!-- container -->
         
-        <?php $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>
-
-        <div class="row">
-
-            <div class="span8 offset1">
-                <div class="floatr">
-                    <div id="footer">
-                        <ul class="nav nav-pills">
-                            <li> <a href="/"> Home </a> </li>
-                             
-                            
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- footer -->
+        <div class="pt20">
+            <?php $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>
+        </div>
+        
 
         <?php echo \com\indigloo\wb\util\Asset::version("/js/wb-bundle.js"); ?>
          <script type="text/javascript">
@@ -100,7 +54,7 @@
                     $container.isotope({ itemSelector: '.tile', layoutMode: 'masonry'});
                 });
 
-                /*
+                
                 $container.infinitescroll(
                     {
                         navSelector     : '.pager',
@@ -129,11 +83,15 @@
                         });
 
                     }
-                ); */
+                ); 
 
             });
 
         </script>
+
+         <div class="row">
+            <div class="span11 offset1" style="border-bottom:1px solid #d5d5d5;padding-bottom:20px;">&nbsp;</div>
+        </div>
 
     </body>
 </html>

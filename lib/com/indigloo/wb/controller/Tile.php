@@ -3,7 +3,7 @@ namespace com\indigloo\wb\controller{
     
     use \com\indigloo\Url as Url ;
 
-    class Sitemap {
+    class Tile {
 
         
         function __construct() {
@@ -15,13 +15,13 @@ namespace com\indigloo\wb\controller{
         	$gpage = Url::tryQueryParam("gpage");
             $gpage = empty($gpage) ? "1" : $gpage ;
             if($gpage == "1") {
-                $this->loadHomePage();
+                $this->loadHomePage($gpage);
             } else {
-                $this->loadNextPage();
+                $this->loadNextPage($gpage);
             }
         }
 
-        function loadHomePage() {
+        function loadHomePage($gpage) {
         	
     		$pageDao = new \com\indigloo\wb\dao\Page();
             $pageSize = 20;
@@ -34,7 +34,7 @@ namespace com\indigloo\wb\controller{
          	//data for paginator
          	$startId = NULL ;
          	$endId = NULL ;
-         	$pageBaseUrl = "/sitemap" ;
+         	$pageBaseUrl = "/" ;
          	$gNumRecords = sizeof($pageDBRows);
 
          	if($gNumRecords > 0 ) {
@@ -42,11 +42,16 @@ namespace com\indigloo\wb\controller{
                 $endId =   $pageDBRows[$gNumRecords-1]["id"] ;
          	}
 
+            
+            $gMetaDescription = "";
+            $gPageTitle = sprintf("page %d of theconverseshoes.info",$gpage);
+            $gMetaKeywords = "shoes converse shoes vans shoes knee high reef sandal";
+
             $view = APP_WEB_DIR. "/themes/vanilla/tiles.tmpl" ;
             include ($view);
         }
 
-        function loadNextPage() {
+        function loadNextPage($gpage) {
 			 
     		$pageDao = new \com\indigloo\wb\dao\Page();
      		$qparams = Url::getRequestQueryParams();
@@ -60,13 +65,17 @@ namespace com\indigloo\wb\controller{
             //data for paginator
          	$startId = NULL ;
          	$endId = NULL ;
-         	$pageBaseUrl = "/sitemap" ;
+         	$pageBaseUrl = "/" ;
          	$gNumRecords = sizeof($pageDBRows);
 
          	if($gNumRecords > 0 ) {
          		$startId = $pageDBRows[0]["id"] ;
                 $endId =   $pageDBRows[$gNumRecords-1]["id"] ;
          	}
+
+            $gMetaDescription = "";
+            $gPageTitle = sprintf("page %d of theconverseshoes.info",$gpage);
+            $gMetaKeywords = "shoes converse shoes vans shoes knee high reef sandal";
 
             $view = APP_WEB_DIR. '/themes/vanilla/tiles.tmpl' ;
             include ($view);

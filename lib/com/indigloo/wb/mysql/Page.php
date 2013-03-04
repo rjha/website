@@ -82,7 +82,7 @@ namespace com\indigloo\wb\mysql {
             //sanitize input
             settype($limit,"integer");
 
-            $sql = " SELECT p.*  FROM wb_page p  WHERE p.org_id = %d " ;
+            $sql = " SELECT p.*  FROM wb_page p  WHERE p.org_id = %d and p.has_media = 1 " ;
             $sql .=" and RAND()<(SELECT ((%d/COUNT(*))*4) FROM wb_page p2 where p2.org_id = %d ) ";
             $sql .= " ORDER BY RAND() LIMIT %d";
             $sql = sprintf($sql,1,$limit,1,$limit);

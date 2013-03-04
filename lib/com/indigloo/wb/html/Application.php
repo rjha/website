@@ -16,7 +16,8 @@ namespace com\indigloo\wb\html {
 
             $view->title = $pageDBRow['title'] ;
             $view->id = $pageDBRow['id'] ;
-            $view->link = $pageDBRow['seo_title'];
+            $view->link = Url::base()."/".$pageDBRow['seo_title'];
+            
           	$view->hasImage = false ;
 
             $strMediaJson = $pageDBRow['media_json'];
