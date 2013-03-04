@@ -52,6 +52,7 @@ CREATE TABLE  wb_page  (
    seo_title_hash varchar(32) not null,
    random_key varchar(16) not null,
    media_json text ,
+   has_media int default 0,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
@@ -70,9 +71,7 @@ CREATE TABLE  wb_page_content  (
    title varchar(256) not null,
    widget_type int not null,
    widget_html text,
-   widget_code text,
-   widget_markdown text,
-   widget_media text,
+   media_json text ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
