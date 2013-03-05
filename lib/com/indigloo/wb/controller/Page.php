@@ -20,7 +20,7 @@ namespace com\indigloo\wb\controller{
 
             $gPageTitle = StringUtil::convertKeyToName($seo_title);
             $gMetaKeywords = "shoes converse shoes vans shoes knee high reef sandal";
-            $gMetaDescription = "";
+            $gMetaDescription = StringUtil::convertKeyToName($seo_title);
             $gSelfUrl = Url::base().$options["path"];
             
             $view = APP_WEB_DIR. "/themes/vanilla/page.tmpl" ;

@@ -42,9 +42,9 @@ namespace com\indigloo\wb\controller{
                 $endId =   $pageDBRows[$gNumRecords-1]["id"] ;
          	}
 
-            
-            $gMetaDescription = "";
-            $gPageTitle = sprintf("page %d of theconverseshoes.info",$gpage);
+            $title = sprintf("page %d of theconverseshoes.info",$gpage);
+            $gMetaDescription = $title;
+            $gPageTitle = $title ;
             $gMetaKeywords = "shoes converse shoes vans shoes knee high reef sandal";
 
             $view = APP_WEB_DIR. "/themes/vanilla/tiles.tmpl" ;
@@ -73,11 +73,12 @@ namespace com\indigloo\wb\controller{
                 $endId =   $pageDBRows[$gNumRecords-1]["id"] ;
          	}
 
-            $gMetaDescription = "";
-            $gPageTitle = sprintf("page %d of theconverseshoes.info",$gpage);
+            $title = sprintf("page %d of theconverseshoes.info",$gpage);
+            $gMetaDescription = $title;
+            $gPageTitle = $title ;
             $gMetaKeywords = "shoes converse shoes vans shoes knee high reef sandal";
 
-            $view = APP_WEB_DIR. '/themes/vanilla/tiles.tmpl' ;
+            $view = APP_WEB_DIR. "/themes/vanilla/tiles.tmpl" ;
             include ($view);
         }
         
