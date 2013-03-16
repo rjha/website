@@ -7,7 +7,10 @@ namespace com\indigloo\wb\mysql {
     use \com\indigloo\Configuration as Config ;
 
     use \com\indigloo\Logger as Logger ;
-    
+    use \com\indigloo\mysql\PDOWrapper;
+    use \com\indigloo\exception\DBException as DBException;
+    use \com\indigloo\fs\Constants as AppConstants ;
+
 
     class Page {
 
@@ -92,6 +95,68 @@ namespace com\indigloo\wb\mysql {
 
         }
 
+        static function getWidgetsOnId($pageId) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($pageId,"integer");
+            $sql = " select * from wb_page_content where page_id = %d " ;
+            $sql = sprintf($sql,$pageId);
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+
+        }
+
+        static function getIdOnSeoTitle($hash) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            $sql = " select * from  wb_page where seo_title_hash = '%s' " ;  
+            $sql = sprintf($sql,$hash);
+            $row = MySQL\Helper::fetchRow($mysqli,$sql);
+            return $row ;
+        }
+
+        static function update($pageId,$widgetId,$title,$content) {
+
+            $dbh = NULL ;
+            
+            try {
+                //input check
+                settype($pageId, "integer");
+                settype($widgetId, "integer");
+
+                $dbh =  PDOWrapper::getHandle();
+                
+                //Tx start
+                $dbh->beginTransaction();
+                
+                $sql1 = " update wb_page_content set title = :title, widget_html = :content ".
+                        " where id = :widget_id and page_id = :page_id " ;
+                
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":widget_id", $widgetId);
+                $stmt1->bindParam(":page_id", $pageId);
+                $stmt1->bindParam(":title", $title);
+                $stmt1->bindParam(":content", $content);
+
+                $stmt1->execute();
+                $stmt1 = NULL ;
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                echo $message ; exit ;
+                throw new DBException($message);
+            }
+
+        }
     }
 
 }

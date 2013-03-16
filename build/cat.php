@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-    define("G_CODE_ROOT","/Users/rjha/code/github");
+    define("G_CODE_ROOT","/home/rjha/code/github");
     error_reporting(-1);
 
     function make_js_bundle($root3p,$rootApp) {

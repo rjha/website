@@ -1,4 +1,13 @@
- <header role="banner">
+<?php
+
+    $qUrl = \com\indigloo\Url::current() ;
+    $params = array("q" => base64_encode($qUrl), "title" => base64_encode($seo_title) );
+    $editUrl = \com\indigloo\Url::createUrl("/app/post/edit.php",$params) ;
+
+
+?>
+
+        <header role="banner">
             <hgroup>
                 <h1> <a href="/">The converse shoes</a> </h1>
             </hgroup>
@@ -18,7 +27,8 @@
                     <div class="nav-collapse">
                         <ul class="nav">
                             <li> <a href="/"><i class="icon icon-home"></i>&nbsp;Home</a></li>
-                            <li> <a href="/sitemap"><i class="icon icon-list"></i>&nbsp;View all posts</a></li>
+                            <li> <a href="/sitemap"><i class="icon icon-folder-open"></i>&nbsp;All posts</a></li>
+                            <li> <a href="<?php echo $editUrl; ?>"><i class="icon icon-edit"></i>&nbsp;Edit</a></li>
                         </ul>
                         
                     </div>
