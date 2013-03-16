@@ -40,28 +40,29 @@ if (!window.JSON) {
 
 /* + namepsaces */
 webgloo = window.webgloo || {};
-webgloo.fs = webgloo.fs || {};
+webgloo.wb = webgloo.wb || {};
 
-webgloo.fs.message = {
+webgloo.message = {
     get : function(key,data) {
         var buffer = '' ;
-        if(webgloo.fs.message.hasOwnProperty(key)) {
-            buffer = webgloo.fs.message[key].supplant(data);
+        if(webgloo.message.hasOwnProperty(key)) {
+            buffer = webgloo.message[key].supplant(data);
         }
 
         return buffer ;
     }
 } 
 
-webgloo.fs.message.SPINNER = '<div> <img src="/css/asset/fs/fb_loader.gif" alt="spinner"/></div>' ;
-webgloo.fs.message.IS_REQUIRED = 'This is required!' ;
-webgloo.fs.message.COURIER_REQUIRED = '<span class="error">courier information is required! </span>' ;
+webgloo.message.SPINNER = '<div> <img src="/css/asset/fs/fb_loader.gif" alt="spinner"/></div>' ;
+webgloo.message.IS_REQUIRED = 'This is required!' ;
 
-webgloo.fs.Ajax = {
+
+/* +ajax wrapper */
+webgloo.Ajax = {
      
     addSpinner : function(messageDivId) {
         $(messageDivId).html('');
-        var content = webgloo.fs.message.SPINNER ;
+        var content = webgloo.message.SPINNER ;
         $(messageDivId).html(content);
        
     },
@@ -94,13 +95,13 @@ webgloo.fs.Ajax = {
         }) ;
 
         xmlRequest.fail(function(response) {
-            webgloo.fs.Ajax.show(settings.messageDivId,response);
+            webgloo.Ajax.show(settings.messageDivId,response);
         });
 
         xmlRequest.done(function(response) {
             
             if(settings.dataType == 'json') {
-                webgloo.fs.Ajax.show(settings.messageDivId,response.message);
+                webgloo.wb.Ajax.show(settings.messageDivId,response.message);
             }
 
             if(typeof settings.onDoneHandler !== "undefined") {
@@ -113,202 +114,91 @@ webgloo.fs.Ajax = {
 
 }
 
-/* jquery validator object for order page */
+/* + webgloo media object */
 
-// Rules
-// first name/ last name - min :3 max 30 | alphanumeric
-// first name <> last name
-// email : 64/ valid format
-// phone : digits only / max 16
-// address : 100 / min 6
-// city : 3-30 chars | alphabets only
-// state : required
-// pincode 2-12 : numbers only
+webgloo.media = {
+    images : {} ,
+    debug : false,
 
+    init : function (options) {
+         /* @imp define all properties that we wish to override */
+        var defaults = {
+            formName : "form1",
+            formId : "#form1",
+            removeImageClass : "a.remove-image",
+            previewDiv : "#image-preview",
+            imageDiv : '<div class="container" id="image-{id}"> '
+                + ' <img src="{srcImage}" alt="{originalName}" width="{width}" height="{height}"/> '
+                + '<div class="link"> <a class="remove-image" id="{id}" href="">Remove</a> </div> </div>'
 
-webgloo.fs.OrderValidator = 
-{
-    errorLabelContainer: $("#form-message"),
-    onkeyup:false,
-    
-    rules: {
-        first_name: {required: true, maxlength:30, minlength:3} ,
-        last_name : { required : true, maxlength : 30, minlength :2},
-        email: {required: true, email:true } ,
-        phone : {required : true, digits : true},
-        billing_address: {required: true , maxlength:100, minlength : 6} ,
-        billing_city: {required: true , maxlength:30, minlength:3} ,
-        billing_state: {required: true} ,
-        billing_pincode: {required: true , maxlength:12, minlength:2} ,
+            
+        };
 
-        ship_first_name: {required: true, maxlength:30, minlength:3} ,
-        ship_last_name : { required : true, maxlength : 30, minlength :2},
-        ship_address: {required: true , maxlength:100, minlength : 6} ,
-        ship_city: {required: true , maxlength:30, minlength:3} ,
-        ship_state: {required: true} ,
-        ship_pincode: {required: true , maxlength:12, minlength:2}, 
-        ship_phone : {required : true, digits : true}
-        
-    },
-    messages: {
-        first_name: {
-            required: "First name is required ", 
-            maxlength : "Only 30 chars allowed in First Name", 
-            minlength: "At least 3 chars required in First Name"
-        } ,
-        last_name : { 
-            required : "Last name is required ",
-            maxlength : "Only 30 chars allowed in Last Name", 
-            minlength: "At least 2 chars required in Last Name"
-        },
-        ship_first_name: {
-            required: "First name (shipping) is required ", 
-            maxlength : "Only 30 chars allowed in First Name", 
-            minlength: "At least 3 chars required in First Name"
-        } ,
-        ship_last_name : { 
-            required : "Last name (shipping) is required ",
-            maxlength : "Only 30 chars allowed in Last Name", 
-            minlength: "At least 2 chars required in Last Name"
-        },
-        email: {
-            required: "Email is required", 
-            email : "Email is not in valid format" ,
-        } ,
-        phone : {
-            required : "Phone is required", 
-            digits : "Only numbers are allowed in Phone"
-        },
-        billing_address: {
-            required: "Address (billing) is required " , 
-            maxlength:"Only 100 chars allowed in Address",
-            minlength: "At least 6 chars required in  Address"
-        } ,
-        billing_city: {
-            required: true , 
-            maxlength : "Only 30 chars allowed in City (billing)", 
-            minlength: "At least 3 chars required in City(billing)"
-        } ,
-        billing_state: {
-            required: "State (billing) is required"
-        } ,
-        billing_pincode: {
-            required: "Pincode (billing) is required " , 
-            maxlength:"Only 12 chars allowed in Pincode (billing)",
-            minlength: "Atleast 2 chars required in Pincode (billing)"
-        },
+        webgloo.media.settings = $.extend({}, defaults, options);
 
-        ship_address: {
-            required: "Address (shipping) is required " , 
-            maxlength:"Only 100 chars allowed in Address",
-            minlength: "At least 6 chars required in  Address"
-        } ,
-        ship_city: {
-            required: true , 
-            maxlength : "Only 30 chars allowed in City (shipping)", 
-            minlength: "At least 3 chars required in City(shipping)"
-        } ,
-        ship_state: {
-            required: "State (shipping) is required"
-        } ,
-        ship_pincode: {
-            required: "Pincode (shipping) is required " , 
-            maxlength:"Only 12 chars allowed in Pincode (shipping)",
-            minlength: "Atleast 2 chars required in Pincode (shipping)"
-        },
-        ship_phone : {
-            required : "Phone (shipping) is required", 
-            digits : "Only numbers are allowed in Phone (shipping)"
+        frm = document.forms[webgloo.media.settings.formName];
+        var strImagesJson = frm.images_json.value ;
+        var images = JSON.parse(strImagesJson);
+        for(i = 0 ;i < images.length ; i++) {
+            webgloo.media.addImage(images[i]);
         }
-    }
-}
 
-
-webgloo.fs.invoice = {
-
-    mail : function(invoiceId,callback) {
-        var dataObj = {} ;
-        dataObj.params = {} ;
-        dataObj.params.invoiceId  = invoiceId;
-        dataObj.endPoint = "/app/action/invoice/ajax/mail.php";
-        
-        var options = {
-            "dataType" : "json", 
-            "timeout" : 9000,
-            "messageDivId" : "#invoice-ajax-" + invoiceId ,
-            onDoneHandler : callback.mail
-        };
-        
-        webgloo.fs.Ajax.post(dataObj,options) ;
     },
 
-    edit : function (invoiceId,callback) {
-        // nothing to do online
-        var dataObj = {} ;
-        var response = {} ;
-        dataObj.params = {} ;
-        dataObj.params.invoiceId = invoiceId ;
-        callback.edit(dataObj,response);
-    },
-
-    cancel : function(invoiceId,callback) {
-        $("#invoice-ajax-" + invoiceId).html("Not implemented yet");
-    },
-
-    shipping : function (invoiceId,callback) {
-        
-        var dataObj = {} ;
-        dataObj.params = {} ;
-        dataObj.params.invoiceId  = invoiceId;
-        dataObj.endPoint = "/app/invoice/get-shipping.php";
-        
-        var options = {
-            "dataType" : "text", 
-            "timeout" : 9000,
-            "messageDivId" : "#invoice-ajax-" + invoiceId ,
-            onDoneHandler : callback.shipping
-        };
-        
-        webgloo.fs.Ajax.post(dataObj,options) ;
-    },
-
-    remind : function(invoiceId,callback) {
-        $("#invoice-ajax-" + invoiceId).html("Not implemented yet");
-    },
-
-    initActions : function(callback) {
-        this.callback = callback ;
-
-        $("a.invoice-action").live("click",function(event){
+    attachEvents : function() {
+        $(webgloo.media.settings.removeImageClass).live("click", function(event){
             event.preventDefault();
-            var invoiceId = $(this).attr("id");
-            var action =  $(this).attr("rel") ;
-
-            switch(action) {
-                case 'mail' :
-                    webgloo.fs.invoice.mail(invoiceId,callback);
-                    break ;
-                case 'edit' :
-                    webgloo.fs.invoice.edit(invoiceId,callback);
-                    break ;
-                case 'cancel' :
-                    webgloo.fs.invoice.cancel(invoiceId,callback);
-                    break ;
-                case 'shipping' :
-                    webgloo.fs.invoice.shipping(invoiceId,callback);
-                    break ;
-                case 'remind' :
-                    webgloo.fs.invoice.remind(invoiceId,callback);
-                    break ;
-                
-                default :
-                    break ;
-
-            }
- 
+            webgloo.media.removeImage($(this));
         }) ;
-    }
 
+        $(webgloo.media.settings.formId).submit(function() {
+            webgloo.media.populateHidden();
+            return true;
+        });
+
+    },
+
+    populateHidden : function () {
+
+        var frm = document.forms[webgloo.media.settings.formName];
+        var images = new Array() ;
+        $(webgloo.media.settings.previewDiv).find('a').each(function(index) {
+             var imageId = $(this).attr("id");
+             images.push(webgloo.media.images[imageId]);
+        });
+
+        var strImages =  JSON.stringify(images);
+        frm.images_json.value = strImages ;
+    },
+
+    removeImage : function(linkObj) {
+        var id = $(linkObj).attr("id");
+        var imageId = "#image-" +id ;
+        $("#image-"+id).remove();
+    },
+
+    addImage : function(mediaVO) {
+        
+        webgloo.media.images[mediaVO.id] = mediaVO ;
+        switch(mediaVO.store) {
+
+            case "s3" :
+                mediaVO.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
+                var buffer = webgloo.media.settings.imageDiv.supplant(mediaVO);
+                $(webgloo.media.settings.previewDiv).append(buffer);
+                break ;
+
+            case "local" :
+                mediaVO.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
+                var buffer = webgloo.media.settings.imageDiv.supplant(mediaVO);
+                $(webgloo.media.settings.previewDiv).append(buffer);
+                break ;
+
+            default:
+                break ;
+        }
+        
+    }
 }
 
 

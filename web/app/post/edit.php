@@ -28,7 +28,7 @@
     $widgetRows = $pageDao->getWidgetsOnId($pageId);
     $widgetRow = $widgetRows[0] ;
     // if more than one widget? show in sidebar
-
+    $strImagesJson = '{}' ;
 
 ?>
 
@@ -95,12 +95,23 @@
                     <div>
                         <?php FormMessage::render(); ?>
                     </div>
+                    <div id="form-message"> </div>
+
                     <form  id="form1"  name="form1" action="<?php echo Url::base() ?>/app/action/post/edit.php" enctype="multipart/form-data"  method="POST">  
                         <table class="form-table">
                             <tr>
                                 <td>
                                     <label>Post*</label>
                                     <input type="text" class="required" name="title" value="<?php echo $sticky->get('title',$widgetRow['title']); ?>" />
+                                </td>
+                            </tr>
+                            <tr>  
+                                <td>
+                                    <div id="ful-message"> </div>
+                                    <div id="image-uploader"> </div> 
+                                    <div class="section1">
+                                        <div id="image-preview"> </div>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
@@ -110,6 +121,7 @@
                                     
                                 </td>
                             </tr>
+                            
                             
                             <tr>
                                 <td>
@@ -123,8 +135,12 @@
 
                         </table>
 
+
+                       
+
                         <input type="hidden" name="widget_id" value="<?php echo $widgetRow['id']; ?>" />
                         <input type="hidden" name="page_id" value="<?php echo $pageId ?>" />
+                          <input type="hidden" name="images_json" value='<?php echo $strImagesJson ; ?>' />
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 
@@ -142,6 +158,51 @@
             </div> <!-- row:content -->
 
         </div>   <!-- container -->
+        <?php echo \com\indigloo\wb\util\Asset::version("/js/wb-bundle.js"); ?>
+        
+        <script type="text/javascript">
 
+            $(document).ready(function(){
+
+                $("#form1").validate({
+                    errorLabelContainer: $("#form-message"),
+                    onkeyup : false,
+                    rules: {
+                        title: {required: true } ,
+                        content: {required: true} 
+                        
+                    },
+                    messages: {
+                        title: {required: "Title is required" },
+                        content: {required: "Content is required"}
+                    }
+                });
+
+                // use all default options
+                var media_options = {} ;
+                webgloo.media.init(media_options);
+                webgloo.media.attachEvents();
+                
+                var uploader = new qq.FileUploader({
+                    element: document.getElementById('image-uploader'),
+                    action: '/app/action/upload/image.php',
+                    allowedExtensions: ['png','gif','jpg','jpeg'],
+                    debug: false,
+                    uploadButtonText : 'Add photo', 
+                    
+                    onComplete: function(id, fileName, responseJSON) {
+                        webgloo.media.addImage(responseJSON.mediaVO);
+                    },  
+
+                    showMessage: function(message){ 
+                        var tmpl = '<li class="qq-uplad-fail"> <span class="error"> {message}</span></li> ';
+                        var errorMessage = tmpl.supplant({"message" : message}) ;
+                        $(".qq-upload-list").append(errorMessage);
+                        
+                    }
+                });
+            });
+
+        </script>
     </body>
 </html>

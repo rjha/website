@@ -12,6 +12,7 @@
         $files[] = "jquery/isotope/jquery.isotope.js" ;
         $files[] = "jquery/infinite/jquery.infinitescroll.hacked.js" ;
         $files[] = "bootstrap/2.1.1/js/bootstrap.js" ;
+        $files[] = "ful/2.1.1/fileuploader.js" ;
 
         $appFiles = array();
         $appFiles[] = "js/wb.js" ;
@@ -43,6 +44,7 @@
         //list of 3p files to concatenate
         $files = array();
         $files[] = "bootstrap/2.1.1/css/bootstrap.css" ;
+        $files[] = "ful/2.1.1/fileuploader.css" ;
        
         $appFiles = array();
         $appFiles[] = "css/wb.css" ;
