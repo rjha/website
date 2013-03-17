@@ -78,3 +78,21 @@ CREATE TABLE  wb_page_content  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
+
+DROP TABLE IF EXISTS  wb_media ;
+CREATE TABLE  wb_media  (
+   id  int(11) NOT NULL AUTO_INCREMENT,
+   original_name  varchar(256) NOT NULL,
+   thumbnail_name  varchar(256) NOT NULL,
+   stored_name  varchar(64) NOT NULL,
+   bucket  varchar(32) NOT NULL,
+   size  int(11) NOT NULL,
+   mime  varchar(64) NOT NULL,
+   original_height  int(11) ,
+   original_width  int(11) ,
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   store  varchar(8) NOT NULL DEFAULT 'local',
+   thumbnail  varchar(64) ,
+  PRIMARY KEY ( id )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

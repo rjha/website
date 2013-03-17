@@ -577,6 +577,13 @@
         cursor:pointer ;
     }
 
+    .section1 {
+        min-height: 20px;
+        padding:15px 20px 15px 20px;
+        margin-bottom:10px;
+        margin-top:10px;
+        overflow:hidden ;
+    }
 
    
     /* + metro UI style tiles to display counters */

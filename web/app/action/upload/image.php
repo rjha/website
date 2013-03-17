@@ -88,12 +88,11 @@
     } else {
         
         $mediaVO = $uploader->getMediaData();
-        /*
-        $mediaDao = new com\indigloo\sc\dao\Media();
+       
+        $mediaDao = new com\indigloo\wb\dao\Media();
         $mediaId = $mediaDao->add($mediaVO);
-        $mediaVO->id  = $mediaId; */
-        $mediaVO->id = 100;
-          
+        $mediaVO->id  = $mediaId;
+        
         $message = "file upload done!";
         $data = array("code" => 200, "mediaVO" => $mediaVO, "message" => $message,"success" => true);
         echo json_encode($data);

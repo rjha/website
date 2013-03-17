@@ -16589,6 +16589,7 @@ webgloo.media = {
     addImage : function(mediaVO) {
         
         webgloo.media.images[mediaVO.id] = mediaVO ;
+
         switch(mediaVO.store) {
 
             case "s3" :
