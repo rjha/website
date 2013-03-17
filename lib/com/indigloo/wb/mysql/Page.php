@@ -117,7 +117,7 @@ namespace com\indigloo\wb\mysql {
             return $row ;
         }
 
-        static function update($pageId,$widgetId,$title,$content) {
+        static function update($pageId,$widgetId,$title,$content,$mediaJson) {
 
             $dbh = NULL ;
             
@@ -131,14 +131,15 @@ namespace com\indigloo\wb\mysql {
                 //Tx start
                 $dbh->beginTransaction();
                 
-                $sql1 = " update wb_page_content set title = :title, widget_html = :content ".
-                        " where id = :widget_id and page_id = :page_id " ;
+                $sql1 = " update wb_page_content set title = :title, widget_html = :content, ".
+                        " media_json = :media_json where id = :widget_id and page_id = :page_id " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
                 $stmt1->bindParam(":widget_id", $widgetId);
                 $stmt1->bindParam(":page_id", $pageId);
                 $stmt1->bindParam(":title", $title);
                 $stmt1->bindParam(":content", $content);
+                $stmt1->bindParam(":media_json", $mediaJson);
 
                 $stmt1->execute();
                 $stmt1 = NULL ;

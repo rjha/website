@@ -20,10 +20,11 @@
         $fhandler = new Form\Handler('form1', $_POST);
         $fhandler->addRule('title', 'Title', array('required' => 1));
         // _do_not_ escape the content
-        $fhandler->addRule('content', 'Content', array('required' => 1, "rawData" => true));
+        $fhandler->addRule('content', 'Content', array('required' => 1, "rawData" => 1));
         $fhandler->addRule('widget_id', 'PostId', array('required' => 1));
         $fhandler->addRule('page_id', 'PageId', array('required' => 1));
-       	
+       	$fhandler->addRule('media_json', 'media json', array('rawData' => 1));
+
         // get form values
         $fvalues = $fhandler->getValues();
         
@@ -35,7 +36,8 @@
         $pageDao->update($fvalues["page_id"],
         					$fvalues["widget_id"],
                             $fvalues["title"],
-                            $fvalues["content"]);
+                            $fvalues["content"],
+                            $fvalues["media_json"]);
 
          
         //success - go to page

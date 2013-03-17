@@ -27,8 +27,13 @@
     $pageId = $pageDao->getIdOnSeoTitle($seo_title);
     $widgetRows = $pageDao->getWidgetsOnId($pageId);
     $widgetRow = $widgetRows[0] ;
-    // if more than one widget? show in sidebar
-    $strImagesJson = '{}' ;
+    // @todo if more than one widget? show in sidebar
+
+    // @imp: why formSafeJson? we are enclosing the JSON string in single quotes
+    // so the single quotes coming from DB should be escaped
+    $strMediaJson = $sticky->get('media_json',$widgetRow['media_json']) ;
+    $strMediaJson = Util::formSafeJson($strMediaJson);
+
 
 ?>
 
@@ -99,12 +104,7 @@
 
                     <form  id="form1"  name="form1" action="<?php echo Url::base() ?>/app/action/post/edit.php" enctype="multipart/form-data"  method="POST">  
                         <table class="form-table">
-                            <tr>
-                                <td>
-                                    <label>Post*</label>
-                                    <input type="text" class="required" name="title" value="<?php echo $sticky->get('title',$widgetRow['title']); ?>" />
-                                </td>
-                            </tr>
+                            
                             <tr>  
                                 <td>
                                     <div id="ful-message"> </div>
@@ -112,6 +112,12 @@
                                     <div class="section1">
                                         <div id="image-preview"> </div>
                                     </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Post*</label>
+                                    <input type="text" class="required" name="title" value="<?php echo $sticky->get('title',$widgetRow['title']); ?>" />
                                 </td>
                             </tr>
                             <tr>
@@ -140,7 +146,7 @@
 
                         <input type="hidden" name="widget_id" value="<?php echo $widgetRow['id']; ?>" />
                         <input type="hidden" name="page_id" value="<?php echo $pageId ?>" />
-                          <input type="hidden" name="images_json" value='<?php echo $strImagesJson ; ?>' />
+                        <input type="hidden" name="media_json" value='<?php echo $strMediaJson ; ?>' />
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 

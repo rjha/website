@@ -51,8 +51,8 @@ namespace com\indigloo\wb\dao {
             return $rows ;
         }
 
-        function update($pageId,$widgetId,$title,$content) {
-            mysql\Page::update($pageId,$widgetId,$title,$content) ;
+        function update($pageId,$widgetId,$title,$content,$mediaJson) {
+            mysql\Page::update($pageId,$widgetId,$title,$content,$mediaJson) ;
         }
                              
     }

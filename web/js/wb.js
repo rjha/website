@@ -137,7 +137,7 @@ webgloo.media = {
         webgloo.media.settings = $.extend({}, defaults, options);
 
         frm = document.forms[webgloo.media.settings.formName];
-        var strImagesJson = frm.images_json.value ;
+        var strImagesJson = frm.media_json.value ;
         var images = JSON.parse(strImagesJson);
         for(i = 0 ;i < images.length ; i++) {
             webgloo.media.addImage(images[i]);
@@ -168,7 +168,7 @@ webgloo.media = {
         });
 
         var strImages =  JSON.stringify(images);
-        frm.images_json.value = strImages ;
+        frm.media_json.value = strImages ;
     },
 
     removeImage : function(linkObj) {

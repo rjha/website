@@ -6077,8 +6077,64 @@ a.badge:hover {
 
     
 
-    /* + link and image previews */
+    /* + image preview grid */
 
+    #image-preview .container{
+       position :relative ;
+       float : left;
+       padding:7px;
+       height:160px;
+       width:190px;
+       box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+       margin :4px;
+    }
+
+    #image-preview .container img {
+        width: auto;
+        height: auto;
+        max-width: 180px;
+        max-height: 135px;
+        margin-bottom : 5px;
+        padding:5px;
+    }
+
+    #image-preview .container .link {
+        position:absolute ;
+        left :60px;
+        bottom : 3px ;
+    }
+
+    #image-preview .container .link a{
+        font-size:10px;
+        line-height: 1.8 ;
+        color: #444 ;
+        text-decoration: underline ;
+    }
+
+     #image-preview .container .options {
+        position:absolute ;
+        overflow:hidden ;
+        z-index:100;
+        display:none ;
+        /* @see http://0to255.com/ to get matching color */
+        background-color: #F7F7F7;
+        margin:0px;
+        padding:0px 0px 0px 0px;
+        height:36px;
+        width:100%;
+    }
+
+     #image-preview .container .options .links {
+        padding : 5px 5px 5px 60px;
+        font-size:11px;
+        line-height:16px;
+    }
+
+     #image-preview .container .options .links a {
+        color : #222;
+        font-weight:bold ;
+    }
+    
     .hide-me {
         display:none ;
     }
