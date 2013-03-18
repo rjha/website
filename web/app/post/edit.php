@@ -45,11 +45,14 @@
         <!-- meta tags -->
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
         <style>
-            /* @hardcoded */
+            /* @hardcoded @inpage */
             .form-table { width:95%;}
             .form-table input {width: 90%;}
             .form-table textarea { width:90%; height: 320px;}
-
+            body {
+                font-size: 13px;
+                font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif ;
+            }
         </style>
 
     </head>
@@ -97,9 +100,14 @@
             <div class="row">
                 
                 <div class="span8 offset1">
-                    <div>
-                        <?php FormMessage::render(); ?>
-                    </div>
+                    <?php FormMessage::render(); ?>
+                    <div class="toolbar">
+                        <ul class="tools unstyled">
+                            <li> <a id="ful-open" href="#ful-container"><i class="icon icon-camera"></i>&nbsp;Add photo</a></li>
+                        </ul>
+                        <div class="clear"> </div>
+                    </div> <!-- toolbar -->
+
                     <div id="form-message"> </div>
 
                     <form  id="form1"  name="form1" action="<?php echo Url::base() ?>/app/action/post/edit.php" enctype="multipart/form-data"  method="POST">  
@@ -107,11 +115,11 @@
                             
                             <tr>  
                                 <td>
-                                    <div id="ful-message"> </div>
-                                    <div id="image-uploader"> </div> 
+                                    <div id="ful-container"> </div> 
                                     <div class="section1">
                                         <div id="image-preview"> </div>
                                     </div>
+                                    
                                 </td>
                             </tr>
                             <tr>
@@ -190,7 +198,8 @@
                 webgloo.media.attachEvents();
                 
                 var uploader = new qq.FileUploader({
-                    element: document.getElementById('image-uploader'),
+                    element: document.getElementById('ful-container'),
+                    button : document.getElementById('ful-open'),
                     action: '/app/action/upload/image.php',
                     allowedExtensions: ['png','gif','jpg','jpeg'],
                     debug: false,

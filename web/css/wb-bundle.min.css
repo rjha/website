@@ -1003,7 +1003,9 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .widget a{text-decoration:none}
 .widget a:hover{text-decoration:underline}
 .widget p{margin-bottom:5px;text-align:justify}
-#image-preview .container{position:relative;float:left;padding:7px;height:160px;width:190px;box-shadow:0 1px 3px rgba(34,25,25,0.4);margin:4px}
+#ful-container{padding-top:10px}
+#image-preview{padding-bottom:20px}
+#image-preview .container{position:relative;float:left;padding:7px;height:160px;width:190px;border:1px solid #d5d5d5;margin:4px}
 #image-preview .container img{width:auto;height:auto;max-width:180px;max-height:135px;margin-bottom:5px;padding:5px}
 #image-preview .container .link{position:absolute;left:60px;bottom:3px}
 #image-preview .container .link a{font-size:10px;line-height:1.8;color:#444;text-decoration:underline}
@@ -1013,11 +1015,10 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .hide-me{display:none}
 .box-shadow{box-shadow:0 1px 3px rgba(34,25,25,0.4)}
 .quote{margin-bottom:10px;padding-bottom:10px;border-left:4px solid #eee;padding-left:20px;overflow:hidden}
-.toolbar{margin-top:20px;border-bottom:2px solid #f8d575;border-top:2px solid #f8d575}
+.toolbar{margin-top:20px;border-top:0;border-bottom:1px solid #333}
 .tools li{float:left;position:relative;padding:5px 10px 5px 20px}
 .tools a{color:#333;font-size:14px}
-.tools a:hover{text-decoration:underline}
-.section{min-height:40px;padding:20px 0 20px 0;border-bottom:1px solid #f1f1f1;overflow:hidden}
+.tools a:hover{text-decoration:none}
 .stack{width:230px;float:left;padding:4px;margin:4px;cursor:pointer}
 .feeds{font-size:12px;padding:0 0 0 10px;font-family:arial}
 .feeds a{color:#333}
@@ -1048,6 +1049,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #user-menu .item a:hover{color:#b1b1b1;text-decoration:none}
 .btn-flat{text-shadow:none;padding:4px 12px 4px 12px;color:#333;background:white;font-family:arial,sans-serif;font-size:13px;border:1px solid #cecece}
 .btn-flat:hover{background-color:#f7f7f7;color:#222;cursor:pointer}
+.section{min-height:40px;padding:20px 0 20px 0;border-bottom:1px solid #f1f1f1;overflow:hidden}
 .section1{min-height:20px;padding:15px 20px 15px 20px;margin-bottom:10px;margin-top:10px;overflow:hidden}
 .metro-tile{color:#333;background-color:#f7f7f7;border:1px solid white;font-size:13px;font-weight:normal;text-align:center;width:120px}
 .metro-tile .name{display:block;padding:5px;font-weight:bold}

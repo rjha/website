@@ -223,6 +223,13 @@
     
 
     /* + image preview grid */
+    #ful-container {
+        padding-top: 10px;
+    }
+
+    #image-preview {
+        padding-bottom: 20px; 
+    }
 
     #image-preview .container{
        position :relative ;
@@ -230,7 +237,8 @@
        padding:7px;
        height:160px;
        width:190px;
-       box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+       border: 1px solid #d5d5d5;
+       /* box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); */
        margin :4px;
     }
 
@@ -301,8 +309,9 @@
 
     .toolbar {
         margin-top:20px;
-        border-bottom: 2px solid #F8D575 ;
-        border-top: 2px solid #F8D575 ;
+        border-top : 0px;
+        border-bottom : 1px solid #333333;
+        /* border-top: 1px solid #d5d5d5; */
     }
 
     .tools li {
@@ -318,14 +327,7 @@
     }
 
     .tools a:hover {
-        text-decoration: underline ;
-    }
-
-    .section {
-        min-height: 40px;
-        padding:20px 0px 20px 0px;
-        border-bottom:1px solid #f1f1f1;
-        overflow:hidden ;
+        text-decoration: none ;
     }
 
     /* generic left floating div */
@@ -575,6 +577,14 @@
         background-color: #f7f7f7 ;
         color: #222 ;
         cursor:pointer ;
+    }
+
+    /* + section_breaks */
+    .section {
+        min-height: 40px;
+        padding:20px 0px 20px 0px;
+        border-bottom:1px solid #f1f1f1;
+        overflow:hidden ;
     }
 
     .section1 {
