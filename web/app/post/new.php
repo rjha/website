@@ -25,23 +25,21 @@
         exit ;
     }
 
+    $orgId = 1 ;
+
+    $pageDao = new \com\indigloo\wb\dao\Page();
+    // existing page
     $seo_title = base64_decode($q_title);
     $page_title = StringUtil::convertKeyToName($seo_title);
-
-    $orgId = 1 ;
-    $pageDao = new \com\indigloo\wb\dao\Page();
     $pageId = $pageDao->getIdOnSeoTitle($seo_title);
-    $widgetRows = $pageDao->getWidgetsOnId($pageId);
-    $widgetRow = $widgetRows[0] ;
-    $post_title = $widgetRow["title"];
 
-    // @todo if more than one widget? show in sidebar
 
     // @imp: why formSafeJson? we are enclosing the JSON string in single quotes
     // so the single quotes coming from DB should be escaped
-    $strMediaJson = $sticky->get('media_json',$widgetRow['media_json']) ;
+    $strMediaJson = $sticky->get('media_json') ;
+    $strMediaJson = empty($strMediaJson) ? '[]' : $strMediaJson ;
     $strMediaJson = Util::formSafeJson($strMediaJson);
-
+    
 
 ?>
 
@@ -49,7 +47,7 @@
 <html>
 
     <head>
-        <title> Edit <?php echo $page_title; ?>  </title>
+        <title> Add new post</title>
         <!-- meta tags -->
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
         <style>
@@ -116,15 +114,7 @@
                 <div class="row">
                     <div class="span11 offset1">
                         <div class="page-header">
-                            <h3> <?php echo $page_title ?> </h3>
-                            <div id="post-list">
-                                <span class="comment-text"> select a different post </span>
-                                <ul class="nav nav-pills nav-stacked">
-                                  <li><a href="#"><i class="icon icon-chevron-right"></i>&nbsp;Profile</a></li>
-                                  <li><a href="#"><i class="icon icon-chevron-right"></i>&nbsp;Messages</a></li>
-                                  
-                                </ul>
-                            </div>
+                            <h3> Add new post </h3>
                         </div>
                     </div>
                 </div> <!-- row:header -->
@@ -142,7 +132,7 @@
 
                     <div id="form-message"> </div>
 
-                    <form  id="form1"  name="form1" action="<?php echo Url::base() ?>/app/action/post/edit.php" enctype="multipart/form-data"  method="POST">  
+                    <form  id="form1"  name="form1" action="<?php echo Url::base() ?>/app/action/post/new.php" enctype="multipart/form-data"  method="POST">  
                         <table class="form-table">
                             
                             <tr>  
@@ -157,13 +147,13 @@
                             <tr>
                                 <td>
                                     <label>Title*</label>
-                                    <input type="text" class="required" name="title" value="<?php echo $sticky->get('title',$widgetRow['title']); ?>" />
+                                    <input type="text" class="required" name="title" value="<?php echo $sticky->get('title'); ?>" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label>Content*</label>
-                                    <textarea name="content" class="required" cols="50" rows="4" ><?php echo $sticky->get('content',$widgetRow['widget_html']); ?></textarea>
+                                    <textarea name="content" class="required" cols="50" rows="4" ><?php echo $sticky->get('content'); ?></textarea>
                                     
                                 </td>
                             </tr>
@@ -173,7 +163,7 @@
                                 <td>
                                     <div class="form-actions">
                                         <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Save</span></button>
-                                          <a href="<?php echo base64_decode($qUrl); ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
+                                         <a href="<?php echo base64_decode($qUrl); ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
                                     </div>
 
                                 </td>
@@ -181,7 +171,6 @@
 
                         </table>
 
-                        <input type="hidden" name="widget_id" value="<?php echo $widgetRow['id']; ?>" />
                         <input type="hidden" name="page_id" value="<?php echo $pageId ?>" />
                         <input type="hidden" name="media_json" value='<?php echo $strMediaJson ; ?>' />
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />

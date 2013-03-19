@@ -156,7 +156,67 @@ namespace com\indigloo\wb\mysql {
                 echo $message ; exit ;
                 throw new DBException($message);
             }
+        }
 
+        static function add($pageId,$title,$content,$mediaJson) {
+
+            $dbh = NULL ;
+            $orgId = 1 ;
+
+            try {
+                //input check
+                settype($pageId, "integer");
+                
+                $dbh =  PDOWrapper::getHandle();
+                
+                //Tx start
+                $dbh->beginTransaction();
+                /*
+                if($page == -1) {
+                    // new page
+                    $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
+                    $seo_title_hash = md5($seo_title);
+                    $random_key = Util::getRandomString(16);
+                    
+                    $sql = " insert into wb_page(org_id,title,seo_title,seo_title_hash,random_key, created_on ) ".
+                        " values (:org_id,:title,:seo_title,:hash,:random_key,now()) " ;
+                    
+                    $stmt = $dbh->prepare($sql1);
+                    $stmt->bindParam(":org_id",$orgId);
+                    $stmt->bindParam(":title", $title);
+                    $stmt->bindParam(":seo_title", $seo_title);
+                    $stmt->bindParam(":hash", $seo_title_hash);
+                    $stmt->bindParam(":random_key", $random_key);
+                    
+                    $stmt->execute();
+                    $stmt = NULL ;
+                    $pageId = $dbh->lastInsertId();
+                } */
+
+                $sql1 = " insert into wb_page_content(page_id,title,widget_html,media_json) ".
+                        " values(:page_id, :title, :content, :media_json) " ;
+                
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":page_id", $pageId);
+                $stmt1->bindParam(":title", $title);
+                $stmt1->bindParam(":content", $content);
+                $stmt1->bindParam(":media_json", $mediaJson);
+
+                $stmt1->execute();
+                $stmt1 = NULL ;
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                echo $message ; exit ;
+                throw new DBException($message);
+            }
         }
     }
 

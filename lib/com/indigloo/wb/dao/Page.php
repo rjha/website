@@ -54,6 +54,10 @@ namespace com\indigloo\wb\dao {
         function update($pageId,$widgetId,$title,$content,$mediaJson) {
             mysql\Page::update($pageId,$widgetId,$title,$content,$mediaJson) ;
         }
+
+        function add($pageId,$title,$content,$mediaJson) {
+            mysql\Page::add($pageId,$title,$content,$mediaJson) ;
+        }
                              
     }
 }

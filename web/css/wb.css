@@ -10,9 +10,8 @@
     }
 
     body {
-        font-size: 18px;
-        font-family: "Georgia","Times New Roman", arial,serif ;
-        line-height: 24px; 
+        font-size: 13px;
+        font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif ; 
         position: relative;
         background-color:white  ;
         padding-top:1px;
@@ -689,19 +688,6 @@
         border-top:1px solid #d5d5d5;
     }
 
-    #footer a {
-
-    }
-
-    .form-actions .btn-mobikwik-wallet {
-
-        background: url('http://merchant.mobikwik.com/static/paywith.png') no-repeat center center;
-        width: 260px;
-        height: 73px;
-        color: transparent;
-        background-color: #f7f7f7;
-    }
-
     .tile {
         width:204px;
         margin:4px 2px 4px 2px;
@@ -715,7 +701,6 @@
 
     }
 
-    
     .tile .photo {
         padding:3px;
         width:190px;
@@ -744,6 +729,25 @@
         padding-bottom: 4px; 
     }
 
+    #admin-toolbar{
+        padding:0px;
+        padding-left: 120px;
+        background-color: #FEFFC5 ;
+        margin-top:-20px;
+        margin-bottom:15px;
+    }
+
+    #admin-toolbar a {
+        color: #333;
+        font-family: arial ;
+        font-size: 13px;
+    }
+
+    .post {
+        font-size: 18px;
+        font-family: "Georgia","Times New Roman", arial,serif ;
+        line-height: 24px; 
+    }
 
     /* @imp : last section - override 3rd party libraries */
     /* bootstrap css */

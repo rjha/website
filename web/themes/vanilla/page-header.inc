@@ -1,3 +1,12 @@
+<?php
+
+    $qUrl = \com\indigloo\Url::current() ;
+    $params = array("q" => base64_encode($qUrl), "title" => base64_encode($seo_title) );
+    $editUrl = \com\indigloo\Url::createUrl("/app/post/edit.php",$params) ;
+    $newUrl = \com\indigloo\Url::createUrl("/app/post/new.php",$params) ;
+
+
+?>
 
 <header role="banner">
     <hgroup>
@@ -28,4 +37,18 @@
         </div>
 
     </div>
-</div> <!-- toolbar -->
+</div> <!-- site toolbar -->
+
+<div id="admin-toolbar">
+    <div>
+        <ul class="tools unstyled">
+            <li> <a href="<?php echo $editUrl; ?>"><i class="icon icon-edit"></i>&nbsp;Edit</a></li>
+            <li> <a href="<?php echo $newUrl; ?>"><i class="icon icon-pencil"></i>&nbsp;New post</a></li>
+            <li> <a href="#"><i class="icon icon-list-alt"></i>&nbsp;Pages</a></li>
+            <li> <a href="#"><i class="icon icon-wrench"></i>&nbsp;Settings</a></li>
+
+        </ul>
+        <div class="clear"> </div>
+    </div>
+</div>
+

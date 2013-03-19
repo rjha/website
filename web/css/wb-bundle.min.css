@@ -939,7 +939,7 @@ to{background-position:0 0}
 .qq-progress-bar{background:-moz-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,rgba(30,87,153,1)),color-stop(50%,rgba(41,137,216,1)),color-stop(51%,rgba(32,124,202,1)),color-stop(100%,rgba(125,185,232,1)));background:-webkit-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:-o-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:-ms-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:linear-gradient(to bottom,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);width:0;height:15px;border-radius:6px;margin-bottom:3px;display:none}
 html,html#nojs{height:100%}
 html#js{height:100%}
-body{font-size:18px;font-family:"Georgia","Times New Roman",arial,serif;line-height:24px;position:relative;background-color:white;padding-top:1px}
+body{font-size:13px;font-family:"HelveticaNeue","Helvetica Neue",Helvetica,Verdana,Arial,sans-serif;position:relative;background-color:white;padding-top:1px}
 header{background-color:#333;margin:0;border:0;padding-top:30px;padding-bottom:30px;padding-left:55px;padding-right:55px;color:#f7f7f7;vertical-align:baseline}
 body>header h1 a,body>header h1 a:hover{color:#f2f2f2;font-family:"Lato","Verdana",sans-serif}
 a:hover{text-decoration:none}
@@ -1071,7 +1071,6 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .form-table input{word-spacing:1px;line-height:1.8em;color:#333;border:1px solid #bbb;width:400px;height:22px;padding-top:4px}
 .form-table textarea{word-spacing:1px;line-height:1.8em;color:#333;border:1px solid #ccc;width:400px;height:110px;padding-top:10px}
 #footer{margin-top:30px;padding-top:30px;text-align:center;border-top:1px solid #d5d5d5}
-.form-actions .btn-mobikwik-wallet{background:url('http://merchant.mobikwik.com/static/paywith.png') no-repeat center center;width:260px;height:73px;color:transparent;background-color:#f7f7f7}
 .tile{width:204px;margin:4px 2px 4px 2px;float:left;padding:8px;background-color:white;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);border:1px solid #ccc;min-height:60px}
 .tile .photo{padding:3px;width:190px}
 .tile .photo img{max-width:190px;margin:0}
@@ -1079,6 +1078,9 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .page-title{padding-bottom:15px;margin-bottom:20px;border-bottom:1px dashed #eaeaea}
 .menu .item a{color:#0f2d5f}
 .menu .item{padding-bottom:4px}
+#admin-toolbar{padding:0;padding-left:120px;background-color:#feffc5;margin-top:-20px;margin-bottom:15px}
+#admin-toolbar a{color:#333;font-family:arial;font-size:13px}
+.post{font-size:18px;font-family:"Georgia","Times New Roman",arial,serif;line-height:24px}
 .beta{font-size:11px;vertical-align:sub}
 .navbar-inner{border:0;border-radius:0;border-bottom:1px solid #d5d5d5}
 .navbar .brand{padding:10px 20px 10px 80px}
