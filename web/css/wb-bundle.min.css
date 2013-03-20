@@ -937,8 +937,6 @@ to{background-position:0 0}
 .qq-upload-list li.qq-upload-success{background-color:white;color:#333}
 .qq-upload-list li.qq-upload-fail{background-color:white;color:red}
 .qq-progress-bar{background:-moz-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,rgba(30,87,153,1)),color-stop(50%,rgba(41,137,216,1)),color-stop(51%,rgba(32,124,202,1)),color-stop(100%,rgba(125,185,232,1)));background:-webkit-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:-o-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:-ms-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:linear-gradient(to bottom,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);width:0;height:15px;border-radius:6px;margin-bottom:3px;display:none}
-html,html#nojs{height:100%}
-html#js{height:100%}
 body{font-size:13px;font-family:"HelveticaNeue","Helvetica Neue",Helvetica,Verdana,Arial,sans-serif;position:relative;background-color:white;padding-top:1px}
 header{background-color:#333;margin:0;border:0;padding-top:30px;padding-bottom:30px;padding-left:55px;padding-right:55px;color:#f7f7f7;vertical-align:baseline}
 body>header h1 a,body>header h1 a:hover{color:#f2f2f2;font-family:"Lato","Verdana",sans-serif}
@@ -962,6 +960,7 @@ div.hr-red{font-size:2px;height:2px;line-height:2px;background:#dd4b39}
 .red-label{color:red}
 .color-green{color:#8c4}
 .grey{color:#808080}
+.gray{color:gray}
 .w200{width:200px}
 .f13{font-size:13px}
 .mt20{margin-top:20px}
@@ -969,31 +968,29 @@ div.hr-red{font-size:2px;height:2px;line-height:2px;background:#dd4b39}
 .mb10{margin-bottom:10px}
 .mb20{margin-bottom:20px}
 .ml20{margin-left:20px}
-.ml40{margin-left:40px}
 .pt10{padding-top:10px}
 .pt20{padding-top:20px}
-.pt100{padding-top:100px}
-.pt120{padding-top:120px}
 .p5{padding:5px}
 .p10{padding:10px}
 .p20{padding:20px}
 .pb10{padding-bottom:10px}
 .pb20{padding-bottom:20px}
-.mh800{min-height:800px}
 .mh600{min-height:600px}
 .w90p{width:90%}
 .b{font-weight:bold}
-.gray{color:gray}
 #content{padding-top:10px;min-height:600px}
-.widget{width:100%;clear:both;border-bottom:1px solid #f1f1f1;min-height:60px;float:left;padding:20px;border:1px solid #f1f1f1;margin-bottom:20px}
+.hide-me{display:none}
+.box-shadow{box-shadow:0 1px 3px rgba(34,25,25,0.4)}
+.quote{margin-bottom:10px;padding-bottom:10px;border-left:4px solid #eee;padding-left:20px;overflow:hidden}
+.stack{width:230px;float:left;padding:4px;margin:4px;cursor:pointer}
+.widget{width:100%;clear:both;min-height:60px;padding:20px;margin-bottom:16px}
+.widget .title{padding-bottom:16px}
 .widget .options{background-color:#fefdf1;visibility:hidden;overflow:hidden;margin:0;padding:0 20px 0 0}
 .widget .options .links{padding:5px 5px 5px 30px;font-size:12px;line-height:18px;float:right}
 .widget .options .links a{color:#333;cursor:pointer;font-size:1em}
+.widget img{max-width:90%}
 .widget .photo{padding:13px}
-.widget img{max-width:90%;border:5px solid #f7f7f7}
-.widget .photo img{max-width:90%;border:2px solid #d5d5d5;position:relative}
-.widget-bg{background-color:#fefdf1}
-.widget-fg{background-color:#fff}
+.widget .photo img{max-width:90%;position:relative}
 img.alignright{float:right;margin:0 0 1em 1em}
 img.alignleft{float:left;margin:0 1em 1em 0}
 img.aligncenter{display:block;margin-left:auto;margin-right:auto}
@@ -1002,7 +999,8 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .video .aligncenter{display:block;margin-left:auto;margin-right:auto}
 .widget a{text-decoration:none}
 .widget a:hover{text-decoration:underline}
-.widget p{margin-bottom:5px;text-align:justify}
+.post{padding-left:15px;font-size:18px;font-family:"Georgia","Times New Roman",arial,serif;line-height:24px}
+.post p{text-align:justify}
 #ful-container{padding-top:10px}
 #image-preview{padding-bottom:20px}
 #image-preview .container{position:relative;float:left;padding:7px;height:160px;width:190px;border:1px solid #d5d5d5;margin:4px}
@@ -1012,14 +1010,10 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #image-preview .container .options{position:absolute;overflow:hidden;z-index:100;display:none;background-color:#f7f7f7;margin:0;padding:0;height:36px;width:100%}
 #image-preview .container .options .links{padding:5px 5px 5px 60px;font-size:11px;line-height:16px}
 #image-preview .container .options .links a{color:#222;font-weight:bold}
-.hide-me{display:none}
-.box-shadow{box-shadow:0 1px 3px rgba(34,25,25,0.4)}
-.quote{margin-bottom:10px;padding-bottom:10px;border-left:4px solid #eee;padding-left:20px;overflow:hidden}
 .toolbar{margin-top:20px;border-top:0;border-bottom:1px solid #333}
 .tools li{float:left;position:relative;padding:5px 10px 5px 20px}
 .tools a{color:#333;font-size:14px}
 .tools a:hover{text-decoration:none}
-.stack{width:230px;float:left;padding:4px;margin:4px;cursor:pointer}
 .feeds{font-size:12px;padding:0 0 0 10px;font-family:arial}
 .feeds a{color:#333}
 .feeds .item{width:100%;clear:both;padding-top:5px;border-top:1px solid #eee;padding-bottom:5px}
@@ -1034,7 +1028,6 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #simple-popup #content{padding:10px;min-height:30px;overflow:hidden}
 #simple-popup #header{margin-bottom:5px}
 #simple-popup #header a{color:#333}
-#nav-share{display:none}
 #simple-popup .stack{border-left:2px solid #eee;padding:10px;text-align:center;font-weight:bold}
 #simple-popup .stack .header{font-size:21px;text-align:center;padding:10px}
 #simple-popup .stack p{color:#333;font-weight:normal}
@@ -1075,12 +1068,10 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .tile .photo{padding:3px;width:190px}
 .tile .photo img{max-width:190px;margin:0}
 .tile a{color:#333}
-.page-title{padding-bottom:15px;margin-bottom:20px;border-bottom:1px dashed #eaeaea}
 .menu .item a{color:#0f2d5f}
 .menu .item{padding-bottom:4px}
 #admin-toolbar{padding:0;padding-left:120px;background-color:#feffc5;margin-top:-20px;margin-bottom:15px}
 #admin-toolbar a{color:#333;font-family:arial;font-size:13px}
-.post{font-size:18px;font-family:"Georgia","Times New Roman",arial,serif;line-height:24px}
 .beta{font-size:11px;vertical-align:sub}
 .navbar-inner{border:0;border-radius:0;border-bottom:1px solid #d5d5d5}
 .navbar .brand{padding:10px 20px 10px 80px}

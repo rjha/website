@@ -43,9 +43,10 @@
     <div>
         <ul class="tools unstyled">
             <li> <a href="<?php echo $editUrl; ?>"><i class="icon icon-edit"></i>&nbsp;Edit</a></li>
-            <li> <a href="<?php echo $newUrl; ?>"><i class="icon icon-pencil"></i>&nbsp;New post</a></li>
+            <li> <a href="<?php echo $newUrl; ?>"><i class="icon icon-pencil"></i>&nbsp;Post</a></li>
             <li> <a href="#"><i class="icon icon-list-alt"></i>&nbsp;Pages</a></li>
             <li> <a href="#"><i class="icon icon-wrench"></i>&nbsp;Settings</a></li>
+            <li> <a href="#">&nbsp;Help</a></li>
 
         </ul>
         <div class="clear"> </div>

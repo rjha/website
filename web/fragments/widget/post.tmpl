@@ -1,0 +1,18 @@
+
+<div class="widget"> 
+	<div class="title">
+		<h2> ~~$view->title~ </h2> 
+	</div>
+	~foreach($view->images as $imgv){~
+		<div class="photo">
+			<img src="~~$imgv['source']~" alt="~~$imgv['name']~" />
+		</div>
+
+	~}~
+	<div class="post">
+		~~$view->content~
+	</div>
+</div>
+
+ 
+
