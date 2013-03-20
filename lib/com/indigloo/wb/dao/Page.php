@@ -28,6 +28,37 @@ namespace com\indigloo\wb\dao {
             return $rows ;
         }
 
+      
+        function getOnId($pageId) {
+            $row = mysql\Page::getOnId($pageId);
+            return $row ;
+        }
+
+        function getOnSeoTitle($seoTitle) {
+            $hash = md5($seoTitle);
+            $row = mysql\Page::getOnSeoTitle($hash);
+            return $row ;
+        }
+
+        function getIdOnSeoTitle($seoTitle) {
+            $row = $this->getOnSeoTitle($seoTitle);
+            $pageId = empty($row) ? NULL : $row['id'] ;
+            return $pageId ;
+        }
+
+        function getRandom($limit) {
+            $rows = mysql\Page::getRandom($limit);
+            return $rows ;
+        }
+
+        function updateWidget($pageId,$widgetId,$title,$content,$mediaJson) {
+            mysql\Page::updateWidget($pageId,$widgetId,$title,$content,$mediaJson) ;
+        }
+
+        function addWidget($pageId,$title,$content,$mediaJson) {
+            mysql\Page::addWidget($pageId,$title,$content,$mediaJson) ;
+        }
+
         function getWidgetsOnSeoTitle($seoTitle) {
             $hash = md5($seoTitle);
             $rows = mysql\Page::getWidgetsOnHash($hash);
@@ -39,25 +70,21 @@ namespace com\indigloo\wb\dao {
             return $rows ;
         }
 
-        function getIdOnSeoTitle($seoTitle) {
-            $hash = md5($seoTitle);
-            $row = mysql\Page::getIdOnSeoTitle($hash);
-            $pageId = empty($row) ? NULL : $row['id'] ;
-            return $pageId ;
-        }
-
-        function getRandom($limit) {
-            $rows = mysql\Page::getRandom($limit);
+        function getWidgetsTitleOnId($pageId) {
+            $rows = mysql\Page::getWidgetsTitleOnId($pageId);
             return $rows ;
         }
 
-        function update($pageId,$widgetId,$title,$content,$mediaJson) {
-            mysql\Page::update($pageId,$widgetId,$title,$content,$mediaJson) ;
+        function getLatestWidget($pageId) {
+            $row = mysql\Page::getLatestWidget($pageId);
+            return $row ;
         }
 
-        function add($pageId,$title,$content,$mediaJson) {
-            mysql\Page::add($pageId,$title,$content,$mediaJson) ;
+        function getWidgetOnWidgetId($pageId,$widgetId) {
+            $row = mysql\Page::getWidgetOnWidgetId($pageId,$widgetId);
+            return $row ;
         }
+
                              
     }
 }

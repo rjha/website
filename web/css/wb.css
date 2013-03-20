@@ -185,6 +185,8 @@
     /* Any photo inside a widget can only go till 90%  */
     .widget img {
         max-width : 90% ;
+        border:10px solid #333;
+        border-radius: 10px;
     }
 
     .widget .photo {
@@ -193,7 +195,8 @@
 
     .widget .photo img {
         max-width:90%;
-        position : relative ;
+        border:10px solid #333;
+        border-radius: 10px;
     }
 
     img.alignright {float:right; margin:0 0 1em 1em}

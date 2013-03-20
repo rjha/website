@@ -988,9 +988,9 @@ div.hr-red{font-size:2px;height:2px;line-height:2px;background:#dd4b39}
 .widget .options{background-color:#fefdf1;visibility:hidden;overflow:hidden;margin:0;padding:0 20px 0 0}
 .widget .options .links{padding:5px 5px 5px 30px;font-size:12px;line-height:18px;float:right}
 .widget .options .links a{color:#333;cursor:pointer;font-size:1em}
-.widget img{max-width:90%}
+.widget img{max-width:90%;border:10px solid #333;border-radius:10px}
 .widget .photo{padding:13px}
-.widget .photo img{max-width:90%;position:relative}
+.widget .photo img{max-width:90%;border:10px solid #333;border-radius:10px}
 img.alignright{float:right;margin:0 0 1em 1em}
 img.alignleft{float:left;margin:0 1em 1em 0}
 img.aligncenter{display:block;margin-left:auto;margin-right:auto}

@@ -10,38 +10,54 @@
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\ui\form\Message as FormMessage;
 
+    use \com\indigloo\wb\html\Application as AppHtml ;
+
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     
     // qUrl is where control will go after success
     // it is part of current URL params and base64 encoded
     // fUrl is current form URL where redirect happens on error
     // encode qUrl param is part of fURL 
+
+    $qparams = Url::getRequestQueryParams();
     $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = base64_encode(Url::current());
 
-    $q_title = Url::tryQueryParam("title");
-    if(empty($q_title)) {
-        echo " Error :: page title is missing from request " ;
+    $qPageId = Url::tryQueryParam("page_id");
+    $qWidgetId = Url::tryQueryParam("tab_id");
+
+    if(empty($qPageId)) {
+        echo " Error :: page_id is missing from request " ;
         exit ;
     }
 
-    $seo_title = base64_decode($q_title);
-    $page_title = StringUtil::convertKeyToName($seo_title);
-
     $orgId = 1 ;
     $pageDao = new \com\indigloo\wb\dao\Page();
-    $pageId = $pageDao->getIdOnSeoTitle($seo_title);
-    $widgetRows = $pageDao->getWidgetsOnId($pageId);
-    $widgetRow = $widgetRows[0] ;
-    $post_title = $widgetRow["title"];
 
-    // @todo if more than one widget? show in sidebar
+    $widgetRow = empty($qWidgetId) ? 
+        $pageDao->getLatestWidget($qPageId) :$pageDao->getWidgetOnWidgetId($qPageId,$qWidgetId) ;
+
+    if(empty($widgetRow)) {
+        echo " Error :: No post found for this page!" ;
+        exit ;
+    }
+
+    $pageDBRow = $pageDao->getOnId($qPageId);
+    $post_title = $widgetRow["title"];
 
     // @imp: why formSafeJson? we are enclosing the JSON string in single quotes
     // so the single quotes coming from DB should be escaped
     $strMediaJson = $sticky->get('media_json',$widgetRow['media_json']) ;
     $strMediaJson = Util::formSafeJson($strMediaJson);
 
+    // widgets list
+    $widgetTabRows = $pageDao->getWidgetsTitleOnId($qPageId);
+
+    $tabParams = $qparams ;
+    unset($tabParams["tab_id"]);
+    
+    $baseURI = Url::base()."/app/post/edit.php" ;
+    $widgetTabsHtml = AppHtml::getWidgetTabs($baseURI,$tabParams,$widgetRow["id"],$widgetTabRows);
 
 ?>
 
@@ -49,7 +65,7 @@
 <html>
 
     <head>
-        <title> Edit <?php echo $page_title; ?>  </title>
+        <title> Edit <?php echo $pageDBRow["title"]; ?>  </title>
         <!-- meta tags -->
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
         <style>
@@ -61,17 +77,7 @@
                 font-size: 13px;
                 font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif ;
             }
-            #post-list {
-                padding-left: 40px;
-                width:600px;
-            }
-            #post-list li{
-
-            }
-            #post-list a {
-                font-size: 16px;
-                line-height: 18px;
-            }
+            
             .page-header {
                 padding-bottom: 9px;
             }
@@ -115,17 +121,7 @@
             
                 <div class="row">
                     <div class="span11 offset1">
-                        <div class="page-header">
-                            <h3> <?php echo $page_title ?> </h3>
-                            <div id="post-list">
-                                <span class="comment-text"> select a different post </span>
-                                <ul class="nav nav-pills nav-stacked">
-                                  <li><a href="#"><i class="icon icon-chevron-right"></i>&nbsp;Profile</a></li>
-                                  <li><a href="#"><i class="icon icon-chevron-right"></i>&nbsp;Messages</a></li>
-                                  
-                                </ul>
-                            </div>
-                        </div>
+                        <?php echo $widgetTabsHtml ; ?>
                     </div>
                 </div> <!-- row:header -->
 
@@ -182,7 +178,7 @@
                         </table>
 
                         <input type="hidden" name="widget_id" value="<?php echo $widgetRow['id']; ?>" />
-                        <input type="hidden" name="page_id" value="<?php echo $pageId ?>" />
+                        <input type="hidden" name="page_id" value="<?php echo $qPageId ?>" />
                         <input type="hidden" name="media_json" value='<?php echo $strMediaJson ; ?>' />
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />

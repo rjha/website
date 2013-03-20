@@ -2,13 +2,33 @@
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
 
+    use \com\indigloo\Url as Url ;
+    use \com\indigloo\util\StringUtil as StringUtil ;
+
+    $seo_title = $router_params["token"];
+    $pageDao = new \com\indigloo\wb\dao\Page();
+    $pageDBRow = $pageDao->getOnSeoTitle($seo_title);
+    $gPageId = $pageDBRow["id"];
+
+
+    $gMenulinks = $pageDao->getRandom(7);
+    $widgetDBRows = $pageDao->getWidgetsOnId($gPageId);
+    $gNumWidgets = sizeof($widgetDBRows);
+
+   
+    //@todo - read from DB
+    $gMetaKeywords = "shoes converse shoes vans shoes knee high reef sandal";
+    $gMetaDescription = StringUtil::convertKeyToName($seo_title);
+    $gSelfUrl = Url::base().$router_options["path"];
+    
+
 ?>
 
 <!DOCTYPE html>
 <html>
 
     <head>
-        <title> <?php echo $gPageTitle ?> </title>
+        <title> <?php echo $pageDBRow["title"] ?> </title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="keywords" content="">

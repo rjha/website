@@ -33,7 +33,7 @@
         }
 
         $pageDao = new \com\indigloo\wb\dao\Page();
-        $pageDao->update($fvalues["page_id"],
+        $pageDao->updateWidget($fvalues["page_id"],
         					$fvalues["widget_id"],
                             $fvalues["title"],
                             $fvalues["content"],

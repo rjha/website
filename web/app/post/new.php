@@ -19,21 +19,18 @@
     $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = base64_encode(Url::current());
 
-    $q_title = Url::tryQueryParam("title");
-    if(empty($q_title)) {
-        echo " Error :: page title is missing from request " ;
+    $qPageId = Url::tryQueryParam("page_id");
+    
+    if(empty($qPageId)) {
+        echo " Error :: page_id is missing from request " ;
         exit ;
     }
 
     $orgId = 1 ;
 
     $pageDao = new \com\indigloo\wb\dao\Page();
-    // existing page
-    $seo_title = base64_decode($q_title);
-    $page_title = StringUtil::convertKeyToName($seo_title);
-    $pageId = $pageDao->getIdOnSeoTitle($seo_title);
-
-
+    $pageDBRow = $pageDao->getOnId($qPageId);
+    
     // @imp: why formSafeJson? we are enclosing the JSON string in single quotes
     // so the single quotes coming from DB should be escaped
     $strMediaJson = $sticky->get('media_json') ;
@@ -47,10 +44,10 @@
 <html>
 
     <head>
-        <title> Add new post</title>
+        <title> <?php echo $pageDBRow["title"]; ?> </title>
         <!-- meta tags -->
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
-        <style>
+         <style>
             /* @hardcoded @inpage */
             .form-table { width:95%;}
             .form-table input {width: 90%;}
@@ -59,17 +56,7 @@
                 font-size: 13px;
                 font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif ;
             }
-            #post-list {
-                padding-left: 40px;
-                width:600px;
-            }
-            #post-list li{
-
-            }
-            #post-list a {
-                font-size: 16px;
-                line-height: 18px;
-            }
+            
             .page-header {
                 padding-bottom: 9px;
             }
@@ -171,7 +158,7 @@
 
                         </table>
 
-                        <input type="hidden" name="page_id" value="<?php echo $pageId ?>" />
+                        <input type="hidden" name="page_id" value="<?php echo $qPageId ?>" />
                         <input type="hidden" name="media_json" value='<?php echo $strMediaJson ; ?>' />
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />

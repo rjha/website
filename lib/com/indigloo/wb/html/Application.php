@@ -7,11 +7,30 @@ namespace com\indigloo\wb\html {
     use \com\indigloo\Util ;
 
     class Application {
-    	
+
+    	static function getWidgetTabs($baseURI,$tabParams,$tabId,$tabRows) {
+            $html = NULL ;
+            $template = "/fragments/generic/tabs.tmpl" ;
+            
+            $view = new \stdClass ;
+            $view->tabs = array();
+
+            foreach($tabRows as $row) {
+                $tab = array();
+                $tab["class"] = ($tabId == $row["id"]) ? "active" : "" ;
+                $tab["name"] = $row["title"] ;
+                $tabParams["tab_id"] = $row["id"];
+                $tab["href"] = Url::createUrl($baseURI,$tabParams) ;
+                array_push($view->tabs,$tab);
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
     	static function getPageTile($pageDBRow) {
 
             $html = NULL ;
-            $template = 
             $view = new \stdClass;
 
             $view->title = $pageDBRow['title'] ;
@@ -62,7 +81,7 @@ namespace com\indigloo\wb\html {
             return $html ;
         }
 
-         static function convertImageJsonObj($jsonObj) {
+        static function convertImageJsonObj($jsonObj) {
             $imgv = array();
 
             $imgv["name"] = $jsonObj->originalName ;

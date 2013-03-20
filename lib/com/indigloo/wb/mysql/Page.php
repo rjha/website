@@ -14,6 +14,36 @@ namespace com\indigloo\wb\mysql {
 
     class Page {
 
+        // @todo fix expensive-query
+        // @see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/
+        // @examined This query is used on thanks page after logout 
+        // and Random posts controller.
+        static function getRandom($limit) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($limit,"integer");
+
+            $sql = " SELECT p.*  FROM wb_page p  WHERE p.org_id = %d and p.has_media = 1 " ;
+            $sql .=" and RAND()<(SELECT ((%d/COUNT(*))*4) FROM wb_page p2 where p2.org_id = %d ) ";
+            $sql .= " ORDER BY RAND() LIMIT %d";
+            $sql = sprintf($sql,1,$limit,1,$limit);
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+
+        }
+
+        static function get($limit) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            // latest first
+            $sql = " select title,seo_title from wb_page order by id desc limit %d " ;
+            $sql = sprintf($sql,$limit);
+
+            $rows = MySQL\Helper::fetchRows($mysqli,$sql);
+            return $rows ;
+        }
+
 		static function getLatest($limit) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -52,12 +82,38 @@ namespace com\indigloo\wb\mysql {
             return $rows;
         }
 
+        static function getOnSeoTitle($hash) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+           
+            //input check
+            $hash = $mysqli->real_escape_string($hash);
+            
+            $sql = " select * from wb_page where seo_title_hash = '%s' " ;
+            $sql = sprintf($sql,$hash);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
+         static function getOnId($pageId) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+           
+            //input check
+            settype($pageId,"integer");
+            
+            $sql = " select * from wb_page where id = %d " ;
+            $sql = sprintf($sql,$pageId);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
         static function getWidgetsOnHash($hash) {
             
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             $sql = " select wpc.* from wb_page_content wpc, wb_page wp" .
-                " where  wpc.page_id = wp.id and wp.seo_title_hash = '%s' order by wpc.row_number " ;
+                " where  wpc.page_id = wp.id and wp.seo_title_hash = '%s' order by wpc.id desc " ;
             $sql = sprintf($sql,$hash);
             
             $rows = MySQL\Helper::fetchRows($mysqli,$sql);
@@ -65,34 +121,30 @@ namespace com\indigloo\wb\mysql {
 
         }
 
-        static function get($limit) {
+        static function getWidgetOnWidgetId($pageId,$widgetId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            // latest first
-            $sql = " select title,seo_title from wb_page order by id desc limit %d " ;
-            $sql = sprintf($sql,$limit);
+            //input
+            settype($pageId,"integer") ;
+            settype($widgetId,"integer") ;
 
-            $rows = MySQL\Helper::fetchRows($mysqli,$sql);
-            return $rows ;
+            $sql = " select * from wb_page_content where id = %d and page_id = %d " ;
+            $sql = sprintf($sql,$widgetId,$pageId);
+
+            $row = MySQL\Helper::fetchRow($mysqli,$sql);
+            return $row ;
+
         }
 
-        // @todo fix expensive-query
-        // @see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/
-        // @examined This query is used on thanks page after logout 
-        // and Random posts controller.
-        static function getRandom($limit) {
+        static function getLatestWidget($pageId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+            //input
+            settype($pageId,"integer") ;
 
-            //sanitize input
-            settype($limit,"integer");
+            $sql = " select * from wb_page_content where page_id = %d order by id desc limit 1" ;
+            $sql = sprintf($sql,$pageId);
 
-            $sql = " SELECT p.*  FROM wb_page p  WHERE p.org_id = %d and p.has_media = 1 " ;
-            $sql .=" and RAND()<(SELECT ((%d/COUNT(*))*4) FROM wb_page p2 where p2.org_id = %d ) ";
-            $sql .= " ORDER BY RAND() LIMIT %d";
-            $sql = sprintf($sql,1,$limit,1,$limit);
-
-            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-            return $rows;
-
+            $row = MySQL\Helper::fetchRow($mysqli,$sql);
+            return $row ;
         }
 
         static function getWidgetsOnId($pageId) {
@@ -100,7 +152,20 @@ namespace com\indigloo\wb\mysql {
 
             //sanitize input
             settype($pageId,"integer");
-            $sql = " select * from wb_page_content where page_id = %d " ;
+            $sql = " select * from wb_page_content where page_id = %d order by id desc " ;
+            $sql = sprintf($sql,$pageId);
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+
+        }   
+
+        static function getWidgetsTitleOnId($pageId) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($pageId,"integer");
+            $sql = " select id,title from wb_page_content where page_id = %d order by id desc " ;
             $sql = sprintf($sql,$pageId);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -108,16 +173,7 @@ namespace com\indigloo\wb\mysql {
 
         }
 
-        static function getIdOnSeoTitle($hash) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            $sql = " select * from  wb_page where seo_title_hash = '%s' " ;  
-            $sql = sprintf($sql,$hash);
-            $row = MySQL\Helper::fetchRow($mysqli,$sql);
-            return $row ;
-        }
-
-        static function update($pageId,$widgetId,$title,$content,$mediaJson) {
+        static function updateWidget($pageId,$widgetId,$title,$content,$mediaJson) {
 
             $dbh = NULL ;
             
@@ -158,7 +214,7 @@ namespace com\indigloo\wb\mysql {
             }
         }
 
-        static function add($pageId,$title,$content,$mediaJson) {
+        static function addWidget($pageId,$title,$content,$mediaJson) {
 
             $dbh = NULL ;
             $orgId = 1 ;

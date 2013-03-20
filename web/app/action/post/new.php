@@ -32,7 +32,7 @@
         }
 
         $pageDao = new \com\indigloo\wb\dao\Page();
-        $pageDao->add($fvalues["page_id"],
+        $pageDao->addWidget($fvalues["page_id"],
                             $fvalues["title"],
                             $fvalues["content"],
                             $fvalues["media_json"]);

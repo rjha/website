@@ -1,8 +1,8 @@
 <?php
 
     $qUrl = \com\indigloo\Url::current() ;
-    $params = array("q" => base64_encode($qUrl), "title" => base64_encode($seo_title) );
-    $editUrl = \com\indigloo\Url::createUrl("/app/post/edit.php",$params) ;
+    $params = array("q" => base64_encode($qUrl), "page_id" => $gPageId);
+    $editUrl = ($gNumWidgets > 0 ) ? \com\indigloo\Url::createUrl("/app/post/edit.php",$params) : '' ;
     $newUrl = \com\indigloo\Url::createUrl("/app/post/new.php",$params) ;
 
 
