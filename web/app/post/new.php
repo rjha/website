@@ -96,19 +96,12 @@
         </div> <!-- toolbar -->
         
         <div class="container">
-             
-            
-                <div class="row">
-                    <div class="span11 offset1">
-                        <div class="page-header">
-                            <h3> Add new post </h3>
-                        </div>
-                    </div>
-                </div> <!-- row:header -->
-
-                <div class="row">
-                    
-                    <div class="span9 offset1">
+        
+            <div class="row">
+                <div class="span3">
+                    <h4> New post </h4>
+                </div>
+                <div class="span8">
                     <?php FormMessage::render(); ?>
                     <div class="toolbar">
                         <ul class="tools unstyled">
@@ -166,7 +159,7 @@
 
                     </form>
 
-                </div> <!-- col:1 -->
+                </div>
 
             </div> <!-- row:content -->
 

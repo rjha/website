@@ -118,16 +118,12 @@
         
         <div class="container">
              
-            
-                <div class="row">
-                    <div class="span11 offset1">
-                        <?php echo $widgetTabsHtml ; ?>
-                    </div>
-                </div> <!-- row:header -->
+            <div class="row">
+                <div class="span3">
+                    <?php echo $widgetTabsHtml ; ?>
+                </div>
 
-                <div class="row">
-                    
-                    <div class="span9 offset1">
+                <div class="span8">
                     <?php FormMessage::render(); ?>
                     <div class="toolbar">
                         <ul class="tools unstyled">
@@ -186,7 +182,7 @@
 
                     </form>
 
-                </div> <!-- col:1 -->
+                </div> <!-- col:2 -->
 
             </div> <!-- row:content -->
 
