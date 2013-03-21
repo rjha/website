@@ -9,6 +9,10 @@ namespace com\indigloo\wb\html {
     class Application {
 
     	static function getWidgetTabs($baseURI,$tabParams,$tabId,$tabRows) {
+            if(sizeof($tabRows) <= 1 ) {
+                return "" ;
+            }
+            
             $html = NULL ;
             $template = "/fragments/generic/tabs.tmpl" ;
             
