@@ -101,7 +101,7 @@ webgloo.Ajax = {
         xmlRequest.done(function(response) {
             
             if(settings.dataType == 'json') {
-                webgloo.wb.Ajax.show(settings.messageDivId,response.message);
+                webgloo.Ajax.show(settings.messageDivId,response.message);
             }
 
             if(typeof settings.onDoneHandler !== "undefined") {
@@ -201,5 +201,6 @@ webgloo.media = {
         
     }
 }
+
 
 
