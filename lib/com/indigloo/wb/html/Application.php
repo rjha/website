@@ -8,6 +8,28 @@ namespace com\indigloo\wb\html {
 
     class Application {
 
+        static function getPageTable($pageDBRows) {
+            if(empty($pageDBRows)) {
+                return "<div class=\"noresults\"> No pages found </div>" ;
+            }
+
+            $html = NULL ;
+            $template = "/fragments/page/table.tmpl" ;
+
+            $view = new \stdClass ;
+            $view->rows = array();
+
+            foreach($pageDBRows as $row) {
+                // page URL would be different for different organizations
+                $row["href"] = Url::base()."/".$row["seo_title"];
+                $view->rows[] = $row ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
     	static function getWidgetTabs($baseURI,$tabParams,$tabId,$tabRows) {
             if(sizeof($tabRows) <= 1 ) {
                 return "" ;

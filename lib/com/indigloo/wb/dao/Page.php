@@ -8,23 +8,23 @@ namespace com\indigloo\wb\dao {
 
     class Page {
 
-        function getPaged($paginator) {
+        function getPaged($paginator,$dbfilter=array()) {
             $limit = $paginator->getPageSize();
             
             if($paginator->isHome()){
-                return $this->getLatest($limit);
+                return $this->getLatest($limit,$dbfilter);
             } else {
 
                 $params = $paginator->getDBParams();
                 $start = $params['start'];
                 $direction = $params['direction'];
-                $rows = mysql\Page::getPaged($start,$direction,$limit);
+                $rows = mysql\Page::getPaged($start,$direction,$limit,$dbfilter);
                 return $rows ;
             }
         }
 
-        function getLatest($limit) {
-            $rows = mysql\Page::getLatest($limit);
+        function getLatest($limit,$dbfilter=array()) {
+            $rows = mysql\Page::getLatest($limit,$dbfilter);
             return $rows ;
         }
 
@@ -83,6 +83,11 @@ namespace com\indigloo\wb\dao {
         function getWidgetOnWidgetId($pageId,$widgetId) {
             $row = mysql\Page::getWidgetOnWidgetId($pageId,$widgetId);
             return $row ;
+        }
+
+        function create($title) {
+            $pageId = mysql\Page::create($title);
+            return $pageId ;
         }
 
                              

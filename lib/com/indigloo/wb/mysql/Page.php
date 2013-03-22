@@ -44,20 +44,26 @@ namespace com\indigloo\wb\mysql {
             return $rows ;
         }
 
-		static function getLatest($limit) {
+		static function getLatest($limit,$dbfilter) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
            
            	//input check
             settype($limit, "integer");
             // latest first
-            $sql = " select * from wb_page order by id desc limit %d " ;
-            $sql = sprintf($sql,$limit);
+            $sql = " select * from wb_page " ; 
+
+            if(!empty($dbfilter) && isset($dbfilter["token"]) && !empty($dbfilter["token"])) {
+                // use % to escape % in the sprintf
+                $sql =  sprintf(" %s where title like '%s%%' ",$sql,$dbfilter["token"]);
+            }
+            
+            $sql = sprintf(" %s  order by id desc limit %d ",$sql,$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
 
-        static function getPaged($start,$direction,$limit) {
+        static function getPaged($start,$direction,$limit,$dbfilter) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -70,6 +76,19 @@ namespace com\indigloo\wb\mysql {
             $sql =  " select * from wb_page page " ;
             $q = new MySQL\Query($mysqli);
             
+            if(!empty($dbfilter) && isset($dbfilter["token"]) && !empty($dbfilter["token"])) {
+                // A percentage (%) is required to escape % inside sprintf
+                // @imp - a string with percentage sign can be substituted as-it-is 
+                // inside sprintf  using %s. 
+                // However if you plan to use the part with % as a variable inside sprintf 
+                // then you have to escape again (double escaping)
+
+                $part =  " page.title like '%s%%' " ;
+                $part = sprintf($part,$dbfilter["token"]) ;
+                $q->addCondition($part) ;
+                $sql .= $q->get();
+            }
+
             $sql .= $q->getPagination($start,$direction,"page.id",$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             
@@ -209,9 +228,54 @@ namespace com\indigloo\wb\mysql {
                 $dbh->rollBack();
                 $dbh = null;
                 $message = $ex->getMessage();
-                echo $message ; exit ;
                 throw new DBException($message);
             }
+        }
+
+        static function create($title) {
+            
+            $dbh = NULL ;
+            $orgId = 1 ;
+            $pageId = NULL ;
+
+            try {
+
+                $dbh =  PDOWrapper::getHandle();
+                $dbh->beginTransaction();
+
+                // new page
+                $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
+                $seo_title_hash = md5($seo_title);
+                $random_key = Util::getRandomString(16);
+                
+                $sql = " insert into wb_page(org_id,title,seo_title,seo_title_hash,random_key, created_on ) ".
+                    " values (:org_id,:title,:seo_title,:hash,:random_key,now()) " ;
+                
+                $stmt = $dbh->prepare($sql);
+                $stmt->bindParam(":org_id",$orgId);
+                $stmt->bindParam(":title", $title);
+                $stmt->bindParam(":seo_title", $seo_title);
+                $stmt->bindParam(":hash", $seo_title_hash);
+                $stmt->bindParam(":random_key", $random_key);
+                
+                $stmt->execute();
+                $stmt = NULL ;
+
+                $pageId = $dbh->lastInsertId();
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+                
+                return $pageId ;
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
+            }
+
         }
 
         static function addWidget($pageId,$title,$content,$mediaJson) {
@@ -227,28 +291,6 @@ namespace com\indigloo\wb\mysql {
                 
                 //Tx start
                 $dbh->beginTransaction();
-                /*
-                if($page == -1) {
-                    // new page
-                    $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
-                    $seo_title_hash = md5($seo_title);
-                    $random_key = Util::getRandomString(16);
-                    
-                    $sql = " insert into wb_page(org_id,title,seo_title,seo_title_hash,random_key, created_on ) ".
-                        " values (:org_id,:title,:seo_title,:hash,:random_key,now()) " ;
-                    
-                    $stmt = $dbh->prepare($sql1);
-                    $stmt->bindParam(":org_id",$orgId);
-                    $stmt->bindParam(":title", $title);
-                    $stmt->bindParam(":seo_title", $seo_title);
-                    $stmt->bindParam(":hash", $seo_title_hash);
-                    $stmt->bindParam(":random_key", $random_key);
-                    
-                    $stmt->execute();
-                    $stmt = NULL ;
-                    $pageId = $dbh->lastInsertId();
-                } */
-
                 $sql1 = " insert into wb_page_content(page_id,title,widget_html,media_json) ".
                         " values(:page_id, :title, :content, :media_json) " ;
                 
@@ -270,7 +312,6 @@ namespace com\indigloo\wb\mysql {
                 $dbh->rollBack();
                 $dbh = null;
                 $message = $ex->getMessage();
-                echo $message ; exit ;
                 throw new DBException($message);
             }
         }

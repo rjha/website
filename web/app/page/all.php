@@ -2,13 +2,14 @@
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
 
-    use com\indigloo\Util as Util;
-    use com\indigloo\util\StringUtil as StringUtil;
-    use com\indigloo\Url as Url;
+    use \com\indigloo\Util as Util;
+    use \com\indigloo\util\StringUtil as StringUtil;
+    use \com\indigloo\Url as Url;
 
-    use com\indigloo\Constants as Constants;
-    use com\indigloo\ui\form\Sticky;
-    use com\indigloo\ui\form\Message as FormMessage;
+    use \com\indigloo\Constants as Constants;
+    use \com\indigloo\ui\form\Sticky;
+    use \com\indigloo\ui\form\Message as FormMessage;
+    use \com\indigloo\wb\html\Application as AppHtml ;
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     
@@ -21,8 +22,36 @@
 
 
     $orgId = 1 ;
+    // fetch pages
+    $pageDao = new \com\indigloo\wb\dao\Page();
+    $qparams = Url::getRequestQueryParams();
+    $pageSize = 10;
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
+    $paginator->setBaseConvert(false);
 
-   
+    $dbfilter = array();
+    if(isset($qparams["token"]) && !empty($qparams["token"])) {
+        // Rule: encode parameters before passing them to createUrl() method
+        // What we get back from getRequestQueryParams is always urldecoded
+        $dbfilter["token"] = $qparams["token"] ;
+    }
+
+
+    $pageDBRows = $pageDao->getPaged($paginator,$dbfilter);
+    //data for paginator
+    $startId = NULL ;
+    $endId = NULL ;
+    $pageBaseUrl = "/app/page/all.php" ;
+    $gNumRecords = sizeof($pageDBRows);
+
+    if($gNumRecords > 0 ) {
+        $startId = $pageDBRows[0]["id"] ;
+        $endId =   $pageDBRows[$gNumRecords-1]["id"] ;
+    }
+
+    $pageTable = AppHtml::getPageTable($pageDBRows);
+    
+    //@todo : open create form when error.   
 
 ?>
 
@@ -33,18 +62,6 @@
         <title> All pages </title>
         <!-- meta tags -->
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
-         <style>
-            
-            body {
-                font-size: 13px;
-                font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif ;
-            }
-            
-            .page-header {
-                padding-bottom: 9px;
-            }
-
-        </style>
 
     </head>
 
@@ -81,11 +98,10 @@
         <div class="container">
         
             <div class="row">
-                <div class="span3">
-                     
-                </div>
-                <div class="span8">
+                
+                <div class="span8 offset3">
                     <h3> Pages </h3>
+                    <?php FormMessage::render(); ?>
                     <div id="user-menu">
                         <div class="item">
                             <a href="#" class="open-panel" rel="create-form">Create </a>
@@ -94,15 +110,20 @@
                             <a href="#" class="open-panel" rel="search-form">Search </a>
                         </div>
 
+                        <div class="item">
+                            <a href="/app/page/all.php">Show all</a>
+                        </div>
+
                     </div> <!-- page:actions -->
 
                     <div id="page-message" class="hide-me"> </div>
                     <div id="create-form" class="panel panel-form">
                         <div class="form-message"> </div>
-                        <form  id="form1"  name="form1" action="<?php echo Url::base() ?>/app/action/post/edit.php" enctype="multipart/form-data"  method="POST">  
+                        <form  id="form1"  name="form1" action="<?php echo Url::base() ?>/app/action/page/create.php" enctype="multipart/form-data"  method="POST">  
                             <table class="form-table">
                                 <tr>  
-                                    <td> <input type="text" class="required" name="title" value="<?php echo $sticky->get('title'); ?>" /></td>
+                                    <td> <label> Page name*</label>
+                                        <input type="text" class="required" name="title" value="<?php echo $sticky->get('title'); ?>" /></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -115,12 +136,14 @@
                                 </tr>
                                 
                             </table>
+                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         </form>
                     </div> <!-- panel:1 -->
 
                      <div id="search-form" class="panel panel-form">
                         <div class="form-message"> </div>
-                        <form  id="form2"  name="form2" action="<?php echo Url::base() ?>/app/action/post/edit.php" enctype="multipart/form-data"  method="POST">  
+                        <form  id="form2"  name="form2" action="<?php echo Url::base() ?>/app/action/page/search.php" enctype="multipart/form-data"  method="POST">  
                             <table class="form-table">
                                 <tr>  
                                     <td> <input type="text" class="required" name="token" value="<?php echo $sticky->get('token'); ?>" /></td>
@@ -136,14 +159,26 @@
                                 </tr>
                                 
                             </table>
+                            
+                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         </form>
                     </div> <!-- panel:2 -->
 
-
-                </div> <!-- column -->
+                </div>
                 
+            </div> <!-- row:1 -->
 
-            </div> <!-- row:content -->
+            <div class="row">
+                <div class="span8 offset3">
+                    <?php echo $pageTable ; ?>
+                </div>
+
+            </div> <!-- row:2 -->
+
+            <div class="pt10">
+                <?php $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>
+            </div>
 
         </div>   <!-- container -->
         <?php echo \com\indigloo\wb\util\Asset::version("/js/wb-bundle.js"); ?>

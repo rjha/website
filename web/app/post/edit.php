@@ -73,10 +73,6 @@
             .form-table { width:95%;}
             .form-table input {width: 90%;}
             .form-table textarea { width:90%; height: 320px;}
-            body {
-                font-size: 13px;
-                font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif ;
-            }
             
             .page-header {
                 padding-bottom: 9px;
