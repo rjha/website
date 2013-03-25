@@ -24,7 +24,6 @@ CREATE TABLE  wb_login (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
-
 DROP TABLE IF EXISTS  wb_facebook_user ;
 CREATE TABLE  wb_facebook_user  (
    id  int NOT NULL AUTO_INCREMENT,
@@ -38,9 +37,51 @@ CREATE TABLE  wb_facebook_user  (
    op_bit int default 1,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id ),
-  UNIQUE KEY  uniq_id  ( facebook_id )
+  PRIMARY KEY (id),
+  UNIQUE KEY  uniq_id  (facebook_id),
+  UNIQUE KEY uniq_email(email),
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS  wb_org ;
+CREATE TABLE  wb_org  (
+   id  int NOT NULL AUTO_INCREMENT,
+   name  varchar(64) NOT NULL,
+   domain varchar(128) not null,
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+
+alter table wb_org add constraint uniq_name unique(name);
+alter table wb_org add constraint uniq_domain unique(domain);
+
+
+DROP TABLE IF EXISTS  wb_org_domain ;
+CREATE TABLE  wb_org_domain  (
+   id  int NOT NULL AUTO_INCREMENT,
+   org_id int not null,
+   domain  varchar(128) NOT NULL,
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+alter table wb_org_domain add constraint uniq_domain unique(org_id,domain);
+
+
+DROP TABLE IF EXISTS  wb_org_admin ;
+CREATE TABLE  wb_org_admin  (
+   id  int NOT NULL AUTO_INCREMENT,
+   login_id int,
+   org_id int,
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
 
 
 DROP TABLE IF EXISTS  wb_page ;

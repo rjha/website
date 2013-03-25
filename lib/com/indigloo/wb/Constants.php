@@ -7,6 +7,8 @@ namespace com\indigloo\wb  {
 	    const PUB_ORG_DATA = "global.org.data" ;
 	    const PUB_DOMAIN_NAME = "global.domain.name" ;
 
+	    const WWW_LOGIN_URL = "/app/hack/login.php" ;
+
     }
 
 }

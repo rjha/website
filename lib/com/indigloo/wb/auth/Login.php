@@ -14,16 +14,12 @@ namespace com\indigloo\wb\auth {
         const NAME = "SESSION_NAME";
         const LOGIN_ID = "SESSION_LOGIN_ID";
         const TOKEN = "SESSION_TOKEN" ;
-       
-        //codes
-        const OK_CODE = 200 ;
-        const FORBIDDEN_CODE = 403 ;
         
         static function startOAuth2Session($loginId,$name) {
             $_SESSION[self::LOGIN_ID] = $loginId;
             $_SESSION[self::NAME] = $name;
             $_SESSION[self::TOKEN] = Util::getBase36GUID();
-            return self::OK_CODE ;
+            return ;
 
         }
         

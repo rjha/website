@@ -8,9 +8,9 @@ namespace com\indigloo\wb\dao {
 
     class Organization {
 
-        function getPublicData($domain) {
-            $row = array();
-            return $row ;
+        function create($loginId,$name) {
+            $orgId = mysql\Organization::create($loginId,$name);
+            return $orgId ;
         }
 
     }

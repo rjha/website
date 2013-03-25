@@ -66,6 +66,16 @@
     </head>
 
      <body>
+        <style>
+            /* @hardcoded @inpage */
+            .table-nav {
+                margin-bottom: 1px;
+                margin-left: 0;
+                list-style: none ;
+            }
+
+        </style>
+
          <header role="banner">
             <hgroup>
                 <h1> <a href="/">website builder app</a> </h1>
