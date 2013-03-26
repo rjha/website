@@ -8,6 +8,38 @@ namespace com\indigloo\wb\html {
 
     class Application {
 
+        static function getOrgReceipt($row) {
+            $html = NULL ;
+            $template = "/fragments/org/receipt.tmpl" ;
+
+            $view = new \stdClass ;
+            $view->href = "http://".$row["domain"];
+            $view->name = $row["name"] ;
+            
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getOrgTable($rows) {
+            if(empty($rows)) {
+                return "<div class=\"noresults\"> No organization found </div>" ;
+            }
+
+            $html = NULL ;
+            $template = "/fragments/org/table.tmpl" ;
+
+            $view = new \stdClass ;
+            $view->rows = array();
+
+            foreach($rows as $row) {
+                $row["href"] = "http://".$row["domain"];
+                $view->rows[] = $row ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
         static function getPageTable($pageDBRows) {
             if(empty($pageDBRows)) {
                 return "<div class=\"noresults\"> No pages found </div>" ;

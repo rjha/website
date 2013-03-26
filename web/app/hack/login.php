@@ -51,12 +51,10 @@
             $remoteIp = \com\indigloo\Url::getRemoteIp();
             mysql\Login::updateTokenIp(session_id(),$loginId,$access_token,$expires,$remoteIp);
             Login::startOAuth2Session($loginId,$name);
-            $message = sprintf("login success with token : %s ", $access_token);
-
-            // redirect to organization create page
-            // or list of organizations owned by the user
-            // number of organizations owned by this user?
-            $num_orgs = 0 ;
+            
+            $orgDao = new \com\indigloo\wb\dao\Organization();
+            $orgDBRows = $orgDao->getOnLoginId($loginId);
+            $num_orgs = sizeof($orgDBRows);
 
             if($num_orgs == 0 ) {
                 $fwd = "/app/org/create.php" ;

@@ -11,6 +11,51 @@ namespace com\indigloo\wb\mysql {
 
     class Organization {
 
+        static function getOnId($orgId) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+           
+            //input check
+            settype($orgId,"integer");
+            
+            $sql = " select * from wb_org where id = %d " ;
+            $sql = sprintf($sql,$orgId);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
+
+        static function getOnLoginId($loginId) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+           
+            //input check
+            settype($loginId,"integer");
+            
+            $sql = " select org.* from wb_org org, wb_org_admin admin ".
+                " where org.id = admin.org_id and admin.login_id = %d " ;
+
+            $sql = sprintf($sql,$loginId);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
+        static function getDomainCount($loginId,$domain) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+           
+            //input check
+            settype($loginId,"integer");
+            $domain = $mysqli->real_escape_string($domain);
+            
+            $sql = " select count(d.id) from wb_org_domain d,  wb_org o, wb_org_admin a ".
+                " where d.domain = '%s' and d.org_id = o.id and o.id = a.org_id ".
+                " and a.login_id = %d " ;
+
+            $sql = sprintf($sql,$domain,$loginId);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
         static function create($loginId, $name) {
             $dbh = NULL ;
             

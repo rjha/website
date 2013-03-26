@@ -114,7 +114,7 @@ namespace com\indigloo\wb\mysql {
             return $row;
         }
 
-         static function getOnId($pageId) {
+        static function getOnId($pageId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
            

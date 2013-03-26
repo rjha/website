@@ -3,32 +3,24 @@
     require_once (APP_WEB_DIR.'/inc/header.inc');
     require_once (APP_WEB_DIR.'/app/inc/admin.inc');
 
-    use com\indigloo\Util as Util;
-    use com\indigloo\util\StringUtil as StringUtil;
-    use com\indigloo\Url as Url;
+    use \com\indigloo\Util as Util;
+    use \com\indigloo\util\StringUtil as StringUtil;
+    use \com\indigloo\Url as Url;
 
-    use com\indigloo\Constants as Constants;    
+    use \com\indigloo\Constants as Constants;
     use \com\indigloo\wb\auth\Login as Login ;
-    use \com\indigloo\wb\html\Application as AppHtml;
-
-    $gWeb = \com\indigloo\core\Web::getInstance();
+    use \com\indigloo\wb\html\Application as AppHtml ;
 
     $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = base64_encode(Url::current());
-    $loginId = Login::getLoginIdInSession() ;
 
-    // @todo remove hard-coded
-    // $orgId = $gWeb->find("global.org.receipt.id");
-    $orgId = 7 ;
-
-    if(empty($orgId)) {
-        echo "Error: no organization id in session " ;
-        exit ;
-    }
-
+    $loginId = Login::getLoginIdInSession();
+ 
     $orgDao = new \com\indigloo\wb\dao\Organization();
-    $orgDBRow = $orgDao->getOnId($orgId);
-    $receiptHtml = AppHtml::getOrgReceipt($orgDBRow);
+    $orgDBRows = $orgDao->getOnLoginId($loginId);
+    $orgTableHtml = AppHtml::getOrgTable($orgDBRows);
+    
+       
 
 ?>
 
@@ -36,13 +28,14 @@
 <html>
 
     <head>
-        <title> website details </title>
+        <title> Select a website </title>
         <!-- meta tags -->
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
     </head>
 
      <body>
+
          <header role="banner">
             <hgroup>
                 <h1> <a href="/">website builder app</a> </h1>
@@ -76,12 +69,14 @@
         
             <div class="row">
                 <div class="span8 offset1">
-                    <?php echo $receiptHtml ; ?>
-                </div>
-            </div>
-            
+                    <div class="page--header">
+                        <h2> Select a website </h2>
+                    </div>
+                    <?php echo $orgTableHtml ; ?>
+                 </div>
+            </div> <!-- row:1 -->
 
         </div>   <!-- container -->
-        
+       
     </body>
 </html>

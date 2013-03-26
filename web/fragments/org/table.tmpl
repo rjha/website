@@ -1,0 +1,19 @@
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+  	~foreach($view->rows as $row){~
+  		<tr>
+	  		<td> <a href="~~$row['href']~"> <h2> ~~$row['name']~ </h2> </a> </td>
+      </tr>
+  	~}~
+   
+  </tbody>
+</table>
+
+ 
+

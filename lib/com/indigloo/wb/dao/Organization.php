@@ -13,6 +13,15 @@ namespace com\indigloo\wb\dao {
             return $orgId ;
         }
 
+        function getOnLoginId($loginId) {
+        	$rows = mysql\Organization::getOnLoginId($loginId);
+            return $rows ;
+        }
+
+        function getOnId($orgId) {
+            $row = mysql\Organization::getOnId($orgId);
+            return $row ;
+        }
     }
 }
 
