@@ -1,7 +1,7 @@
 <?php
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
-    require_once (APP_WEB_DIR.'/app/inc/admin.inc');
+    require_once (APP_WEB_DIR.'/app/inc/user.inc');
 
     use com\indigloo\Util as Util;
     use com\indigloo\util\StringUtil as StringUtil;
@@ -10,6 +10,7 @@
     use com\indigloo\Constants as Constants;    
     use \com\indigloo\wb\auth\Login as Login ;
     use \com\indigloo\wb\html\Application as AppHtml;
+    use \com\indigloo\wb\Constants as AppConstants ;
 
     $gWeb = \com\indigloo\core\Web::getInstance();
 
@@ -17,9 +18,7 @@
     $fUrl = base64_encode(Url::current());
     $loginId = Login::getLoginIdInSession() ;
 
-    // @todo remove hard-coded
-    // $orgId = $gWeb->find("global.org.receipt.id");
-    $orgId = 7 ;
+    $orgId = $gWeb->find(AppConstants::JUST_BORN_ORG_ID);
 
     if(empty($orgId)) {
         echo "Error: no organization id in session " ;
@@ -28,7 +27,25 @@
 
     $orgDao = new \com\indigloo\wb\dao\Organization();
     $orgDBRow = $orgDao->getOnId($orgId);
-    $receiptHtml = AppHtml::getOrgReceipt($orgDBRow);
+    if(empty($orgDBRow)) {
+        $message = sprintf("Error: organization with id %d does not exists",$orgId) ;
+        echo $message ;
+        exit ;
+    }
+
+    $pageDao = new \com\indigloo\wb\dao\Page();
+    // get Home page.
+    // @todo - remove hard-coded string
+    $pageDBRow = $pageDao->getOnSeoTitle("home");
+
+    if(empty($pageDBRow)) {
+        $message = "Error: Home page does not exists" ;
+        echo $message ;
+        exit ;
+    }
+
+    $pageId = $pageDBRow["id"] ;
+    $receiptHtml = AppHtml::getOrgReceipt($orgDBRow,$pageId);
 
 ?>
 

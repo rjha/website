@@ -2,7 +2,7 @@
     
     include 'wb-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
-    include(APP_WEB_DIR . '/app/inc/admin.inc');
+    include(APP_WEB_DIR . '/app/inc/user.inc');
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
@@ -14,8 +14,8 @@
     use \com\indigloo\exception\DBException as DBException;
 
     use \com\indigloo\wb\auth\Login as Login ;
+    use \com\indigloo\wb\Constants as AppConstants ;
 
-    
     $gWeb = \com\indigloo\core\Web::getInstance();
     $loginId = Login::getLoginIdInSession(); 
     $fvalues = array();
@@ -43,7 +43,7 @@
         $orgId = $organizationDao->create($loginId,$fvalues["name"]) ;
 
         // success
-        $gweb->store("global.org.receipt.id",$orgId);
+        $gWeb->store(AppConstants::JUST_BORN_ORG_ID,$orgId);
         $fwd = "/app/org/receipt.php" ;
         header("Location: " .$fwd);
         

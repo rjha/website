@@ -232,10 +232,9 @@ namespace com\indigloo\wb\mysql {
             }
         }
 
-        static function create($title) {
+        static function create($orgId,$title) {
             
             $dbh = NULL ;
-            $orgId = 1 ;
             $pageId = NULL ;
 
             try {

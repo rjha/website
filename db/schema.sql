@@ -48,7 +48,8 @@ DROP TABLE IF EXISTS  wb_org ;
 CREATE TABLE  wb_org  (
    id  int NOT NULL AUTO_INCREMENT,
    name  varchar(64) NOT NULL,
-   domain varchar(128) not null,
+   farm_domain varchar(64) not null,
+   canonical_domain varchar(128) not null,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
@@ -56,7 +57,7 @@ CREATE TABLE  wb_org  (
 
 
 alter table wb_org add constraint uniq_name unique(name);
-alter table wb_org add constraint uniq_domain unique(domain);
+alter table wb_org add constraint uniq_domain unique(canonical_domain);
 
 
 DROP TABLE IF EXISTS  wb_org_domain ;
@@ -69,7 +70,7 @@ CREATE TABLE  wb_org_domain  (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-alter table wb_org_domain add constraint uniq_domain unique(org_id,domain);
+alter table wb_org_domain add constraint uniq_domain unique(domain);
 
 
 DROP TABLE IF EXISTS  wb_org_admin ;
@@ -81,7 +82,6 @@ CREATE TABLE  wb_org_admin  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
 
 
 DROP TABLE IF EXISTS  wb_page ;
@@ -137,3 +137,12 @@ CREATE TABLE  wb_media  (
    thumbnail  varchar(64) ,
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- patch to delete org data
+--
+
+delete from wb_org;
+delete from wb_org_admin ;
+delete from wb_org_domain ;

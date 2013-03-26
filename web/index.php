@@ -6,20 +6,22 @@
     use \com\indigloo\wb\Constants as AppConstants ;
 
     $s_time = microtime(true);
-    
-    // find domain 
-    // find organization data for this domain
-    // inject domain name and organization data into request scope
-    $host = $_SERVER["HTTP_HOST"];
-    // @todo - no Host : find NoHostController
-    //$organizationDao = new com\indigloo\wb\dao\Organization();
-    //$gPubOrgData = $organizationDao->getPublicData($host);
-    $gPubOrgData = NULL ;
-    // @todo - process org Data
 
     $gWeb = \com\indigloo\core\Web::getInstance();
-    $gWeb->setRequestAttribute(AppConstants::PUB_ORG_DATA,$gPubOrgData);
-	$gWeb->setRequestAttribute(AppConstants::PUB_DOMAIN_NAME,$host);
+    // site domain check
+    $domain = $_SERVER["HTTP_HOST"];
+    $orgDao = new \com\indigloo\wb\dao\Organization();
+    $orgDBRow = $orgDao->getOnDomain($domain);
+
+    if(empty($orgDBRow)) {
+        $message = sprintf("<h2> Unknown domain :: %s </h2> ",$domain) ;
+        echo $message ;
+        exit(1);
+    }
+
+    $gOrgView = $orgDao->getSessionView($orgDBRow["org_id"]);
+    $gWeb->setRequestAttribute(AppConstants::ORG_SESSION_VIEW,$gOrgView);
+
 
 	$router = new com\indigloo\wb\router\MainRouter();
 	//route to appropriate controller

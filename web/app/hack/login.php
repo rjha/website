@@ -8,10 +8,10 @@
     use \com\indigloo\wb\auth\Login as Login ;
     use \com\indigloo\wb\mysql as mysql ;
 
-
     try{
 
         $access_token = NULL ;
+
         if(array_key_exists("token", $_POST)) {
             $access_token = $_POST["token"] ;
         }
@@ -19,7 +19,7 @@
         if(!empty($access_token)) {
             //copy from graph API explorer
             // make sure you have manage_pages/publish_stream/email permissions
-            
+            $message = "" ;
             $facebookId = "100000110234029" ;
             $name = "Rajeev Jha" ;
             $firstName = "Rajeev" ;
@@ -56,11 +56,16 @@
             $orgDBRows = $orgDao->getOnLoginId($loginId);
             $num_orgs = sizeof($orgDBRows);
 
+            // @debug
+            echo "num_orgs = $num_orgs <br>" ;
+            print_r($_POST);
+            // exit ;
+
             if($num_orgs == 0 ) {
                 $fwd = "/app/org/create.php" ;
                 header("Location: $fwd") ;
             } else if($num_orgs == 1 ) {
-                $domain = $organizations[0]["domain"] ;
+                $domain = $organizations[0]["canonical_domain"] ;
                 $fwd = "http://".$domain ;
                 header("Location: $fwd") ;
 
@@ -74,7 +79,7 @@
         }
 
         
-    }catch(\Exception $ex) {
+    } catch(\Exception $ex) {
         
         Logger::getInstance()->error($ex->getMessage());
         Logger::getInstance()->backtrace($ex->getTrace());

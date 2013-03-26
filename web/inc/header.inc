@@ -1,6 +1,6 @@
 <?php
-    //application header
-    //classes should be loaded first or we get incomplete class object errors
+    // application header
+    // classes should be loaded first or we get incomplete class object errors
     // Also, do not output anything in class_loader (apart from errors ) - otherwise you will
     // get session header related warnings. Please keep this order.
 
@@ -9,6 +9,7 @@
 
     use \com\indigloo\core\Web  ;
     use \com\indigloo\Configuration as Config  ;
+    use \com\indigloo\wb\Constants as AppConstants;
 
     $session_backend = Config::getInstance()->get_value("session.backend");
     $session_backend = empty($session_backend) ? "default" :  strtolower($session_backend);
@@ -22,8 +23,8 @@
     }
     
     include(APP_WEB_DIR . '/inc/global-error.inc');
-
-    $gWeb = Web::getInstance();
+    
+    $gWeb = \com\indigloo\core\Web::getInstance();
     $gWeb->start();
     
 ?>

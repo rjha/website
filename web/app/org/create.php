@@ -1,8 +1,8 @@
 <?php
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
-    require_once (APP_WEB_DIR.'/app/inc/admin.inc');
-
+    require_once (APP_WEB_DIR.'/app/inc/user.inc');
+    
     use com\indigloo\Util as Util;
     use com\indigloo\util\StringUtil as StringUtil;
     use com\indigloo\Url as Url;
@@ -11,6 +11,7 @@
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\wb\auth\Login as Login ;
+
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     

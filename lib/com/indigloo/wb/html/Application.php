@@ -8,13 +8,17 @@ namespace com\indigloo\wb\html {
 
     class Application {
 
-        static function getOrgReceipt($row) {
+        static function getOrgReceipt($row,$pageId) {
             $html = NULL ;
             $template = "/fragments/org/receipt.tmpl" ;
 
             $view = new \stdClass ;
-            $view->href = "http://".$row["domain"];
+            $view->href = "http://".$row["canonical_domain"];
             $view->name = $row["name"] ;
+
+            $qUrl = base64_encode($view->href);
+            $params = array("q" => $qUrl, "page_id" => $pageId, "org_id" => $orgId);
+            $view->postUrl = Url::createUrl("/app/post/new.php",$params) ;
             
             $html = Template::render($template,$view);
             return $html ;
@@ -32,7 +36,7 @@ namespace com\indigloo\wb\html {
             $view->rows = array();
 
             foreach($rows as $row) {
-                $row["href"] = "http://".$row["domain"];
+                $row["href"] = "http://".$row["canonical_domain"];
                 $view->rows[] = $row ;
             }
 
