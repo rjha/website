@@ -8,6 +8,9 @@ namespace com\indigloo\wb  {
 	    const WWW_LOGIN_URL = "/app/hack/login.php" ;
 	    const JUST_BORN_ORG_ID = "global.org.newborn.id";
 		const ORG_SESSION_VIEW ="organization.session.view" ;
+		const ORG_HOST_DOMAIN = "organization.host.domain" ;
+		const ORG_TOP_DOMAIN = "organization.top.domain" ;
+
 
     }
 

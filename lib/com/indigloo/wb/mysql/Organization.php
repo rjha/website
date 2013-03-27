@@ -6,14 +6,13 @@ namespace com\indigloo\wb\mysql {
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Logger ;
 
-    use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException as DBException;
 
     class Organization {
 
         static function getOnId($orgId) {
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
            
             //input check
             settype($orgId,"integer");
@@ -26,7 +25,7 @@ namespace com\indigloo\wb\mysql {
 
         static function getOnLoginId($loginId) {
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
            
             // @input check
             settype($loginId,"integer");
@@ -40,20 +39,20 @@ namespace com\indigloo\wb\mysql {
         }
 
         static function getOnDomain($domain) {
-
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-           
+            
+            $mysqli = WbConnection::getInstance()->getHandle();
             // @input check
             $domain = $mysqli->real_escape_string($domain);
             
             $sql = " select org_id from wb_org_domain where domain = '%s' " ;
             $sql = sprintf($sql,$domain);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            
             return $row;
         }
 
         static function getDomainCount($loginId,$domain) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
            
             //input check
             settype($loginId,"integer");
@@ -70,7 +69,7 @@ namespace com\indigloo\wb\mysql {
 
         static function getSessionView($orgId) {
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
             settype($orgId,"integer");
             
             $sql = " select a.login_id from wb_org_admin a where org_id = %d  " ;
@@ -84,7 +83,7 @@ namespace com\indigloo\wb\mysql {
             
             try {
 
-                $dbh =  PDOWrapper::getHandle();
+                $dbh =  WbPdoWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
 

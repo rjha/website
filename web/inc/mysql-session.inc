@@ -1,6 +1,6 @@
 <?php
 
-$sessionHandler = new \com\indigloo\core\MySQLSession();
+$sessionHandler = new \com\indigloo\wb\core\MySQLSession();
 session_set_save_handler(array($sessionHandler,"open"),
                             array($sessionHandler,"close"),
                             array($sessionHandler,"read"),

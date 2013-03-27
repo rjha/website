@@ -5,15 +5,13 @@ namespace com\indigloo\wb\mysql {
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
-
-    use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException as DBException;
 
 
     class Facebook {
         
         static function getOnFacebookId($facebookId) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
 
             //facebookId is string
             //sanitize input
@@ -30,7 +28,7 @@ namespace com\indigloo\wb\mysql {
         }
 
         static function getOnLoginId($loginId) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
 
             settype($loginId, "inetger");
 
@@ -58,7 +56,7 @@ namespace com\indigloo\wb\mysql {
                 $sql1 .= " values(:name,:source,:access_token, now(),%s, :ip_address) " ;
                 
                 
-                $dbh =  PDOWrapper::getHandle();
+                $dbh =  WbPdoWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
 

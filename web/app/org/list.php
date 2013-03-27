@@ -1,7 +1,7 @@
 <?php
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');   
-    require_once (APP_WEB_DIR.'/app/inc/admin.inc');
+    require_once (APP_WEB_DIR.'/app/inc/user.inc');
    
     use \com\indigloo\Util as Util;
     use \com\indigloo\util\StringUtil as StringUtil;

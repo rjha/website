@@ -4,22 +4,11 @@
     use com\indigloo\wb\Constants as AppConstants ;
  
     $gWeb = \com\indigloo\core\Web::getInstance();
-
-     // + site domain check
-    $domain = $_SERVER["HTTP_HOST"];
-    $orgDao = new \com\indigloo\wb\dao\Organization();
-    $orgDBRow = $orgDao->getOnDomain($domain);
-
-    if(empty($orgDBRow)) {
-        $message = sprintf("<h2> Unknown domain :: %s </h2> ",$domain) ;
-        echo $message ;
-        exit(1);
-    }
-
-    $gOrgView = $orgDao->getSessionView($orgDBRow["org_id"]);
-    $gWeb->setRequestAttribute(AppConstants::ORG_SESSION_VIEW,$gOrgView);
-    // + site domain check over
-
+    
+    $rp = new com\indigloo\wb\core\RequestProcessor();
+    $rp->process();
+    
+    $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
     $loginId = Login::tryLoginIdInSession();
     $admins = $gOrgView->admins;
 

@@ -8,7 +8,7 @@ namespace com\indigloo\wb\mysql {
 
         static function add($mediaVO) {
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
             $mediaId = NULL ;
 
             $sql = " insert into wb_media(bucket,original_name, stored_name, " ;

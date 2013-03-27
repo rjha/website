@@ -1,6 +1,6 @@
 
-DROP TABLE IF EXISTS  sc_php_session ;
-CREATE TABLE  sc_php_session  (
+DROP TABLE IF EXISTS  wb_php_session ;
+CREATE TABLE  wb_php_session  (
    session_id  varchar(40) NOT NULL DEFAULT '',
    data  text,
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',

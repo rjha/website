@@ -9,7 +9,7 @@ namespace com\indigloo\wb\mysql {
 
         static function updateTokenIp($sessionId,$loginId, $access_token, $expires,$remoteIp) {
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
             $sql = " update wb_login set access_token = ? , expire_on = %s, " ;
             $sql .= " ip_address = ?, session_id = ? , updated_on = now() where id = ? " ;
             $expiresOn = "(now() + interval ".$expires. " second)";

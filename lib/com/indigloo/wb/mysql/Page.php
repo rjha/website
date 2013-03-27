@@ -7,7 +7,6 @@ namespace com\indigloo\wb\mysql {
     use \com\indigloo\Configuration as Config ;
 
     use \com\indigloo\Logger as Logger ;
-    use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException as DBException;
     use \com\indigloo\fs\Constants as AppConstants ;
 
@@ -19,7 +18,7 @@ namespace com\indigloo\wb\mysql {
         // @examined This query is used on thanks page after logout 
         // and Random posts controller.
         static function getRandom($limit) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
 
             //sanitize input
             settype($limit,"integer");
@@ -35,7 +34,7 @@ namespace com\indigloo\wb\mysql {
         }
 
         static function get($limit) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
             // latest first
             $sql = " select title,seo_title from wb_page order by id desc limit %d " ;
             $sql = sprintf($sql,$limit);
@@ -46,7 +45,7 @@ namespace com\indigloo\wb\mysql {
 
 		static function getLatest($limit,$dbfilter) {
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
            
            	//input check
             settype($limit, "integer");
@@ -65,7 +64,7 @@ namespace com\indigloo\wb\mysql {
 
         static function getPaged($start,$direction,$limit,$dbfilter) {
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
 
             //sanitize input
             settype($limit, "integer");
@@ -103,7 +102,7 @@ namespace com\indigloo\wb\mysql {
 
         static function getOnSeoTitle($hash) {
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
            
             //input check
             $hash = $mysqli->real_escape_string($hash);
@@ -116,7 +115,7 @@ namespace com\indigloo\wb\mysql {
 
         static function getOnId($pageId) {
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
            
             //input check
             settype($pageId,"integer");
@@ -129,7 +128,7 @@ namespace com\indigloo\wb\mysql {
 
         static function getWidgetsOnHash($hash) {
             
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
 
             $sql = " select wpc.* from wb_page_content wpc, wb_page wp" .
                 " where  wpc.page_id = wp.id and wp.seo_title_hash = '%s' order by wpc.id desc " ;
@@ -141,7 +140,7 @@ namespace com\indigloo\wb\mysql {
         }
 
         static function getWidgetOnWidgetId($pageId,$widgetId) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
             //input
             settype($pageId,"integer") ;
             settype($widgetId,"integer") ;
@@ -155,7 +154,7 @@ namespace com\indigloo\wb\mysql {
         }
 
         static function getLatestWidget($pageId) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
             //input
             settype($pageId,"integer") ;
 
@@ -167,7 +166,7 @@ namespace com\indigloo\wb\mysql {
         }
 
         static function getWidgetsOnId($pageId) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
 
             //sanitize input
             settype($pageId,"integer");
@@ -180,7 +179,7 @@ namespace com\indigloo\wb\mysql {
         }   
 
         static function getWidgetsTitleOnId($pageId) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = WbConnection::getInstance()->getHandle();
 
             //sanitize input
             settype($pageId,"integer");
@@ -201,7 +200,7 @@ namespace com\indigloo\wb\mysql {
                 settype($pageId, "integer");
                 settype($widgetId, "integer");
 
-                $dbh =  PDOWrapper::getHandle();
+                $dbh =  WbPdoWrapper::getHandle();
                 
                 //Tx start
                 $dbh->beginTransaction();
@@ -239,7 +238,7 @@ namespace com\indigloo\wb\mysql {
 
             try {
 
-                $dbh =  PDOWrapper::getHandle();
+                $dbh =  WbPdoWrapper::getHandle();
                 $dbh->beginTransaction();
 
                 // new page
@@ -286,7 +285,7 @@ namespace com\indigloo\wb\mysql {
                 //input check
                 settype($pageId, "integer");
                 
-                $dbh =  PDOWrapper::getHandle();
+                $dbh =  WbPdoWrapper::getHandle();
                 
                 //Tx start
                 $dbh->beginTransaction();
