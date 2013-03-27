@@ -17,10 +17,12 @@ namespace com\indigloo\wb\html {
             $view->name = $row["name"] ;
 
             $qUrl = base64_encode($view->href);
-            $params = array("q" => $qUrl, "page_id" => $pageId, "org_id" => $orgId);
-            $view->postUrl = Url::createUrl("/app/post/new.php",$params) ;
-            
+            $params = array("q" => $qUrl, "page_id" => $pageId);
+            $baseUrl = $view->href."/app/post/new.php" ;
+
+            $view->postUrl = Url::createUrl($baseUrl,$params) ;
             $html = Template::render($template,$view);
+            
             return $html ;
         }
 

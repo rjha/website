@@ -2,6 +2,7 @@
     
     include 'wb-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
+    include(APP_WEB_DIR . '/app/inc/admin.inc');
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
@@ -10,7 +11,8 @@
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\exception\UIException as UIException;
-    
+    use \com\indigloo\wb\Constants as AppConstants;
+
     $gWeb = \com\indigloo\core\Web::getInstance(); 
     $fvalues = array();
     $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");

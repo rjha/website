@@ -1,6 +1,7 @@
 <?php
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
+    require_once (APP_WEB_DIR.'/app/inc/admin.inc');
 
     use com\indigloo\Util as Util;
     use com\indigloo\util\StringUtil as StringUtil;
@@ -11,7 +12,13 @@
     use com\indigloo\ui\form\Message as FormMessage;
 
     use \com\indigloo\wb\html\Application as AppHtml ;
+    use \com\indigloo\wb\Constants as AppConstants;
 
+    // get org_id injected in request
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
+    $orgId = $gOrgView->id ;
+    
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     
     // qUrl is where control will go after success
@@ -31,18 +38,16 @@
         exit ;
     }
 
-    $orgId = 1 ;
     $pageDao = new \com\indigloo\wb\dao\Page();
-
     $widgetRow = empty($qWidgetId) ? 
-        $pageDao->getLatestWidget($qPageId) :$pageDao->getWidgetOnWidgetId($qPageId,$qWidgetId) ;
+        $pageDao->getLatestWidget($orgId,$qPageId) :$pageDao->getWidgetOnWidgetId($orgId,$qPageId,$qWidgetId) ;
 
     if(empty($widgetRow)) {
         echo " Error :: No post found for this page!" ;
         exit ;
     }
 
-    $pageDBRow = $pageDao->getOnId($qPageId);
+    $pageDBRow = $pageDao->getOnId($orgId,$qPageId);
     $post_title = $widgetRow["title"];
 
     // @imp: why formSafeJson? we are enclosing the JSON string in single quotes
@@ -51,7 +56,7 @@
     $strMediaJson = Util::formSafeJson($strMediaJson);
 
     // widgets list
-    $widgetTabRows = $pageDao->getWidgetsTitleOnId($qPageId);
+    $widgetTabRows = $pageDao->getWidgetsTitleOnId($orgId,$qPageId);
 
     $tabParams = $qparams ;
     unset($tabParams["tab_id"]);
@@ -85,7 +90,7 @@
      <body>
          <header role="banner">
             <hgroup>
-                <h1> <a href="/">website builder app</a> </h1>
+                <h1> <a href="/"><?php echo $gOrgView->name ; ?> </a> </h1>
             </hgroup>
 
         </header>

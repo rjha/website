@@ -8,17 +8,17 @@
     $rp = new com\indigloo\wb\core\RequestProcessor();
     $rp->process();
     
-    $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
+    $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW); 
     $loginId = Login::tryLoginIdInSession();
     $admins = $gOrgView->admins;
 
     if(empty($gOrgView) 
         || empty($loginId) 
         || !in_array($loginId,$admins)) {
-         
+        
         $fwd = AppConstants::WWW_LOGIN_URL ;
         header('Location: '.$fwd);
         exit ;
     }
-
+    
 ?>

@@ -4,15 +4,21 @@
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\util\StringUtil as StringUtil ;
+    use \com\indigloo\wb\Constants as AppConstants;
+
+    // get org_id injected in request
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
+    $orgId = $gOrgView->id ;
 
     $seo_title = $router_params["token"];
     $pageDao = new \com\indigloo\wb\dao\Page();
-    $pageDBRow = $pageDao->getOnSeoTitle($seo_title);
+    $pageDBRow = $pageDao->getOnSeoTitle($orgId,$seo_title);
     $gPageId = $pageDBRow["id"];
 
 
-    $gMenulinks = $pageDao->getRandom(7);
-    $widgetDBRows = $pageDao->getWidgetsOnId($gPageId);
+    $gMenulinks = $pageDao->getRandom($orgId,7);
+    $widgetDBRows = $pageDao->getWidgetsOnId($orgId,$gPageId);
     $gNumWidgets = sizeof($widgetDBRows);
 
    

@@ -37,7 +37,11 @@ namespace com\indigloo\wb\core {
 		        exit(1);
 		    }
 
-		    $gOrgView = $orgDao->getSessionView($orgDBRow["org_id"]);
+		    $gOrgView = $orgDao->getSessionView($orgDBRow["id"]);
+		    $gOrgView->domain = $domain ;
+		    $gOrgView->name = $orgDBRow["name"];
+		    $gOrgView->id = $orgDBRow["id"] ;
+
 		    // set in request
 		    $gWeb->setRequestAttribute(AppConstants::ORG_SESSION_VIEW,$gOrgView);
 			

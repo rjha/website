@@ -1,15 +1,19 @@
 <?php
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
+    require_once (APP_WEB_DIR.'/app/inc/admin.inc');
 
-    use com\indigloo\Util as Util;
-    use com\indigloo\util\StringUtil as StringUtil;
-    use com\indigloo\Url as Url;
+    use \com\indigloo\Util as Util;
+    use \com\indigloo\util\StringUtil as StringUtil;
+    use \com\indigloo\Url as Url;
 
-    use com\indigloo\Constants as Constants;
-    use com\indigloo\ui\form\Sticky;
-    use com\indigloo\ui\form\Message as FormMessage;
+    use \com\indigloo\Constants as Constants;
+    use \com\indigloo\wb\Constants as AppConstants ;
 
+    use \com\indigloo\ui\form\Sticky;
+    use \com\indigloo\ui\form\Message as FormMessage;
+
+    $gWeb = \com\indigloo\core\Web::getInstance();
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     
     // qUrl is where control will go after success
@@ -26,10 +30,11 @@
         exit ;
     }
 
-    $orgId = 1 ;
+    $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
+    $orgId = $gOrgView->id ;
 
     $pageDao = new \com\indigloo\wb\dao\Page();
-    $pageDBRow = $pageDao->getOnId($qPageId);
+    $pageDBRow = $pageDao->getOnId($orgId,$qPageId);
     
     // @imp: why formSafeJson? we are enclosing the JSON string in single quotes
     // so the single quotes coming from DB should be escaped
@@ -64,7 +69,7 @@
      <body>
          <header role="banner">
             <hgroup>
-                <h1> <a href="/">website builder app</a> </h1>
+                <h1> <a href="/"><?php echo $gOrgView->name ; ?></a> </h1>
             </hgroup>
 
         </header>

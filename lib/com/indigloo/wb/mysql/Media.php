@@ -36,12 +36,13 @@ namespace com\indigloo\wb\mysql {
                 if ($mysqli->affected_rows != 1) {
                     MySQL\Error::handle($stmt);
                 }
+                
                 $stmt->close();
             } else {
                 MySQL\Error::handle($mysqli);
             }
 
-            $mediaId = MySQL\Connection::getInstance()->getLastInsertId();
+            $mediaId = WbConnection::getInstance()->getLastInsertId();
             return $mediaId;
         }
 

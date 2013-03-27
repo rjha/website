@@ -36,7 +36,7 @@
     $pageDao = new \com\indigloo\wb\dao\Page();
     // get Home page.
     // @todo - remove hard-coded string
-    $pageDBRow = $pageDao->getOnSeoTitle("home");
+    $pageDBRow = $pageDao->getOnSeoTitle($orgId,"home");
 
     if(empty($pageDBRow)) {
         $message = "Error: Home page does not exists" ;

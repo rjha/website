@@ -2,6 +2,7 @@
     
     include 'wb-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
+    include(APP_WEB_DIR.'/app/inc/admin.inc');
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
@@ -10,6 +11,7 @@
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\exception\UIException as UIException;
+    use \com\indigloo\wb\Constants as AppConstants;
     
     $gWeb = \com\indigloo\core\Web::getInstance(); 
     $fvalues = array();
@@ -32,8 +34,12 @@
             throw new UIException($fhandler->getErrors());
         }
 
+        // find org_id injected in request
+        $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
+        $orgId = $gOrgView->id ;
+        
         $pageDao = new \com\indigloo\wb\dao\Page();
-        $pageDao->updateWidget($fvalues["page_id"],
+        $pageDao->updateWidget($orgId,$fvalues["page_id"],
         					$fvalues["widget_id"],
                             $fvalues["title"],
                             $fvalues["content"],

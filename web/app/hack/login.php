@@ -56,16 +56,11 @@
             $orgDBRows = $orgDao->getOnLoginId($loginId);
             $num_orgs = sizeof($orgDBRows);
 
-            // @debug
-            echo "num_orgs = $num_orgs <br>" ;
-            print_r($_POST);
-            // exit ;
-
             if($num_orgs == 0 ) {
                 $fwd = "/app/org/create.php" ;
                 header("Location: $fwd") ;
             } else if($num_orgs == 1 ) {
-                $domain = $organizations[0]["canonical_domain"] ;
+                $domain = $orgDBRows[0]["canonical_domain"] ;
                 $fwd = "http://".$domain ;
                 header("Location: $fwd") ;
 

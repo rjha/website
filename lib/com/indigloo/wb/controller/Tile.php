@@ -2,30 +2,37 @@
 namespace com\indigloo\wb\controller{
     
     use \com\indigloo\Url as Url ;
+    use \com\indigloo\wb\Constants as AppConstants;
 
     class Tile {
 
         
-        function __construct() {
-            
-        }
+        function __construct() {}
 
         function process($params,$options) {
 
         	$gpage = Url::tryQueryParam("gpage");
             $gpage = empty($gpage) ? "1" : $gpage ;
+
+
+            $gWeb = \com\indigloo\core\Web::getInstance();
+            $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
+            $orgId = $gOrgView->id ;
+
             if($gpage == "1") {
-                $this->loadHomePage($gpage);
+                $this->loadHomePage($orgId,$gpage);
             } else {
-                $this->loadNextPage($gpage);
+                $this->loadNextPage($orgId,$gpage);
             }
         }
 
-        function loadHomePage($gpage) {
+        function loadHomePage($orgId,$gpage) {
         	
     		$pageDao = new \com\indigloo\wb\dao\Page();
             $pageSize = 20;
-            $pageDBRows = $pageDao->getLatest($pageSize);
+
+
+            $pageDBRows = $pageDao->getLatest($orgId,$pageSize);
 
             $qparams = Url::getRequestQueryParams();
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
@@ -51,7 +58,7 @@ namespace com\indigloo\wb\controller{
             include ($view);
         }
 
-        function loadNextPage($gpage) {
+        function loadNextPage($orgId,$gpage) {
 			 
     		$pageDao = new \com\indigloo\wb\dao\Page();
      		$qparams = Url::getRequestQueryParams();
@@ -60,7 +67,7 @@ namespace com\indigloo\wb\controller{
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
             $paginator->setBaseConvert(false);
 
-            $pageDBRows = $pageDao->getPaged($paginator);
+            $pageDBRows = $pageDao->getPaged($orgId,$paginator);
 
             //data for paginator
          	$startId = NULL ;

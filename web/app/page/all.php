@@ -1,6 +1,7 @@
 <?php
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
+    require_once (APP_WEB_DIR.'/app/inc/admin.inc');
 
     use \com\indigloo\Util as Util;
     use \com\indigloo\util\StringUtil as StringUtil;
@@ -9,7 +10,14 @@
     use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\form\Sticky;
     use \com\indigloo\ui\form\Message as FormMessage;
+
     use \com\indigloo\wb\html\Application as AppHtml ;
+    use \com\indigloo\wb\Constants as AppConstants;
+
+    // get org_id injected in request
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
+    $orgId = $gOrgView->id ;
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     
@@ -20,8 +28,6 @@
     $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = base64_encode(Url::current());
 
-
-    $orgId = 1 ;
     // fetch pages
     $pageDao = new \com\indigloo\wb\dao\Page();
     $qparams = Url::getRequestQueryParams();
@@ -36,8 +42,7 @@
         $dbfilter["token"] = $qparams["token"] ;
     }
 
-
-    $pageDBRows = $pageDao->getPaged($paginator,$dbfilter);
+    $pageDBRows = $pageDao->getPaged($orgId,$paginator,$dbfilter);
     //data for paginator
     $startId = NULL ;
     $endId = NULL ;

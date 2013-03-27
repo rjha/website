@@ -2,6 +2,7 @@
     
     include 'wb-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
+    include(APP_WEB_DIR.'/app/inc/admin.inc');
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
@@ -10,8 +11,10 @@
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\exception\UIException as UIException;
+    use \com\indigloo\wb\Constants as AppConstants;
+
     
-    $gWeb = \com\indigloo\core\Web::getInstance(); 
+    $gWeb = \com\indigloo\core\Web::getInstance();
     $fvalues = array();
     $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
 
@@ -27,8 +30,12 @@
             throw new UIException($fhandler->getErrors());
         }
 
+        // get org_id injected in request
+        $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
+        $orgId = $gOrgView->id ;
+    
         $pageDao = new \com\indigloo\wb\dao\Page();
-        $pageId = $pageDao->create($fvalues["title"]);
+        $pageId = $pageDao->create($orgId,$fvalues["title"]);
 
         //success
         $messages = array("page created successfully!");

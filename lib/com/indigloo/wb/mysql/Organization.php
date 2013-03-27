@@ -44,7 +44,9 @@ namespace com\indigloo\wb\mysql {
             // @input check
             $domain = $mysqli->real_escape_string($domain);
             
-            $sql = " select org_id from wb_org_domain where domain = '%s' " ;
+            $sql = " select o.* from wb_org_domain d, wb_org o " .
+                " where d.org_id = o.id and d.domain = '%s' " ;
+                
             $sql = sprintf($sql,$domain);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             

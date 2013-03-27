@@ -8,88 +8,88 @@ namespace com\indigloo\wb\dao {
 
     class Page {
 
-        function getPaged($paginator,$dbfilter=array()) {
+        function getPaged($orgId,$paginator,$dbfilter=array()) {
             $limit = $paginator->getPageSize();
             
             if($paginator->isHome()){
-                return $this->getLatest($limit,$dbfilter);
+                return $this->getLatest($orgId,$limit,$dbfilter);
             } else {
 
                 $params = $paginator->getDBParams();
                 $start = $params['start'];
                 $direction = $params['direction'];
-                $rows = mysql\Page::getPaged($start,$direction,$limit,$dbfilter);
+                $rows = mysql\Page::getPaged($orgId,$start,$direction,$limit,$dbfilter);
                 return $rows ;
             }
         }
 
-        function getLatest($limit,$dbfilter=array()) {
-            $rows = mysql\Page::getLatest($limit,$dbfilter);
+        function getLatest($orgId,$limit,$dbfilter=array()) {
+            $rows = mysql\Page::getLatest($orgId,$limit,$dbfilter);
             return $rows ;
         }
-
       
-        function getOnId($pageId) {
-            $row = mysql\Page::getOnId($pageId);
+        function getOnId($orgId,$pageId) {
+            $row = mysql\Page::getOnId($orgId,$pageId);
             return $row ;
         }
 
-        function getOnSeoTitle($seoTitle) {
+        function getOnSeoTitle($orgId,$seoTitle) {
             $hash = md5($seoTitle);
-            $row = mysql\Page::getOnSeoTitle($hash);
+            $row = mysql\Page::getOnSeoTitle($orgId,$hash);
             return $row ;
         }
 
+        /*
         function getIdOnSeoTitle($seoTitle) {
             $row = $this->getOnSeoTitle($seoTitle);
             $pageId = empty($row) ? NULL : $row['id'] ;
             return $pageId ;
-        }
+        }*/
 
-        function getRandom($limit) {
-            $rows = mysql\Page::getRandom($limit);
+        function getRandom($orgId,$limit) {
+            $rows = mysql\Page::getRandom($orgId,$limit);
             return $rows ;
         }
 
-        function updateWidget($pageId,$widgetId,$title,$content,$mediaJson) {
-            mysql\Page::updateWidget($pageId,$widgetId,$title,$content,$mediaJson) ;
+        function updateWidget($orgId,$pageId,$widgetId,$title,$content,$mediaJson) {
+            mysql\Page::updateWidget($orgId,$pageId,$widgetId,$title,$content,$mediaJson) ;
         }
 
-        function addWidget($pageId,$title,$content,$mediaJson) {
-            mysql\Page::addWidget($pageId,$title,$content,$mediaJson) ;
+        function addWidget($orgId,$pageId,$title,$content,$mediaJson) {
+            mysql\Page::addWidget($orgId,$pageId,$title,$content,$mediaJson) ;
         }
 
+        /*
         function getWidgetsOnSeoTitle($seoTitle) {
             $hash = md5($seoTitle);
             $rows = mysql\Page::getWidgetsOnHash($hash);
             return $rows ;
-        }
+        }*/
 
-        function getWidgetsOnId($pageId) {
-            $rows = mysql\Page::getWidgetsOnId($pageId);
+        function getWidgetsOnId($orgId,$pageId) {
+            $rows = mysql\Page::getWidgetsOnId($orgId,$pageId);
             return $rows ;
         }
 
-        function getWidgetsTitleOnId($pageId) {
-            $rows = mysql\Page::getWidgetsTitleOnId($pageId);
+        function getWidgetsTitleOnId($orgId,$pageId) {
+            $rows = mysql\Page::getWidgetsTitleOnId($orgId,$pageId);
             return $rows ;
         }
 
-        function getLatestWidget($pageId) {
-            $row = mysql\Page::getLatestWidget($pageId);
+        function getLatestWidget($orgId,$pageId) {
+            $row = mysql\Page::getLatestWidget($orgId,$pageId);
             return $row ;
         }
 
-        function getWidgetOnWidgetId($pageId,$widgetId) {
-            $row = mysql\Page::getWidgetOnWidgetId($pageId,$widgetId);
+        function getWidgetOnWidgetId($orgId,$pageId,$widgetId) {
+            $row = mysql\Page::getWidgetOnWidgetId($orgId,$pageId,$widgetId);
             return $row ;
         }
 
-        function create($title) {
-            $pageId = mysql\Page::create($title);
+        function create($orgId,$title) {
+            $pageId = mysql\Page::create($orgId,$title);
             return $pageId ;
         }
-
                              
     }
 }

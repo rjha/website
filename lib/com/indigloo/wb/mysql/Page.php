@@ -17,22 +17,24 @@ namespace com\indigloo\wb\mysql {
         // @see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/
         // @examined This query is used on thanks page after logout 
         // and Random posts controller.
-        static function getRandom($limit) {
+        static function getRandom($orgId,$limit) {
             $mysqli = WbConnection::getInstance()->getHandle();
 
             //sanitize input
+            settype($orgId,"integer");
             settype($limit,"integer");
 
             $sql = " SELECT p.*  FROM wb_page p  WHERE p.org_id = %d and p.has_media = 1 " ;
             $sql .=" and RAND()<(SELECT ((%d/COUNT(*))*4) FROM wb_page p2 where p2.org_id = %d ) ";
             $sql .= " ORDER BY RAND() LIMIT %d";
-            $sql = sprintf($sql,1,$limit,1,$limit);
+            $sql = sprintf($sql,$orgId,$limit,$orgId,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
         }
 
+        /*
         static function get($limit) {
             $mysqli = WbConnection::getInstance()->getHandle();
             // latest first
@@ -41,20 +43,23 @@ namespace com\indigloo\wb\mysql {
 
             $rows = MySQL\Helper::fetchRows($mysqli,$sql);
             return $rows ;
-        }
+        } */
 
-		static function getLatest($limit,$dbfilter) {
+		static function getLatest($orgId,$limit,$dbfilter) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
            
            	//input check
             settype($limit, "integer");
+            settype($orgId, "integer");
+
             // latest first
-            $sql = " select * from wb_page " ; 
+            $sql = " select * from wb_page where org_id = %d " ;
+            $sql = sprintf($sql,$orgId); 
 
             if(!empty($dbfilter) && isset($dbfilter["token"]) && !empty($dbfilter["token"])) {
                 // use % to escape % in the sprintf
-                $sql =  sprintf(" %s where title like '%s%%' ",$sql,$dbfilter["token"]);
+                $sql =  sprintf(" %s and title like '%s%%' ",$sql,$dbfilter["token"]);
             }
             
             $sql = sprintf(" %s  order by id desc limit %d ",$sql,$limit);
@@ -62,19 +67,22 @@ namespace com\indigloo\wb\mysql {
             return $rows;
         }
 
-        static function getPaged($start,$direction,$limit,$dbfilter) {
+        static function getPaged($orgId,$start,$direction,$limit,$dbfilter) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
 
             //sanitize input
             settype($limit, "integer");
             settype($start,"integer");
+            settype($orgId, "integer");
             $direction = $mysqli->real_escape_string($direction);
 
-            
-            $sql =  " select * from wb_page page " ;
+            $sql = " select * from wb_page where org_id = %d " ;
+            $sql = sprintf($sql,$orgId); 
+
             $q = new MySQL\Query($mysqli);
-            
+            $q->setPrefixAnd();
+
             if(!empty($dbfilter) && isset($dbfilter["token"]) && !empty($dbfilter["token"])) {
                 // A percentage (%) is required to escape % inside sprintf
                 // @imp - a string with percentage sign can be substituted as-it-is 
@@ -100,32 +108,35 @@ namespace com\indigloo\wb\mysql {
             return $rows;
         }
 
-        static function getOnSeoTitle($hash) {
+        static function getOnSeoTitle($orgId,$hash) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
            
             //input check
             $hash = $mysqli->real_escape_string($hash);
+            settype($orgId,"integer");
             
-            $sql = " select * from wb_page where seo_title_hash = '%s' " ;
-            $sql = sprintf($sql,$hash);
+            $sql = " select * from wb_page where seo_title_hash = '%s' and org_id = %d " ;
+            $sql = sprintf($sql,$hash,$orgId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
 
-        static function getOnId($pageId) {
+        static function getOnId($orgId,$pageId) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
            
             //input check
             settype($pageId,"integer");
-            
-            $sql = " select * from wb_page where id = %d " ;
-            $sql = sprintf($sql,$pageId);
+            settype($orgId,"integer");
+
+            $sql = " select * from wb_page where id = %d and org_id = %d" ;
+            $sql = sprintf($sql,$pageId,$orgId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
 
+        /*
         static function getWidgetsOnHash($hash) {
             
             $mysqli = WbConnection::getInstance()->getHandle();
@@ -137,80 +148,91 @@ namespace com\indigloo\wb\mysql {
             $rows = MySQL\Helper::fetchRows($mysqli,$sql);
             return $rows ;
 
-        }
+        } */
 
-        static function getWidgetOnWidgetId($pageId,$widgetId) {
+        static function getWidgetOnWidgetId($orgId,$pageId,$widgetId) {
             $mysqli = WbConnection::getInstance()->getHandle();
             //input
             settype($pageId,"integer") ;
             settype($widgetId,"integer") ;
+            settype($orgId,"integer");
 
-            $sql = " select * from wb_page_content where id = %d and page_id = %d " ;
-            $sql = sprintf($sql,$widgetId,$pageId);
+            $sql = " select * from wb_page_content where id = %d and page_id = %d and org_id = %d " ;
+            $sql = sprintf($sql,$widgetId,$pageId,$orgId);
 
             $row = MySQL\Helper::fetchRow($mysqli,$sql);
             return $row ;
 
         }
 
-        static function getLatestWidget($pageId) {
+        static function getLatestWidget($orgId,$pageId) {
             $mysqli = WbConnection::getInstance()->getHandle();
+            
             //input
             settype($pageId,"integer") ;
+            settype($orgId,"integer");
 
-            $sql = " select * from wb_page_content where page_id = %d order by id desc limit 1" ;
-            $sql = sprintf($sql,$pageId);
+            $sql = " select * from wb_page_content where page_id = %d and org_id = %d ".
+                " order by id desc limit 1" ;
+            $sql = sprintf($sql,$pageId,$orgId);
 
             $row = MySQL\Helper::fetchRow($mysqli,$sql);
             return $row ;
         }
 
-        static function getWidgetsOnId($pageId) {
+        static function getWidgetsOnId($orgId,$pageId) {
             $mysqli = WbConnection::getInstance()->getHandle();
 
             //sanitize input
             settype($pageId,"integer");
-            $sql = " select * from wb_page_content where page_id = %d order by id desc " ;
-            $sql = sprintf($sql,$pageId);
+            settype($orgId,"integer");
+
+            $sql = " select * from wb_page_content where page_id = %d " .
+                " and org_id = %d order by id desc " ;
+            $sql = sprintf($sql,$pageId,$orgId);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
         }   
 
-        static function getWidgetsTitleOnId($pageId) {
-            $mysqli = WbConnection::getInstance()->getHandle();
+        static function getWidgetsTitleOnId($orgId,$pageId) {
 
+            $mysqli = WbConnection::getInstance()->getHandle();
             //sanitize input
             settype($pageId,"integer");
-            $sql = " select id,title from wb_page_content where page_id = %d order by id desc " ;
-            $sql = sprintf($sql,$pageId);
+            settype($orgId,"integer");
 
+            $sql = " select id,title from wb_page_content " .
+                " where page_id = %d and org_id = %d order by id desc " ;
+
+            $sql = sprintf($sql,$pageId,$orgId);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
         }
 
-        static function updateWidget($pageId,$widgetId,$title,$content,$mediaJson) {
+        static function updateWidget($orgId,$pageId,$widgetId,$title,$content,$mediaJson) {
 
             $dbh = NULL ;
             
             try {
-                //input check
-                settype($pageId, "integer");
-                settype($widgetId, "integer");
-
+                
                 $dbh =  WbPdoWrapper::getHandle();
                 
                 //Tx start
                 $dbh->beginTransaction();
                 
                 $sql1 = " update wb_page_content set title = :title, widget_html = :content, ".
-                        " media_json = :media_json where id = :widget_id and page_id = :page_id " ;
+                        " media_json = :media_json where id = :widget_id " .
+                        " and page_id = :page_id and org_id = :org_id " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
+
                 $stmt1->bindParam(":widget_id", $widgetId);
                 $stmt1->bindParam(":page_id", $pageId);
+                $stmt1->bindParam(":org_id", $orgId);
+
                 $stmt1->bindParam(":title", $title);
                 $stmt1->bindParam(":content", $content);
                 $stmt1->bindParam(":media_json", $mediaJson);
@@ -276,23 +298,22 @@ namespace com\indigloo\wb\mysql {
 
         }
 
-        static function addWidget($pageId,$title,$content,$mediaJson) {
+        static function addWidget($orgId,$pageId,$title,$content,$mediaJson) {
 
             $dbh = NULL ;
-            $orgId = 1 ;
 
             try {
-                //input check
-                settype($pageId, "integer");
-                
+                 
                 $dbh =  WbPdoWrapper::getHandle();
                 
                 //Tx start
                 $dbh->beginTransaction();
-                $sql1 = " insert into wb_page_content(page_id,title,widget_html,media_json) ".
-                        " values(:page_id, :title, :content, :media_json) " ;
+                $sql1 = " insert into wb_page_content(org_id,page_id,title,widget_html,media_json) ".
+                        " values(:org_id,:page_id, :title, :content, :media_json) " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
+
+                $stmt1->bindParam(":org_id", $orgId);
                 $stmt1->bindParam(":page_id", $pageId);
                 $stmt1->bindParam(":title", $title);
                 $stmt1->bindParam(":content", $content);
@@ -304,7 +325,6 @@ namespace com\indigloo\wb\mysql {
                 //Tx end
                 $dbh->commit();
                 $dbh = null;
-
 
             } catch(\Exception $ex) {
                 $dbh->rollBack();

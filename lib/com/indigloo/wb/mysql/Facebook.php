@@ -104,7 +104,6 @@ namespace com\indigloo\wb\mysql {
                 throw new DBException($message);
             }
 
-
         }
 
     }

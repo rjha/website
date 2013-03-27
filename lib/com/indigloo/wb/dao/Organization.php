@@ -29,14 +29,17 @@ namespace com\indigloo\wb\dao {
         }
 
         function getSessionView($orgId) {
+            
             $rows = mysql\Organization::getSessionView($orgId);
             $admins = array();
+
             foreach($rows as $row) {
                 $admins[] = $row["login_id"] ;
             }
             
             $view = new \com\indigloo\wb\view\Organization ;
             $view->admins = $admins ;
+
             return $view ;
         }
     }

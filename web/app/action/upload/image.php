@@ -10,7 +10,8 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger ; 
-    /*  use \com\indigloo\sc\auth\Login as Login ; */
+    use \com\indigloo\wb\auth\Login as Login ; 
+
     function check_image_name($name) {
 
         $allowed = array("jpg","jpeg","png","gif");
@@ -29,13 +30,12 @@
        
     }
 
-    /*
     if(!Login::hasSession()) {
         $message = array("code" => 401 , "message" => "Authentication failure: You need to login!");
         $json = json_encode($message); 
         echo $json;
         exit;
-    } */
+    } 
     
     $uploader =  NULL ; 
     $prefix = sprintf("%s/",date('Y/m/d')) ;
@@ -88,7 +88,7 @@
     } else {
         
         $mediaVO = $uploader->getMediaData();
-       
+
         $mediaDao = new com\indigloo\wb\dao\Media();
         $mediaId = $mediaDao->add($mediaVO);
         $mediaVO->id  = $mediaId;
