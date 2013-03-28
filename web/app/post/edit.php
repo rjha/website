@@ -14,10 +14,10 @@
     use \com\indigloo\wb\html\Application as AppHtml ;
     use \com\indigloo\wb\Constants as AppConstants;
 
-    // get org_id injected in request
+    // get site_id injected in request
     $gWeb = \com\indigloo\core\Web::getInstance();
-    $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
-    $orgId = $gOrgView->id ;
+    $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
+    $siteId = $gSiteView->id ;
     
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     
@@ -31,7 +31,7 @@
     $fUrl = base64_encode(Url::current());
 
     $qPageId = Url::tryQueryParam("page_id");
-    $qWidgetId = Url::tryQueryParam("tab_id");
+    $qPostId = Url::tryQueryParam("tab_id");
 
     if(empty($qPageId)) {
         echo " Error :: page_id is missing from request " ;
@@ -39,30 +39,29 @@
     }
 
     $pageDao = new \com\indigloo\wb\dao\Page();
-    $widgetRow = empty($qWidgetId) ? 
-        $pageDao->getLatestWidget($orgId,$qPageId) :$pageDao->getWidgetOnWidgetId($orgId,$qPageId,$qWidgetId) ;
+    $postDBRow = empty($qPostId) ? 
+        $pageDao->getLatestPost($siteId,$qPageId) :$pageDao->getPostOnPostId($siteId,$qPostId) ;
 
-    if(empty($widgetRow)) {
+    if(empty($postDBRow)) {
         echo " Error :: No post found for this page!" ;
         exit ;
     }
 
-    $pageDBRow = $pageDao->getOnId($orgId,$qPageId);
-    $post_title = $widgetRow["title"];
+    $pageDBRow = $pageDao->getOnId($siteId,$qPageId);
+    $post_title = $postDBRow["title"];
 
     // @imp: why formSafeJson? we are enclosing the JSON string in single quotes
     // so the single quotes coming from DB should be escaped
-    $strMediaJson = $sticky->get('media_json',$widgetRow['media_json']) ;
+    $strMediaJson = $sticky->get('media_json',$postDBRow['media_json']) ;
     $strMediaJson = Util::formSafeJson($strMediaJson);
 
-    // widgets list
-    $widgetTabRows = $pageDao->getWidgetsTitleOnId($orgId,$qPageId);
+    $postTabRows = $pageDao->getPostsTitleOnId($siteId,$qPageId);
 
     $tabParams = $qparams ;
     unset($tabParams["tab_id"]);
     
     $baseURI = Url::base()."/app/post/edit.php" ;
-    $widgetTabsHtml = AppHtml::getWidgetTabs($baseURI,$tabParams,$widgetRow["id"],$widgetTabRows);
+    $PostTabsHtml = AppHtml::getPostTabs($baseURI,$tabParams,$postDBRow["id"],$postTabRows);
 
 ?>
 
@@ -90,7 +89,7 @@
      <body>
          <header role="banner">
             <hgroup>
-                <h1> <a href="/"><?php echo $gOrgView->name ; ?> </a> </h1>
+                <h1> <a href="/"><?php echo $gSiteView->name ; ?> </a> </h1>
             </hgroup>
 
         </header>
@@ -121,7 +120,7 @@
              
             <div class="row">
                 <div class="span3">
-                    <?php echo $widgetTabsHtml ; ?>
+                    <?php echo $postTabsHtml ; ?>
                 </div>
 
                 <div class="span8">
@@ -150,13 +149,13 @@
                             <tr>
                                 <td>
                                     <label>Title*</label>
-                                    <input type="text" class="required" name="title" value="<?php echo $sticky->get('title',$widgetRow['title']); ?>" />
+                                    <input type="text" class="required" name="title" value="<?php echo $sticky->get('title',$postDBRow['title']); ?>" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label>Content*</label>
-                                    <textarea name="content" class="required" cols="50" rows="4" ><?php echo $sticky->get('content',$widgetRow['widget_html']); ?></textarea>
+                                    <textarea name="content" class="required" cols="50" rows="4" ><?php echo $sticky->get('content',$postDBRow['post_html']); ?></textarea>
                                     
                                 </td>
                             </tr>
@@ -174,7 +173,7 @@
 
                         </table>
 
-                        <input type="hidden" name="widget_id" value="<?php echo $widgetRow['id']; ?>" />
+                        <input type="hidden" name="post_id" value="<?php echo $postDBRow['id']; ?>" />
                         <input type="hidden" name="page_id" value="<?php echo $qPageId ?>" />
                         <input type="hidden" name="media_json" value='<?php echo $strMediaJson ; ?>' />
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />

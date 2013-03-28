@@ -8,17 +8,17 @@ namespace com\indigloo\wb\mysql {
 
     use \com\indigloo\exception\DBException as DBException;
 
-    class Organization {
+    class Site {
 
-        static function getOnId($orgId) {
+        static function getOnId($siteId) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
            
             //input check
-            settype($orgId,"integer");
+            settype($siteId,"integer");
             
-            $sql = " select * from wb_org where id = %d " ;
-            $sql = sprintf($sql,$orgId);
+            $sql = " select * from wb_site where id = %d " ;
+            $sql = sprintf($sql,$siteId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
@@ -30,8 +30,8 @@ namespace com\indigloo\wb\mysql {
             // @input check
             settype($loginId,"integer");
             
-            $sql = " select org.* from wb_org org, wb_org_admin admin ".
-                " where org.id = admin.org_id and admin.login_id = %d " ;
+            $sql = " select site.* from wb_site site, wb_site_admin admin ".
+                " where site.id = admin.site_id and admin.login_id = %d " ;
 
             $sql = sprintf($sql,$loginId);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -44,8 +44,8 @@ namespace com\indigloo\wb\mysql {
             // @input check
             $domain = $mysqli->real_escape_string($domain);
             
-            $sql = " select o.* from wb_org_domain d, wb_org o " .
-                " where d.org_id = o.id and d.domain = '%s' " ;
+            $sql = " select o.* from wb_site_domain d, wb_site o " .
+                " where d.site_id = o.id and d.domain = '%s' " ;
                 
             $sql = sprintf($sql,$domain);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
@@ -60,8 +60,8 @@ namespace com\indigloo\wb\mysql {
             settype($loginId,"integer");
             $domain = $mysqli->real_escape_string($domain);
             
-            $sql = " select count(d.id) from wb_org_domain d,  wb_org o, wb_org_admin a ".
-                " where d.domain = '%s' and d.org_id = o.id and o.id = a.org_id ".
+            $sql = " select count(d.id) from wb_site_domain d,  wb_site o, wb_site_admin a ".
+                " where d.domain = '%s' and d.site_id = o.id and o.id = a.site_id ".
                 " and a.login_id = %d " ;
 
             $sql = sprintf($sql,$domain,$loginId);
@@ -69,13 +69,13 @@ namespace com\indigloo\wb\mysql {
             return $row;
         }
 
-        static function getSessionView($orgId) {
+        static function getSessionView($siteId) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
-            settype($orgId,"integer");
+            settype($siteId,"integer");
             
-            $sql = " select a.login_id from wb_org_admin a where org_id = %d  " ;
-            $sql = sprintf($sql,$orgId);
+            $sql = " select a.login_id from wb_site_admin a where site_id = %d  " ;
+            $sql = sprintf($sql,$siteId);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
@@ -89,7 +89,7 @@ namespace com\indigloo\wb\mysql {
                 //Tx start
                 $dbh->beginTransaction();
 
-                $sql1 = " insert into wb_org(name,farm_domain,canonical_domain,created_on) ".
+                $sql1 = " insert into wb_site(name,farm_domain,canonical_domain,created_on) ".
                     " values(:name, :farm_domain, :canonical_domain, now()) " ;
                 $farm_domain = Config::getInstance()->get_value("system.farm.domain", "indigloo.com") ;
                 $canonical_domain = sprintf("%s.%s",$name,$farm_domain);
@@ -102,20 +102,20 @@ namespace com\indigloo\wb\mysql {
                 $stmt1->execute();
                 $stmt1 = NULL ;
 
-                $orgId = $dbh->lastInsertId();
+                $siteId = $dbh->lastInsertId();
 
-                $sql2 = " insert into wb_org_domain(org_id,domain,created_on) ". 
-                    " values (:org_id,:domain,now())" ;
+                $sql2 = " insert into wb_site_domain(site_id,domain,created_on) ". 
+                    " values (:site_id,:domain,now())" ;
                 $stmt2 = $dbh->prepare($sql2);
-                $stmt2->bindParam(":org_id",$orgId) ;
+                $stmt2->bindParam(":site_id",$siteId) ;
                 $stmt2->bindParam(":domain",$canonical_domain) ;
                 $stmt2->execute();
                 $stmt2 = NULL ;
 
-                $sql3 = " insert into wb_org_admin(org_id,login_id,created_on) ".
-                    " values (:org_id,:login_id,now())" ;
+                $sql3 = " insert into wb_site_admin(site_id,login_id,created_on) ".
+                    " values (:site_id,:login_id,now())" ;
                 $stmt3 = $dbh->prepare($sql3);
-                $stmt3->bindParam(":org_id",$orgId) ;
+                $stmt3->bindParam(":site_id",$siteId) ;
                 $stmt3->bindParam(":login_id",$loginId) ;
                 $stmt3->execute();
                 $stmt3 = NULL ;
@@ -126,11 +126,11 @@ namespace com\indigloo\wb\mysql {
                 $seo_title_hash = md5($seo_title);
                 $random_key = Util::getRandomString(16);
                 
-                $sql4 = " insert into wb_page(org_id,title,seo_title,seo_title_hash,random_key, created_on ) ".
-                    " values (:org_id,:title,:seo_title,:hash,:random_key,now()) " ;
+                $sql4 = " insert into wb_page(site_id,title,seo_title,seo_title_hash,random_key, created_on ) ".
+                    " values (:site_id,:title,:seo_title,:hash,:random_key,now()) " ;
                 
                 $stmt4 = $dbh->prepare($sql4);
-                $stmt4->bindParam(":org_id",$orgId);
+                $stmt4->bindParam(":site_id",$siteId);
                 $stmt4->bindParam(":title", $page_title);
                 $stmt4->bindParam(":seo_title", $seo_title);
                 $stmt4->bindParam(":hash", $seo_title_hash);
@@ -143,7 +143,7 @@ namespace com\indigloo\wb\mysql {
                 $dbh->commit();
                 $dbh = null;
 
-                return $orgId ;
+                return $siteId ;
 
             } catch(\Exception $ex) {
                 $dbh->rollBack();

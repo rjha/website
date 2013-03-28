@@ -1,10 +1,11 @@
 
+
 DROP TABLE IF EXISTS  wb_php_session ;
 CREATE TABLE  wb_php_session  (
    session_id  varchar(40) NOT NULL DEFAULT '',
    data  text,
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( session_id )
+  PRIMARY KEY (session_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -39,45 +40,49 @@ CREATE TABLE  wb_facebook_user  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id),
   UNIQUE KEY  uniq_id  (facebook_id),
-  UNIQUE KEY uniq_email(email),
+  UNIQUE KEY uniq_email(email)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 
-DROP TABLE IF EXISTS  wb_org ;
-CREATE TABLE  wb_org  (
+DROP TABLE IF EXISTS  wb_site ;
+CREATE TABLE  wb_site  (
    id  int NOT NULL AUTO_INCREMENT,
    name  varchar(64) NOT NULL,
    farm_domain varchar(64) not null,
    canonical_domain varchar(128) not null,
+   description varchar(128),
+   theme_name varchar(16),
+   meta_title varchar(128),
+   meta_description varchar(128),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
-alter table wb_org add constraint uniq_name unique(name);
-alter table wb_org add constraint uniq_domain unique(canonical_domain);
+alter table wb_site add constraint uniq_name unique(name);
+alter table wb_site add constraint uniq_domain unique(canonical_domain);
 
 
-DROP TABLE IF EXISTS  wb_org_domain ;
-CREATE TABLE  wb_org_domain  (
+DROP TABLE IF EXISTS  wb_site_domain ;
+CREATE TABLE  wb_site_domain  (
    id  int NOT NULL AUTO_INCREMENT,
-   org_id int not null,
+   site_id int not null,
    domain  varchar(128) NOT NULL,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-alter table wb_org_domain add constraint uniq_domain unique(domain);
+alter table wb_site_domain add constraint uniq_domain unique(domain);
 
 
-DROP TABLE IF EXISTS  wb_org_admin ;
-CREATE TABLE  wb_org_admin  (
+DROP TABLE IF EXISTS  wb_site_admin ;
+CREATE TABLE  wb_site_admin  (
    id  int NOT NULL AUTO_INCREMENT,
    login_id int,
-   org_id int,
+   site_id int,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
@@ -87,31 +92,33 @@ CREATE TABLE  wb_org_admin  (
 DROP TABLE IF EXISTS  wb_page ;
 CREATE TABLE  wb_page  (
    id  int(11) NOT NULL AUTO_INCREMENT,
-   org_id int not null,
+   site_id int not null,
    title varchar(256) not null,
    seo_title varchar(320) not null,
    seo_title_hash varchar(32) not null,
    random_key varchar(16) not null,
-   media_json text ,
-   has_media int default 0,
+   meta_title varchar(128),
+   meta_description varchar(128),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-alter table wb_page add constraint unique uniq_page_key(org_id,random_key);
-alter table wb_page add constraint unique uniq_page_name(org_id,seo_title_hash);
+alter table wb_page add constraint unique uniq_page_key(site_id,random_key);
+alter table wb_page add constraint unique uniq_page_name(site_id,seo_title_hash);
 
 
-DROP TABLE IF EXISTS  wb_page_content ;
-CREATE TABLE  wb_page_content  (
+DROP TABLE IF EXISTS  wb_post ;
+CREATE TABLE  wb_post  (
    id  int(11) NOT NULL AUTO_INCREMENT,
-   org_id int not null,
-   page_id int not null,
+   site_id int not null,
+   page_id int ,
    row_number int not null,
    title varchar(256) not null,
-   widget_type int not null,
-   widget_html text,
+   seo_title varchar(320) not null,
+   post_type int not null,
+   post_html text,
+   has_media int default 0,
    media_json text ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -123,6 +130,7 @@ CREATE TABLE  wb_page_content  (
 DROP TABLE IF EXISTS  wb_media ;
 CREATE TABLE  wb_media  (
    id  int(11) NOT NULL AUTO_INCREMENT,
+   site_id int not null,
    original_name  varchar(256) NOT NULL,
    thumbnail_name  varchar(256) NOT NULL,
    stored_name  varchar(64) NOT NULL,
@@ -137,12 +145,3 @@ CREATE TABLE  wb_media  (
    thumbnail  varchar(64) ,
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
---
--- patch to delete org data
---
-
-delete from wb_org;
-delete from wb_org_admin ;
-delete from wb_org_domain ;

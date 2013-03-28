@@ -1,0 +1,72 @@
+
+site receipt page
+------------------
+sign in link : read from config file
+
+Post details page
+-------------------
+post.tmpl
+Post controller
+
+
+
+start page
+-------------
++ Add page to do login
+
+
+wb_org
+------------
+    + Done on settings page
+    (do not do at time of creating an org.
+     take sensible defaults)
+
+    + Home style 
+        - Blog
+        - website
+        - pinterest 
+        - Let system decide
+        (this will determine the templates)
+
+    + URL scheme 
+    (include random keys + date for pages?)
+
+    + Description
+    + Meta tags and description
+    
+
+Refactoring
+-------------
++ common code into one place for pages (toolbar etc.)
++ Admin toolbar injection based on actual login
+
+
+Page
+---------
++ Help message for empty pages
++ Remove media information - All media belongs to posts
+ + All media views work on posts directly
++ meta tags and description
++ Add category
++ Add tags
+
+Templates
+--------------
+ + for different styles
+ + put all css/js related to template in one place
+
+Search
+---------
+ + posts
+ + pages
+
+Post
+---------
+summary view for posts
+
+
+
+
+
+
+

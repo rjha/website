@@ -25,8 +25,8 @@
                 <div class="span12">
                     <div id="tiles">
                         <?php
-                            foreach($pageDBRows as $pageDBRow) {
-                                $html = \com\indigloo\wb\html\Application::getPageTile($pageDBRow);
+                            foreach($postDBRows as $postDBRow) {
+                                $html = \com\indigloo\wb\html\Application::getPostTile($postDBRow);
                                 echo $html ;
                             }
                         ?>

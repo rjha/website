@@ -15,47 +15,36 @@ namespace com\indigloo\wb\mysql {
 
         // @todo fix expensive-query
         // @see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/
-        // @examined This query is used on thanks page after logout 
-        // and Random posts controller.
-        static function getRandom($orgId,$limit) {
+        // get N random posts
+
+        static function getRandomPosts($siteId,$limit) {
             $mysqli = WbConnection::getInstance()->getHandle();
 
             //sanitize input
-            settype($orgId,"integer");
+            settype($siteId,"integer");
             settype($limit,"integer");
 
-            $sql = " SELECT p.*  FROM wb_page p  WHERE p.org_id = %d and p.has_media = 1 " ;
-            $sql .=" and RAND()<(SELECT ((%d/COUNT(*))*4) FROM wb_page p2 where p2.org_id = %d ) ";
+            $sql = " SELECT p.*  FROM wb_post p  WHERE p.site_id = %d and p.has_media = 1 " ;
+            $sql .=" and RAND()<(SELECT ((%d/COUNT(*))*4) FROM wb_post p2 where p2.site_id = %d ) ";
             $sql .= " ORDER BY RAND() LIMIT %d";
-            $sql = sprintf($sql,$orgId,$limit,$orgId,$limit);
+            $sql = sprintf($sql,$siteId,$limit,$siteId,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
         }
 
-        /*
-        static function get($limit) {
-            $mysqli = WbConnection::getInstance()->getHandle();
-            // latest first
-            $sql = " select title,seo_title from wb_page order by id desc limit %d " ;
-            $sql = sprintf($sql,$limit);
-
-            $rows = MySQL\Helper::fetchRows($mysqli,$sql);
-            return $rows ;
-        } */
-
-		static function getLatest($orgId,$limit,$dbfilter) {
+		static function getLatest($siteId,$limit,$dbfilter) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
            
            	//input check
             settype($limit, "integer");
-            settype($orgId, "integer");
+            settype($siteId, "integer");
 
             // latest first
-            $sql = " select * from wb_page where org_id = %d " ;
-            $sql = sprintf($sql,$orgId); 
+            $sql = " select * from wb_page where site_id = %d " ;
+            $sql = sprintf($sql,$siteId); 
 
             if(!empty($dbfilter) && isset($dbfilter["token"]) && !empty($dbfilter["token"])) {
                 // use % to escape % in the sprintf
@@ -67,18 +56,18 @@ namespace com\indigloo\wb\mysql {
             return $rows;
         }
 
-        static function getPaged($orgId,$start,$direction,$limit,$dbfilter) {
+        static function getPaged($siteId,$start,$direction,$limit,$dbfilter) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
 
             //sanitize input
             settype($limit, "integer");
             settype($start,"integer");
-            settype($orgId, "integer");
+            settype($siteId, "integer");
             $direction = $mysqli->real_escape_string($direction);
 
-            $sql = " select * from wb_page where org_id = %d " ;
-            $sql = sprintf($sql,$orgId); 
+            $sql = " select * from wb_page where site_id = %d " ;
+            $sql = sprintf($sql,$siteId); 
 
             $q = new MySQL\Query($mysqli);
             $q->setPrefixAnd();
@@ -108,111 +97,96 @@ namespace com\indigloo\wb\mysql {
             return $rows;
         }
 
-        static function getOnSeoTitle($orgId,$hash) {
+        static function getOnSeoTitle($siteId,$hash) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
            
             //input check
             $hash = $mysqli->real_escape_string($hash);
-            settype($orgId,"integer");
+            settype($siteId,"integer");
             
-            $sql = " select * from wb_page where seo_title_hash = '%s' and org_id = %d " ;
-            $sql = sprintf($sql,$hash,$orgId);
+            $sql = " select * from wb_page where seo_title_hash = '%s' and site_id = %d " ;
+            $sql = sprintf($sql,$hash,$siteId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
 
-        static function getOnId($orgId,$pageId) {
+        static function getOnId($siteId,$pageId) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
            
             //input check
             settype($pageId,"integer");
-            settype($orgId,"integer");
+            settype($siteId,"integer");
 
-            $sql = " select * from wb_page where id = %d and org_id = %d" ;
-            $sql = sprintf($sql,$pageId,$orgId);
+            $sql = " select * from wb_page where id = %d and site_id = %d" ;
+            $sql = sprintf($sql,$pageId,$siteId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
 
-        /*
-        static function getWidgetsOnHash($hash) {
-            
-            $mysqli = WbConnection::getInstance()->getHandle();
-
-            $sql = " select wpc.* from wb_page_content wpc, wb_page wp" .
-                " where  wpc.page_id = wp.id and wp.seo_title_hash = '%s' order by wpc.id desc " ;
-            $sql = sprintf($sql,$hash);
-            
-            $rows = MySQL\Helper::fetchRows($mysqli,$sql);
-            return $rows ;
-
-        } */
-
-        static function getWidgetOnWidgetId($orgId,$pageId,$widgetId) {
+        static function getPostOnPostId($siteId,$postId) {
             $mysqli = WbConnection::getInstance()->getHandle();
             //input
-            settype($pageId,"integer") ;
-            settype($widgetId,"integer") ;
-            settype($orgId,"integer");
+            settype($postId,"integer") ;
+            settype($siteId,"integer");
 
-            $sql = " select * from wb_page_content where id = %d and page_id = %d and org_id = %d " ;
-            $sql = sprintf($sql,$widgetId,$pageId,$orgId);
+            $sql = " select * from wb_post where id = %d  and site_id = %d " ;
+            $sql = sprintf($sql,$postId,$siteId);
 
             $row = MySQL\Helper::fetchRow($mysqli,$sql);
             return $row ;
 
         }
 
-        static function getLatestWidget($orgId,$pageId) {
+        static function getLatestPost($siteId,$pageId) {
             $mysqli = WbConnection::getInstance()->getHandle();
             
             //input
             settype($pageId,"integer") ;
-            settype($orgId,"integer");
+            settype($siteId,"integer");
 
-            $sql = " select * from wb_page_content where page_id = %d and org_id = %d ".
+            $sql = " select * from wb_post where page_id = %d and site_id = %d ".
                 " order by id desc limit 1" ;
-            $sql = sprintf($sql,$pageId,$orgId);
+            $sql = sprintf($sql,$pageId,$siteId);
 
             $row = MySQL\Helper::fetchRow($mysqli,$sql);
             return $row ;
         }
 
-        static function getWidgetsOnId($orgId,$pageId) {
+        static function getPostsOnId($siteId,$pageId) {
             $mysqli = WbConnection::getInstance()->getHandle();
 
             //sanitize input
             settype($pageId,"integer");
-            settype($orgId,"integer");
+            settype($siteId,"integer");
 
-            $sql = " select * from wb_page_content where page_id = %d " .
-                " and org_id = %d order by id desc " ;
-            $sql = sprintf($sql,$pageId,$orgId);
+            $sql = " select * from wb_post where page_id = %d " .
+                " and site_id = %d order by id desc " ;
+            $sql = sprintf($sql,$pageId,$siteId);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
         }   
 
-        static function getWidgetsTitleOnId($orgId,$pageId) {
+        static function getPostsTitleOnId($siteId,$pageId) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
             //sanitize input
             settype($pageId,"integer");
-            settype($orgId,"integer");
+            settype($siteId,"integer");
 
-            $sql = " select id,title from wb_page_content " .
-                " where page_id = %d and org_id = %d order by id desc " ;
+            $sql = " select id,title from wb_post " .
+                " where page_id = %d and site_id = %d order by id desc " ;
 
-            $sql = sprintf($sql,$pageId,$orgId);
+            $sql = sprintf($sql,$pageId,$siteId);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
         }
 
-        static function updateWidget($orgId,$pageId,$widgetId,$title,$content,$mediaJson) {
+        static function updatePost($siteId,$pageId,$postId,$title,$content,$mediaJson) {
 
             $dbh = NULL ;
             
@@ -223,18 +197,21 @@ namespace com\indigloo\wb\mysql {
                 //Tx start
                 $dbh->beginTransaction();
                 
-                $sql1 = " update wb_page_content set title = :title, widget_html = :content, ".
-                        " media_json = :media_json where id = :widget_id " .
-                        " and page_id = :page_id and org_id = :org_id " ;
+                $sql1 = " update wb_post set title = :title, post_html = :content, ".
+                        " has_media = :has_media, media_json = :media_json " .
+                        " where id = :post_id and page_id = :page_id and site_id = :site_id " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
 
-                $stmt1->bindParam(":widget_id", $widgetId);
+                $stmt1->bindParam(":post_id", $postId);
                 $stmt1->bindParam(":page_id", $pageId);
-                $stmt1->bindParam(":org_id", $orgId);
+                $stmt1->bindParam(":site_id", $siteId);
 
                 $stmt1->bindParam(":title", $title);
                 $stmt1->bindParam(":content", $content);
+
+                $has_media = (strcmp($mediaJson,'[]') == 0 ) ? 0 : 1 ;
+                $stmt1->bindParam(":has_media", $has_media);
                 $stmt1->bindParam(":media_json", $mediaJson);
 
                 $stmt1->execute();
@@ -253,7 +230,7 @@ namespace com\indigloo\wb\mysql {
             }
         }
 
-        static function create($orgId,$title) {
+        static function create($siteId,$title) {
             
             $dbh = NULL ;
             $pageId = NULL ;
@@ -268,11 +245,11 @@ namespace com\indigloo\wb\mysql {
                 $seo_title_hash = md5($seo_title);
                 $random_key = Util::getRandomString(16);
                 
-                $sql = " insert into wb_page(org_id,title,seo_title,seo_title_hash,random_key, created_on ) ".
-                    " values (:org_id,:title,:seo_title,:hash,:random_key,now()) " ;
+                $sql = " insert into wb_page(site_id,title,seo_title,seo_title_hash,random_key, created_on ) ".
+                    " values (:site_id,:title,:seo_title,:hash,:random_key,now()) " ;
                 
                 $stmt = $dbh->prepare($sql);
-                $stmt->bindParam(":org_id",$orgId);
+                $stmt->bindParam(":site_id",$siteId);
                 $stmt->bindParam(":title", $title);
                 $stmt->bindParam(":seo_title", $seo_title);
                 $stmt->bindParam(":hash", $seo_title_hash);
@@ -298,7 +275,7 @@ namespace com\indigloo\wb\mysql {
 
         }
 
-        static function addWidget($orgId,$pageId,$title,$content,$mediaJson) {
+        static function addPost($siteId,$pageId,$title,$content,$mediaJson) {
 
             $dbh = NULL ;
 
@@ -306,17 +283,25 @@ namespace com\indigloo\wb\mysql {
                  
                 $dbh =  WbPdoWrapper::getHandle();
                 
+                
                 //Tx start
                 $dbh->beginTransaction();
-                $sql1 = " insert into wb_page_content(org_id,page_id,title,widget_html,media_json) ".
-                        " values(:org_id,:page_id, :title, :content, :media_json) " ;
+                $sql1 = 
+                    " insert into wb_post(site_id,page_id,title, seo_title,post_html,has_media,media_json) ".
+                    " values(:site_id,:page_id, :title, :seo_title,:content,:has_media, :media_json) " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
 
-                $stmt1->bindParam(":org_id", $orgId);
+                $stmt1->bindParam(":site_id", $siteId);
                 $stmt1->bindParam(":page_id", $pageId);
+
+                $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
                 $stmt1->bindParam(":title", $title);
+                $stmt1->bindParam(":seo_title", $seo_title);
                 $stmt1->bindParam(":content", $content);
+
+                $has_media = (strcmp($mediaJson,'[]') == 0 ) ? 0 : 1 ;
+                $stmt1->bindParam(":has_media", $has_media);
                 $stmt1->bindParam(":media_json", $mediaJson);
 
                 $stmt1->execute();

@@ -23,7 +23,7 @@
         $fhandler->addRule('title', 'Title', array('required' => 1));
         // _do_not_ escape the content
         $fhandler->addRule('content', 'Content', array('required' => 1, "rawData" => 1));
-        $fhandler->addRule('widget_id', 'PostId', array('required' => 1));
+        $fhandler->addRule('post_id', 'PostId', array('required' => 1));
         $fhandler->addRule('page_id', 'PageId', array('required' => 1));
        	$fhandler->addRule('media_json', 'media json', array('rawData' => 1));
 
@@ -34,13 +34,13 @@
             throw new UIException($fhandler->getErrors());
         }
 
-        // find org_id injected in request
-        $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
-        $orgId = $gOrgView->id ;
+        // find site_id injected in request
+        $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
+        $siteId = $gSiteView->id ;
         
         $pageDao = new \com\indigloo\wb\dao\Page();
-        $pageDao->updateWidget($orgId,$fvalues["page_id"],
-        					$fvalues["widget_id"],
+        $pageDao->updatePost($siteId,$fvalues["page_id"],
+        					$fvalues["post_id"],
                             $fvalues["title"],
                             $fvalues["content"],
                             $fvalues["media_json"]);

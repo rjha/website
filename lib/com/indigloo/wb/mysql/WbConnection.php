@@ -39,7 +39,7 @@ namespace com\indigloo\wb\mysql {
                 
                 // read map of domain vs. database from config file
                 $gWeb = \com\indigloo\core\Web::getInstance();
-                $top_domain = $gWeb->getRequestAttribute(AppConstants::ORG_TOP_DOMAIN);
+                $top_domain = $gWeb->getRequestAttribute(AppConstants::SITE_TOP_DOMAIN);
 
                 $key = sprintf("%s.%s",$top_domain,"dbstring");
                 $dbstring = Config::getInstance()->get_value($key);

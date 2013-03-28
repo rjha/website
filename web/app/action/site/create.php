@@ -39,12 +39,12 @@
             throw new UIException(array($message));
         }
 
-        $organizationDao = new \com\indigloo\wb\dao\Organization();
-        $orgId = $organizationDao->create($loginId,$fvalues["name"]) ;
+        $siteDao = new \com\indigloo\wb\dao\Site();
+        $siteId = $siteDao->create($loginId,$fvalues["name"]) ;
 
         // success
-        $gWeb->store(AppConstants::JUST_BORN_ORG_ID,$orgId);
-        $fwd = "/app/org/receipt.php" ;
+        $gWeb->store(AppConstants::JUST_BORN_SITE_ID,$siteId);
+        $fwd = "/app/site/receipt.php" ;
         header("Location: " .$fwd);
         
 

@@ -13,7 +13,7 @@
                 $this->createRule('^(?P<token>[-\w]+)$','com\indigloo\wb\controller\Page');
                 $this->createRule('^(?P<randomKey>[\w]+)/(?P<token>[-\w]+)$','com\indigloo\wb\controller\Page');
                 $this->createRule('^sitemap$', 'com\indigloo\wb\controller\Tile');
-
+                $this->createRule('^post/(?P<post_id>\d+)/(?P<token>[-\w]+)$','com\indigloo\wb\controller\Post');
             }
 
             function route() {

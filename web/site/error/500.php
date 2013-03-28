@@ -43,6 +43,7 @@ a:link, a:hover, a:visited {
 a:active {
   color: #E7BE00;
 }
+
 #error {
   height: 100%;
   background-color: white;
@@ -50,11 +51,13 @@ a:active {
   border-right: 1px solid #999999;
   box-shadow: 0 0 5px 5px #C5CACD;
 }
+
 .error_message {
   color: #999999;
   font-size: 17.5px;
   padding: 30px 70px 20px;
 }
+
 .error_bubble {
   font-family: Arial, helvetica, sans-serif;
   font-weight: bold;
@@ -117,6 +120,7 @@ a:active {
 .error_code_500 .error_arrow {
   border-color: #EDCA24 transparent transparent transparent;
 }
+
 a.btn {
   background-repeat: repeat-x; 
   background-color: #ECE2C6;

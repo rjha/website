@@ -24,26 +24,26 @@ namespace com\indigloo\wb\core {
 		    $top_domain = substr($domain,$pos1 + 1);
 		    
 			// set in request
-		    $gWeb->setRequestAttribute(AppConstants::ORG_TOP_DOMAIN,$top_domain);
- 			$gWeb->setRequestAttribute(AppConstants::ORG_HOST_DOMAIN,$domain);
+		    $gWeb->setRequestAttribute(AppConstants::SITE_TOP_DOMAIN,$top_domain);
+ 			$gWeb->setRequestAttribute(AppConstants::SITE_HOST_DOMAIN,$domain);
 
  			// Load data from DB
-		    $orgDao = new \com\indigloo\wb\dao\Organization();
-		    $orgDBRow = $orgDao->getOnDomain($domain);
+		    $siteDao = new \com\indigloo\wb\dao\Site();
+		    $siteDBRow = $siteDao->getOnDomain($domain);
 			
-		    if(empty($orgDBRow)) {
+		    if(empty($siteDBRow)) {
 		        $message = sprintf("<h2> Unknown domain :: %s </h2> ",$domain) ;
 		        echo $message ;
 		        exit(1);
 		    }
 
-		    $gOrgView = $orgDao->getSessionView($orgDBRow["id"]);
-		    $gOrgView->domain = $domain ;
-		    $gOrgView->name = $orgDBRow["name"];
-		    $gOrgView->id = $orgDBRow["id"] ;
-
-		    // set in request
-		    $gWeb->setRequestAttribute(AppConstants::ORG_SESSION_VIEW,$gOrgView);
+		    $gSiteView = $siteDao->getSessionView($siteDBRow["id"]);
+		    $gSiteView->domain = $domain ;
+		    $gSiteView->name = $siteDBRow["name"];
+		    $gSiteView->id = $siteDBRow["id"] ;
+			
+			// set in request
+		    $gWeb->setRequestAttribute(AppConstants::SITE_SESSION_VIEW,$gSiteView);
 			
 		}
 

@@ -16,23 +16,23 @@ namespace com\indigloo\wb\controller{
 
 
             $gWeb = \com\indigloo\core\Web::getInstance();
-            $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
-            $orgId = $gOrgView->id ;
+            $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
+            $siteId = $gSiteView->id ;
 
             if($gpage == "1") {
-                $this->loadHomePage($orgId,$gpage);
+                $this->loadHomePage($siteId,$gpage);
             } else {
-                $this->loadNextPage($orgId,$gpage);
+                $this->loadNextPage($siteId,$gpage);
             }
         }
 
-        function loadHomePage($orgId,$gpage) {
+        function loadHomePage($siteId,$gpage) {
         	
-    		$pageDao = new \com\indigloo\wb\dao\Page();
+    		$postDao = new \com\indigloo\wb\dao\Post();
             $pageSize = 20;
 
 
-            $pageDBRows = $pageDao->getLatest($orgId,$pageSize);
+            $postDBRows = $postDao->getLatest($siteId,$pageSize);
 
             $qparams = Url::getRequestQueryParams();
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
@@ -42,48 +42,38 @@ namespace com\indigloo\wb\controller{
          	$startId = NULL ;
          	$endId = NULL ;
          	$pageBaseUrl = "/" ;
-         	$gNumRecords = sizeof($pageDBRows);
+         	$gNumRecords = sizeof($postDBRows);
 
          	if($gNumRecords > 0 ) {
-         		$startId = $pageDBRows[0]["id"] ;
-                $endId =   $pageDBRows[$gNumRecords-1]["id"] ;
+         		$startId = $postDBRows[0]["id"] ;
+                $endId =   $postDBRows[$gNumRecords-1]["id"] ;
          	}
-
-            $title = sprintf("page %d of theconverseshoes.info",$gpage);
-            $gMetaDescription = $title;
-            $gPageTitle = $title ;
-            $gMetaKeywords = "shoes converse shoes vans shoes knee high reef sandal";
 
             $view = APP_WEB_DIR. "/themes/vanilla/tiles.tmpl" ;
             include ($view);
         }
 
-        function loadNextPage($orgId,$gpage) {
+        function loadNextPage($siteId,$gpage) {
 			 
-    		$pageDao = new \com\indigloo\wb\dao\Page();
+    		$postDao = new \com\indigloo\wb\dao\Post();
      		$qparams = Url::getRequestQueryParams();
 
             $pageSize = 20;
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
             $paginator->setBaseConvert(false);
 
-            $pageDBRows = $pageDao->getPaged($orgId,$paginator);
+            $postDBRows = $postDao->getPaged($siteId,$paginator);
 
             //data for paginator
          	$startId = NULL ;
          	$endId = NULL ;
          	$pageBaseUrl = "/" ;
-         	$gNumRecords = sizeof($pageDBRows);
+         	$gNumRecords = sizeof($postDBRows);
 
          	if($gNumRecords > 0 ) {
-         		$startId = $pageDBRows[0]["id"] ;
-                $endId =   $pageDBRows[$gNumRecords-1]["id"] ;
+         		$startId = $postDBRows[0]["id"] ;
+                $endId =   $postDBRows[$gNumRecords-1]["id"] ;
          	}
-
-            $title = sprintf("page %d of theconverseshoes.info",$gpage);
-            $gMetaDescription = $title;
-            $gPageTitle = $title ;
-            $gMetaKeywords = "shoes converse shoes vans shoes knee high reef sandal";
 
             $view = APP_WEB_DIR. "/themes/vanilla/tiles.tmpl" ;
             include ($view);

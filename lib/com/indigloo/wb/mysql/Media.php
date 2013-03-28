@@ -6,22 +6,23 @@ namespace com\indigloo\wb\mysql {
 
     class Media {
 
-        static function add($mediaVO) {
+        static function add($siteId,$mediaVO) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
             $mediaId = NULL ;
 
-            $sql = " insert into wb_media(bucket,original_name, stored_name, " ;
+            $sql = " insert into wb_media(bucket,original_name, stored_name, site_id," ;
             $sql .= " size,mime, original_height, original_width,created_on,store,thumbnail,thumbnail_name) ";
-            $sql .= " values(?,?,?,?,?,?,?,now(),?,?,?) ";
+            $sql .= " values(?,?,?,?,?,?,?,?,now(),?,?,?) ";
 
             $stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
-                $stmt->bind_param("sssisiisss",
+                $stmt->bind_param("ssssisiisss",
                         $mediaVO->bucket,
                         $mediaVO->originalName,
                         $mediaVO->storeName,
+                        $siteId,
                         $mediaVO->size,
                         $mediaVO->mime,
                         $mediaVO->height,

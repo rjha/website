@@ -12,19 +12,11 @@
     $siteId = $gSiteView->id ;
 
     $seo_title = $router_params["token"];
+    $postId = $router_params["post_id"];
+
     $pageDao = new \com\indigloo\wb\dao\Page();
-    $pageDBRow = $pageDao->getOnSeoTitle($siteId,$seo_title);
-    $gPageId = $pageDBRow["id"];
-
-
     $gMenuPosts = $pageDao->getRandomPosts($siteId,7);
-    $postDBRows = $pageDao->getPostsOnId($siteId,$gPageId);
-    $gNumPosts = sizeof($postDBRows);
-
-   
-    //@todo - read from DB
-    $gMetaKeywords = "shoes converse shoes vans shoes knee high reef sandal";
-    $gMetaDescription = StringUtil::convertKeyToName($seo_title);
+    $postDBRow = $pageDao->getPostOnPostId($siteId,$postId);
     $gSelfUrl = Url::base().$router_options["path"];
     
 
@@ -37,10 +29,7 @@
         <title> <?php echo $pageDBRow["title"] ?> </title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="keywords" content="">
-        <meta name="description" content="">
-
-         
+        
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -80,10 +69,9 @@
                     <div id="page-content">
 
                        <?php
-                            foreach($postDBRows as $postDBRow) {
-                                $html = \com\indigloo\wb\html\Application::getPost($postDBRow);
-                                echo $html ;
-                            }
+                        $html =  \com\indigloo\wb\html\Application::getPost($postDBRow);
+                        echo $html ;
+                            
                         ?>
                     </div>
 
@@ -92,24 +80,12 @@
 
                 </div>
                 <div class="span3 offset1">
-                    <?php
-                        foreach($gMenuPosts as $gMenuPost) {
-                           $html = \com\indigloo\wb\html\Application::getPostTile($gMenuPost);
-                           echo $html ;
-                        }
-                    ?>
-                    <div class="p20">
-                        <a href="/sitemap">View all Posts &gt;</a>
-                    </div>
-                    
+                  &nbsp;
                 </div>
 
             </div> <!-- row:content -->
 
         </div>   <!-- container -->
-
-       
-
 
     </body>
 </html>

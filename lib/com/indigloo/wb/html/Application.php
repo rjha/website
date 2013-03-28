@@ -8,9 +8,9 @@ namespace com\indigloo\wb\html {
 
     class Application {
 
-        static function getOrgReceipt($row,$pageId) {
+        static function getSiteReceipt($row,$pageId) {
             $html = NULL ;
-            $template = "/fragments/org/receipt.tmpl" ;
+            $template = "/fragments/site/receipt.tmpl" ;
 
             $view = new \stdClass ;
             $view->href = "http://".$row["canonical_domain"];
@@ -26,13 +26,13 @@ namespace com\indigloo\wb\html {
             return $html ;
         }
 
-        static function getOrgTable($rows) {
+        static function getSiteTable($rows) {
             if(empty($rows)) {
-                return "<div class=\"noresults\"> No organization found </div>" ;
+                return "<div class=\"noresults\"> No sites found </div>" ;
             }
 
             $html = NULL ;
-            $template = "/fragments/org/table.tmpl" ;
+            $template = "/fragments/site/table.tmpl" ;
 
             $view = new \stdClass ;
             $view->rows = array();
@@ -58,7 +58,8 @@ namespace com\indigloo\wb\html {
             $view->rows = array();
 
             foreach($pageDBRows as $row) {
-                // page URL would be different for different organizations
+                // @todo page URL would be different for different themes
+                
                 $row["href"] = Url::base()."/".$row["seo_title"];
                 $view->rows[] = $row ;
             }
@@ -68,7 +69,7 @@ namespace com\indigloo\wb\html {
 
         }
 
-    	static function getWidgetTabs($baseURI,$tabParams,$tabId,$tabRows) {
+    	static function getPostTabs($baseURI,$tabParams,$tabId,$tabRows) {
             if(sizeof($tabRows) <= 1 ) {
                 return "" ;
             }
@@ -92,22 +93,25 @@ namespace com\indigloo\wb\html {
             return $html ;
         }
 
-    	static function getPageTile($pageDBRow) {
+    	static function getPostTile($postDBRow) {
 
             $html = NULL ;
             $view = new \stdClass;
 
-            $view->title = $pageDBRow['title'] ;
-            $view->id = $pageDBRow['id'] ;
-            $view->link = Url::base()."/".$pageDBRow['seo_title'];
-            
+            $view->title = $postDBRow['title'] ;
+            $view->id = $postDBRow['id'] ;
+             
           	$view->hasImage = false ;
+            $view->href= sprintf("%s/post/%d/%s",Url::base(),$postDBRow["id"],$postDBRow["seo_title"]);
 
-            $strMediaJson = $pageDBRow['media_json'];
+            $strMediaJson = $postDBRow['media_json'];
             $mediaVO = json_decode($strMediaJson);
+
             if(sizeof($mediaVO) > 0 ) {
-                $element = $mediaVO[0];
-                $view->srcImage = $element->address; 
+                $image = $mediaVO[0];
+                $imgv = self::convertImageJsonObj($image);
+                
+                $view->srcImage = $imgv["tsource"]; 
                 $view->hasImage = true ;
             }
 
@@ -117,29 +121,28 @@ namespace com\indigloo\wb\html {
 
         }
 
-        static function getWidget($widgetDBRow) {
+        static function getPost($postDBRow) {
             $html = NULL ;
-            $template = "/fragments/widget/post.tmpl" ;
+            $template = "/fragments/post/post.tmpl" ;
             $view = new \stdClass;
             
             $view->hasImage = false ;
             $view->images = array();
             // get media
-            $imagesJson = $widgetDBRow["media_json"];
+            $imagesJson = $postDBRow["media_json"];
             $images = json_decode($imagesJson);
 
             if(!empty($images) && (sizeof($images) > 0)) {
                 $view->hasImage = true ;
                 
-
                 foreach($images as $image) {
                     $imgv = self::convertImageJsonObj($image);
                     array_push($view->images,$imgv);
                 }
             } 
 
-            $view->content = $widgetDBRow['widget_html'];
-            $view->title = $widgetDBRow['title'];
+            $view->content = $postDBRow['post_html'];
+            $view->title = $postDBRow['title'];
            
             $html = Template::render($template,$view);
             return $html ;

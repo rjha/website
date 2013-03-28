@@ -2,7 +2,10 @@
     
     include 'wb-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
+    echo "before admin" ;
     include(APP_WEB_DIR . '/app/inc/admin.inc');
+
+    echo "after admin" ;
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
@@ -33,12 +36,12 @@
             throw new UIException($fhandler->getErrors());
         }
 
-        $gWeb = \com\indigloo\core\Web::getInstance();
-        $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
-        $orgId = $gOrgView->id ;
+        // find site_id injected in request
+        $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
+        $siteId = $gSiteView->id ;
 
         $pageDao = new \com\indigloo\wb\dao\Page();
-        $pageDao->addWidget($orgId,$fvalues["page_id"],
+        $pageDao->addPost($siteId,$fvalues["page_id"],
                             $fvalues["title"],
                             $fvalues["content"],
                             $fvalues["media_json"]);

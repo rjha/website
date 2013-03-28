@@ -30,11 +30,11 @@
         exit ;
     }
 
-    $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
-    $orgId = $gOrgView->id ;
-
+    $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
+    $siteId = $gSiteView->id ;
+    
     $pageDao = new \com\indigloo\wb\dao\Page();
-    $pageDBRow = $pageDao->getOnId($orgId,$qPageId);
+    $pageDBRow = $pageDao->getOnId($siteId,$qPageId);
     
     // @imp: why formSafeJson? we are enclosing the JSON string in single quotes
     // so the single quotes coming from DB should be escaped
@@ -69,7 +69,7 @@
      <body>
          <header role="banner">
             <hgroup>
-                <h1> <a href="/"><?php echo $gOrgView->name ; ?></a> </h1>
+                <h1> <a href="/"><?php echo $gSiteView->name ; ?></a> </h1>
             </hgroup>
 
         </header>

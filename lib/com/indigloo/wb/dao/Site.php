@@ -6,38 +6,38 @@ namespace com\indigloo\wb\dao {
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\wb\mysql as mysql;
 
-    class Organization {
+    class Site {
 
         function create($loginId,$name) {
-            $orgId = mysql\Organization::create($loginId,$name);
-            return $orgId ;
+            $siteId = mysql\Site::create($loginId,$name);
+            return $siteId ;
         }
 
         function getOnLoginId($loginId) {
-        	$rows = mysql\Organization::getOnLoginId($loginId);
+        	$rows = mysql\Site::getOnLoginId($loginId);
             return $rows ;
         }
 
-        function getOnId($orgId) {
-            $row = mysql\Organization::getOnId($orgId);
+        function getOnId($siteId) {
+            $row = mysql\Site::getOnId($siteId);
             return $row ;
         }
 
         function getOnDomain($domain) {
-            $row = mysql\Organization::getOnDomain($domain);
+            $row = mysql\Site::getOnDomain($domain);
             return $row ;
         }
 
-        function getSessionView($orgId) {
+        function getSessionView($siteId) {
             
-            $rows = mysql\Organization::getSessionView($orgId);
+            $rows = mysql\Site::getSessionView($siteId);
             $admins = array();
 
             foreach($rows as $row) {
                 $admins[] = $row["login_id"] ;
             }
             
-            $view = new \com\indigloo\wb\view\Organization ;
+            $view = new \com\indigloo\wb\view\Site ;
             $view->admins = $admins ;
 
             return $view ;

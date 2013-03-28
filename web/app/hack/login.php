@@ -52,20 +52,20 @@
             mysql\Login::updateTokenIp(session_id(),$loginId,$access_token,$expires,$remoteIp);
             Login::startOAuth2Session($loginId,$name);
             
-            $orgDao = new \com\indigloo\wb\dao\Organization();
-            $orgDBRows = $orgDao->getOnLoginId($loginId);
-            $num_orgs = sizeof($orgDBRows);
+            $siteDao = new \com\indigloo\wb\dao\Site();
+            $siteDBRows = $siteDao->getOnLoginId($loginId);
+            $num_sites = sizeof($siteDBRows);
 
-            if($num_orgs == 0 ) {
-                $fwd = "/app/org/create.php" ;
+            if($num_sites == 0 ) {
+                $fwd = "/app/site/create.php" ;
                 header("Location: $fwd") ;
-            } else if($num_orgs == 1 ) {
-                $domain = $orgDBRows[0]["canonical_domain"] ;
+            } else if($num_sites == 1 ) {
+                $domain = $siteDBRows[0]["canonical_domain"] ;
                 $fwd = "http://".$domain ;
                 header("Location: $fwd") ;
 
             } else {
-                $fwd = "/app/org/list.php" ;
+                $fwd = "/app/site/list.php" ;
                 header("Location: $fwd") ;
             }
 

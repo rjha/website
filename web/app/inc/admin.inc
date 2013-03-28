@@ -8,11 +8,11 @@
     $rp = new com\indigloo\wb\core\RequestProcessor();
     $rp->process();
     
-    $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW); 
+    $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW); 
     $loginId = Login::tryLoginIdInSession();
-    $admins = $gOrgView->admins;
+    $admins = $gSiteView->admins;
 
-    if(empty($gOrgView) 
+    if(empty($gSiteView) 
         || empty($loginId) 
         || !in_array($loginId,$admins)) {
         

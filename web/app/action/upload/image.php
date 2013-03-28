@@ -3,6 +3,8 @@
     //app/action/upload/image.php
     include ('wb-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
+    include(APP_WEB_DIR . '/app/inc/admin.inc');
+
     require_once(WEBGLOO_LIB_ROOT. '/ext/S3.php');
 
     set_exception_handler('webgloo_ajax_exception_handler');
@@ -10,7 +12,9 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger ; 
+
     use \com\indigloo\wb\auth\Login as Login ; 
+    use \com\indigloo\wb\Constants as AppConstants;
 
     function check_image_name($name) {
 
@@ -88,9 +92,13 @@
     } else {
         
         $mediaVO = $uploader->getMediaData();
+        $gWeb = \com\indigloo\core\Web::getInstance();
+        // find site_id injected in request
+        $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
+        $siteId = $gSiteView->id ;
 
         $mediaDao = new com\indigloo\wb\dao\Media();
-        $mediaId = $mediaDao->add($mediaVO);
+        $mediaId = $mediaDao->add($siteId,$mediaVO);
         $mediaVO->id  = $mediaId;
         
         $message = "file upload done!";

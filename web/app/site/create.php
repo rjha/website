@@ -33,7 +33,7 @@
 <html>
 
     <head>
-        <title> Create organization </title>
+        <title> Create website </title>
         <!-- meta tags -->
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
@@ -85,7 +85,7 @@
 
                     <div id="form-message"> </div>
 
-                    <form  id="form1"  name="form1" action="<?php echo Url::base() ?>/app/action/org/create.php" enctype="multipart/form-data"  method="POST">  
+                    <form  id="form1"  name="form1" action="<?php echo Url::base() ?>/app/action/site/create.php" enctype="multipart/form-data"  method="POST">  
                         <table class="form-table">
                             
                             <tr>

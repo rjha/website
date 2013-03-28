@@ -30,12 +30,12 @@
             throw new UIException($fhandler->getErrors());
         }
 
-        // get org_id injected in request
-        $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
-        $orgId = $gOrgView->id ;
-    
+        // find site_id injected in request
+        $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
+        $siteId = $gSiteView->id ;
+
         $pageDao = new \com\indigloo\wb\dao\Page();
-        $pageId = $pageDao->create($orgId,$fvalues["title"]);
+        $pageId = $pageDao->create($siteId,$fvalues["title"]);
 
         //success
         $messages = array("page created successfully!");

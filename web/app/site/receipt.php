@@ -18,17 +18,18 @@
     $fUrl = base64_encode(Url::current());
     $loginId = Login::getLoginIdInSession() ;
 
-    $orgId = $gWeb->find(AppConstants::JUST_BORN_ORG_ID);
+    $siteId = $gWeb->find(AppConstants::JUST_BORN_SITE_ID);
 
-    if(empty($orgId)) {
-        echo "Error: no organization id in session " ;
+    if(empty($siteId)) {
+        echo "Error: no website_id in session " ;
         exit ;
     }
 
-    $orgDao = new \com\indigloo\wb\dao\Organization();
-    $orgDBRow = $orgDao->getOnId($orgId);
-    if(empty($orgDBRow)) {
-        $message = sprintf("Error: organization with id %d does not exists",$orgId) ;
+    $siteDao = new \com\indigloo\wb\dao\Site();
+    $siteDBRow = $siteDao->getOnId($siteId);
+
+    if(empty($siteDBRow)) {
+        $message = sprintf("Error: website with id %d does not exists",$siteId) ;
         echo $message ;
         exit ;
     }
@@ -36,7 +37,7 @@
     $pageDao = new \com\indigloo\wb\dao\Page();
     // get Home page.
     // @todo - remove hard-coded string
-    $pageDBRow = $pageDao->getOnSeoTitle($orgId,"home");
+    $pageDBRow = $pageDao->getOnSeoTitle($siteId,"home");
 
     if(empty($pageDBRow)) {
         $message = "Error: Home page does not exists" ;
@@ -45,7 +46,7 @@
     }
 
     $pageId = $pageDBRow["id"] ;
-    $receiptHtml = AppHtml::getOrgReceipt($orgDBRow,$pageId);
+    $receiptHtml = AppHtml::getSiteReceipt($siteDBRow,$pageId);
 
 ?>
 

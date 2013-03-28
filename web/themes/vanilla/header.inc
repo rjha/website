@@ -1,7 +1,13 @@
+<?php
+    use \com\indigloo\wb\Constants as AppConstants ;
 
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW); 
+
+?>
 <header role="banner">
     <hgroup>
-        <h1> <a href="/">The converse shoes</a> </h1>
+        <h1> <a href="/"> <?php echo $gSiteView->name ; ?></a> </h1>
     </hgroup>
 
 </header>

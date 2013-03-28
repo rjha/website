@@ -16,9 +16,9 @@
 
     $loginId = Login::getLoginIdInSession();
  
-    $orgDao = new \com\indigloo\wb\dao\Organization();
-    $orgDBRows = $orgDao->getOnLoginId($loginId);
-    $orgTableHtml = AppHtml::getOrgTable($orgDBRows);
+    $siteDao = new \com\indigloo\wb\dao\Site();
+    $siteDBRows = $siteDao->getOnLoginId($loginId);
+    $siteTableHtml = AppHtml::getSiteTable($siteDBRows);
     
        
 
@@ -72,7 +72,7 @@
                     <div class="page--header">
                         <h2> Select a website </h2>
                     </div>
-                    <?php echo $orgTableHtml ; ?>
+                    <?php echo $siteTableHtml ; ?>
                  </div>
             </div> <!-- row:1 -->
 

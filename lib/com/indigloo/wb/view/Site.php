@@ -2,7 +2,7 @@
 
 namespace com\indigloo\wb\view {
 
-    class Organization {
+    class Site {
     	public $id ;
     	public $domain ;
     	public $name ;

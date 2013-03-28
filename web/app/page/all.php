@@ -14,10 +14,11 @@
     use \com\indigloo\wb\html\Application as AppHtml ;
     use \com\indigloo\wb\Constants as AppConstants;
 
-    // get org_id injected in request
+    // get site_id injected in request
     $gWeb = \com\indigloo\core\Web::getInstance();
-    $gOrgView = $gWeb->getRequestAttribute(AppConstants::ORG_SESSION_VIEW);
-    $orgId = $gOrgView->id ;
+    $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
+    $siteId = $gSiteView->id ;
+    
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     
@@ -42,7 +43,7 @@
         $dbfilter["token"] = $qparams["token"] ;
     }
 
-    $pageDBRows = $pageDao->getPaged($orgId,$paginator,$dbfilter);
+    $pageDBRows = $pageDao->getPaged($siteId,$paginator,$dbfilter);
     //data for paginator
     $startId = NULL ;
     $endId = NULL ;
@@ -83,7 +84,7 @@
 
          <header role="banner">
             <hgroup>
-                <h1> <a href="/">website builder app</a> </h1>
+                <h1> <a href="/"><?php echo $gSiteView->name ?></a> </h1>
             </hgroup>
 
         </header>

@@ -8,86 +8,72 @@ namespace com\indigloo\wb\dao {
 
     class Page {
 
-        function getPaged($orgId,$paginator,$dbfilter=array()) {
+        function getPaged($siteId,$paginator,$dbfilter=array()) {
             $limit = $paginator->getPageSize();
             
             if($paginator->isHome()){
-                return $this->getLatest($orgId,$limit,$dbfilter);
+                return $this->getLatest($siteId,$limit,$dbfilter);
             } else {
 
                 $params = $paginator->getDBParams();
                 $start = $params['start'];
                 $direction = $params['direction'];
-                $rows = mysql\Page::getPaged($orgId,$start,$direction,$limit,$dbfilter);
+                $rows = mysql\Page::getPaged($siteId,$start,$direction,$limit,$dbfilter);
                 return $rows ;
             }
         }
 
-        function getLatest($orgId,$limit,$dbfilter=array()) {
-            $rows = mysql\Page::getLatest($orgId,$limit,$dbfilter);
+        function getLatest($siteId,$limit,$dbfilter=array()) {
+            $rows = mysql\Page::getLatest($siteId,$limit,$dbfilter);
             return $rows ;
         }
       
-        function getOnId($orgId,$pageId) {
-            $row = mysql\Page::getOnId($orgId,$pageId);
+        function getOnId($siteId,$pageId) {
+            $row = mysql\Page::getOnId($siteId,$pageId);
             return $row ;
         }
 
-        function getOnSeoTitle($orgId,$seoTitle) {
+        function getOnSeoTitle($siteId,$seoTitle) {
             $hash = md5($seoTitle);
-            $row = mysql\Page::getOnSeoTitle($orgId,$hash);
+            $row = mysql\Page::getOnSeoTitle($siteId,$hash);
             return $row ;
         }
 
-        /*
-        function getIdOnSeoTitle($seoTitle) {
-            $row = $this->getOnSeoTitle($seoTitle);
-            $pageId = empty($row) ? NULL : $row['id'] ;
-            return $pageId ;
-        }*/
-
-        function getRandom($orgId,$limit) {
-            $rows = mysql\Page::getRandom($orgId,$limit);
+        function getRandomPosts($siteId,$limit) {
+            $rows = mysql\Page::getRandomPosts($siteId,$limit);
             return $rows ;
         }
 
-        function updateWidget($orgId,$pageId,$widgetId,$title,$content,$mediaJson) {
-            mysql\Page::updateWidget($orgId,$pageId,$widgetId,$title,$content,$mediaJson) ;
+        function updatePost($siteId,$pageId,$postId,$title,$content,$mediaJson) {
+            mysql\Page::updatePost($siteId,$pageId,$postId,$title,$content,$mediaJson) ;
         }
 
-        function addWidget($orgId,$pageId,$title,$content,$mediaJson) {
-            mysql\Page::addWidget($orgId,$pageId,$title,$content,$mediaJson) ;
+        function addPost($siteId,$pageId,$title,$content,$mediaJson) {
+            mysql\Page::addPost($siteId,$pageId,$title,$content,$mediaJson) ;
         }
 
-        /*
-        function getWidgetsOnSeoTitle($seoTitle) {
-            $hash = md5($seoTitle);
-            $rows = mysql\Page::getWidgetsOnHash($hash);
-            return $rows ;
-        }*/
-
-        function getWidgetsOnId($orgId,$pageId) {
-            $rows = mysql\Page::getWidgetsOnId($orgId,$pageId);
+        function getPostsOnId($siteId,$pageId) {
+            $rows = mysql\Page::getPostsOnId($siteId,$pageId);
             return $rows ;
         }
 
-        function getWidgetsTitleOnId($orgId,$pageId) {
-            $rows = mysql\Page::getWidgetsTitleOnId($orgId,$pageId);
+        function getPostsTitleOnId($siteId,$pageId) {
+            $rows = mysql\Page::getPostsTitleOnId($siteId,$pageId);
             return $rows ;
         }
 
-        function getLatestWidget($orgId,$pageId) {
-            $row = mysql\Page::getLatestWidget($orgId,$pageId);
+        function getLatestPost($siteId,$pageId) {
+            $row = mysql\Page::getLatestPost($siteId,$pageId);
             return $row ;
         }
 
-        function getWidgetOnWidgetId($orgId,$pageId,$widgetId) {
-            $row = mysql\Page::getWidgetOnWidgetId($orgId,$pageId,$widgetId);
+        function getPostOnPostId($siteId,$postId) {
+            $row = mysql\Page::getPostOnPostId($siteId,$postId);
             return $row ;
         }
 
-        function create($orgId,$title) {
-            $pageId = mysql\Page::create($orgId,$title);
+        function create($siteId,$title) {
+            $pageId = mysql\Page::create($siteId,$title);
             return $pageId ;
         }
                              
