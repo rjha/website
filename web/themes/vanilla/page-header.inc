@@ -2,7 +2,7 @@
 
     $qUrl = \com\indigloo\Url::current() ;
     $params = array("q" => base64_encode($qUrl), "page_id" => $gPageId);
-    $editUrl = ($gNumWidgets > 0 ) ? \com\indigloo\Url::createUrl("/app/post/edit.php",$params) : '' ;
+    $editUrl = ($gNumPosts > 0 ) ? \com\indigloo\Url::createUrl("/app/post/edit.php",$params) : '' ;
     $newUrl = \com\indigloo\Url::createUrl("/app/post/new.php",$params) ;
 
 
@@ -10,7 +10,7 @@
 
 <header role="banner">
     <hgroup>
-        <h1> <a href="/">The converse shoes</a> </h1>
+        <h1> <a href="/"> <?php echo $gSiteView->name ; ?> </a> </h1>
     </hgroup>
 
 </header>

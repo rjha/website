@@ -4,7 +4,9 @@
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW); 
 
+
 ?>
+
 <header role="banner">
     <hgroup>
         <h1> <a href="/"> <?php echo $gSiteView->name ; ?></a> </h1>
@@ -35,3 +37,16 @@
 
     </div>
 </div> <!-- toolbar -->
+
+<div id="admin-toolbar">
+    <div>
+        <ul class="tools unstyled">
+            <li> <a id="page-popup" href="/app/page/all.php"><i class="icon icon-list-alt"></i>&nbsp;Pages</a></li>
+            <li> <a href="#"><i class="icon icon-wrench"></i>&nbsp;Settings</a></li>
+            <li> <a href="#">&nbsp;Help</a></li>
+
+        </ul>
+        <div class="clear"> </div>
+    </div>
+</div>
+

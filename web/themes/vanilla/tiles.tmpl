@@ -2,6 +2,10 @@
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
 
+    use \com\indigloo\wb\Constants as AppConstants;
+    
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
 
 ?>
 
@@ -9,7 +13,7 @@
 <html>
 
     <head>
-        <title><?php echo $gPageTitle ; ?></title>
+        <title><?php echo $gSiteView->name ; ?></title>
         <?php include("meta.inc") ?>
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 

@@ -14,7 +14,6 @@ namespace com\indigloo\wb\controller{
         	$gpage = Url::tryQueryParam("gpage");
             $gpage = empty($gpage) ? "1" : $gpage ;
 
-
             $gWeb = \com\indigloo\core\Web::getInstance();
             $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
             $siteId = $gSiteView->id ;
@@ -30,8 +29,6 @@ namespace com\indigloo\wb\controller{
         	
     		$postDao = new \com\indigloo\wb\dao\Post();
             $pageSize = 20;
-
-
             $postDBRows = $postDao->getLatest($siteId,$pageSize);
 
             $qparams = Url::getRequestQueryParams();

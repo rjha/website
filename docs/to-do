@@ -1,4 +1,16 @@
 
+refactor - post dao and page dao
+
++ show login/logout link
++ show add website link (inside settings)
++ create settings page 
+    - for ORG
+    - for Page
++ Add meta title and header everywhere
++ Admin toolbar rendering for owners only!
+
+
+
 site receipt page
 ------------------
 sign in link : read from config file
