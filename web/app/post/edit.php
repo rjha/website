@@ -61,7 +61,7 @@
     unset($tabParams["tab_id"]);
     
     $baseURI = Url::base()."/app/post/edit.php" ;
-    $PostTabsHtml = AppHtml::getPostTabs($baseURI,$tabParams,$postDBRow["id"],$postTabRows);
+    $postTabsHtml = AppHtml::getPostTabs($baseURI,$tabParams,$postDBRow["id"],$postTabRows);
 
 ?>
 

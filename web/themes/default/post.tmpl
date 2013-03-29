@@ -18,6 +18,9 @@
     $gMenuPosts = $pageDao->getRandomPosts($siteId,7);
     $postDBRow = $pageDao->getPostOnPostId($siteId,$postId);
     
+    // Do not show all admin toolbar buttons
+    $G_FULL_ADMIN_TOOLBAR = false ;
+
 
 ?>
 
@@ -34,7 +37,7 @@
 
      <body>
         
-        <?php include("header2.inc") ?>
+        <?php include("header.inc") ?>
         
         <div class="container">
 
