@@ -10,6 +10,7 @@ namespace com\indigloo\wb  {
 		const SITE_SESSION_VIEW ="site.session.view" ;
 		const SITE_HOST_DOMAIN = "site.host.domain" ;
 		const SITE_TOP_DOMAIN = "site.top.domain" ;
+		const DEFAULT_THEME_NAME = "default" ;
 
 
     }

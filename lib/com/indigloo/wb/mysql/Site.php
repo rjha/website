@@ -7,6 +7,7 @@ namespace com\indigloo\wb\mysql {
     use \com\indigloo\Logger ;
 
     use \com\indigloo\exception\DBException as DBException;
+    use \com\indigloo\wb\Constants as AppConstants ;
 
     class Site {
 
@@ -89,8 +90,10 @@ namespace com\indigloo\wb\mysql {
                 //Tx start
                 $dbh->beginTransaction();
 
-                $sql1 = " insert into wb_site(name,farm_domain,canonical_domain,created_on) ".
-                    " values(:name, :farm_domain, :canonical_domain, now()) " ;
+                $sql1 = 
+                    " insert into wb_site(name,farm_domain,canonical_domain,theme_name,created_on) ".
+                    " values(:name, :farm_domain, :canonical_domain, :theme, now()) " ;
+
                 $farm_domain = Config::getInstance()->get_value("system.farm.domain", "indigloo.com") ;
                 $canonical_domain = sprintf("%s.%s",$name,$farm_domain);
                 
@@ -98,6 +101,7 @@ namespace com\indigloo\wb\mysql {
                 $stmt1->bindParam(":name",$name) ;
                 $stmt1->bindParam(":farm_domain",$farm_domain) ;
                 $stmt1->bindParam(":canonical_domain",$canonical_domain) ;
+                $stmt1->bindParam(":theme",AppConstants::DEFAULT_THEME_NAME) ;
                 
                 $stmt1->execute();
                 $stmt1 = NULL ;
