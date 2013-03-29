@@ -1,16 +1,7 @@
-<?php
-
-    $qUrl = \com\indigloo\Url::current() ;
-    $params = array("q" => base64_encode($qUrl), "page_id" => $gPageId);
-    $editUrl = ($gNumPosts > 0 ) ? \com\indigloo\Url::createUrl("/app/post/edit.php",$params) : '' ;
-    $newUrl = \com\indigloo\Url::createUrl("/app/post/new.php",$params) ;
-
-
-?>
 
 <header role="banner">
     <hgroup>
-        <h1> <a href="/"> <?php echo $gSiteView->name ; ?> </a> </h1>
+        <h1> <a href="/"> <?php echo $gSiteView->name ; ?></a> </h1>
     </hgroup>
 
 </header>
@@ -39,11 +30,10 @@
     </div>
 </div> <!-- site toolbar -->
 
+<?php if($gSiteView->isOwner) { ?>
 <div id="admin-toolbar">
     <div>
         <ul class="tools unstyled">
-            <li> <a href="<?php echo $editUrl; ?>"><i class="icon icon-edit"></i>&nbsp;Edit</a></li>
-            <li> <a href="<?php echo $newUrl; ?>"><i class="icon icon-pencil"></i>&nbsp;Post</a></li>
             <li> <a id="page-popup" href="/app/page/all.php"><i class="icon icon-list-alt"></i>&nbsp;Pages</a></li>
             <li> <a href="#"><i class="icon icon-wrench"></i>&nbsp;Settings</a></li>
             <li> <a href="#">&nbsp;Help</a></li>
@@ -53,3 +43,4 @@
     </div>
 </div>
 
+<?php } ?>

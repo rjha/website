@@ -4,17 +4,11 @@
     use com\indigloo\wb\Constants as AppConstants ;
  
     $gWeb = \com\indigloo\core\Web::getInstance();
-    
     $rp = new com\indigloo\wb\core\RequestProcessor();
     $rp->process();
-    
     $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW); 
-    $loginId = Login::tryLoginIdInSession();
-    $admins = $gSiteView->admins;
-
-    if(empty($gSiteView) 
-        || empty($loginId) 
-        || !in_array($loginId,$admins)) {
+    
+    if(!$gSiteView->isOwner) {
         
         $fwd = AppConstants::WWW_LOGIN_URL ;
         header('Location: '.$fwd);

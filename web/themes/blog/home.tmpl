@@ -2,23 +2,22 @@
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
 
-    use \com\indigloo\Url as Url ;
-    use \com\indigloo\util\StringUtil as StringUtil ;
     use \com\indigloo\wb\Constants as AppConstants;
-
-    // get site_id injected in request
+    use \com\indigloo\Url ;
+    
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
     $siteId = $gSiteView->id ;
-
-    $seo_title = $router_params["token"];
-    $postId = $router_params["post_id"];
-
-    $pageDao = new \com\indigloo\wb\dao\Page();
-    $gMenuPosts = $pageDao->getRandomPosts($siteId,7);
-    $postDBRow = $pageDao->getPostOnPostId($siteId,$postId);
-    $gSelfUrl = Url::base().$router_options["path"];
     
+   
+    //$seo_title = $router_params["token"];
+    $seo_title = "home" ;
+    $pageDao = new \com\indigloo\wb\dao\Page();
+    $pageDBRow = $pageDao->getOnSeoTitle($siteId,$seo_title);
+    $gPageId = $pageDBRow["id"];
+    $postDBRows = $pageDao->getPostsOnId($siteId,$gPageId);
+    //to determine the edit link
+    $gNumPosts = sizeof($postDBRows);
 
 ?>
 
@@ -26,7 +25,7 @@
 <html>
 
     <head>
-        <title> <?php echo $postDBRow["title"] ?> </title>
+        <title><?php echo $gSiteView->name ; ?></title>
         <?php include("meta.inc") ?>
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
@@ -34,30 +33,36 @@
     </head>
 
      <body>
-        
-        <?php include("header.inc") ?>
-        
+
+       <?php include("header.inc") ?>
         <div class="container">
 
-            <div class="row">
+             <div class="row">
                 <div class="span7 offset1">
                     
                     <div id="page-content">
 
                        <?php
-                        $html =  \com\indigloo\wb\html\Application::getPost($postDBRow);
-                        echo $html ;
+                            foreach($postDBRows as $postDBRow) {
+                                $html = \com\indigloo\wb\html\Application::getPost($postDBRow);
+                                echo $html ;
+                            }
                             
                         ?>
                     </div>
+
                 </div>
                 <div class="span3 offset1">
-                  &nbsp;
+                   &nbsp;
                 </div>
 
             </div> <!-- row:content -->
 
         </div>   <!-- container -->
+
+         <div class="row">
+            <div class="span11 offset1" style="border-bottom:1px solid #d5d5d5;padding-bottom:20px;">&nbsp;</div>
+        </div>
 
     </body>
 </html>

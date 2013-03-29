@@ -1,11 +1,3 @@
-<?php
-    use \com\indigloo\wb\Constants as AppConstants ;
-
-    $gWeb = \com\indigloo\core\Web::getInstance();
-    $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW); 
-
-
-?>
 
 <header role="banner">
     <hgroup>
@@ -36,8 +28,9 @@
         </div>
 
     </div>
-</div> <!-- toolbar -->
+</div> <!-- site toolbar -->
 
+<?php if($gSiteView->isOwner) { ?>
 <div id="admin-toolbar">
     <div>
         <ul class="tools unstyled">
@@ -50,3 +43,4 @@
     </div>
 </div>
 
+<?php } ?>

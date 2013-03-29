@@ -39,6 +39,7 @@
     </div>
 </div> <!-- site toolbar -->
 
+<?php if($gSiteView->isOwner) { ?>
 <div id="admin-toolbar">
     <div>
         <ul class="tools unstyled">
@@ -52,4 +53,4 @@
         <div class="clear"> </div>
     </div>
 </div>
-
+<?php } ?>

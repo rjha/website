@@ -1,13 +1,18 @@
 <?php
 namespace com\indigloo\wb\controller{
     
+    use \com\indigloo\wb\Constants as AppConstants;
+
     class Post {
         
         function __construct() { }
 
         function process($router_params,$router_options) {
-        	
-            $view = APP_WEB_DIR. "/themes/masonry/post.tmpl" ;
+
+            $gWeb = \com\indigloo\core\Web::getInstance();
+        	$gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW); 
+    		
+            $view = APP_WEB_DIR. "/themes/".$gSiteView->theme."/post.tmpl" ;
             include ($view);
         }
         

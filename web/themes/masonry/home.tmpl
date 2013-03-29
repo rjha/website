@@ -16,7 +16,10 @@
     $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $paginator->setBaseConvert(false);
 
-    $postDBRows = $postDao->getPaged($siteId,$paginator);
+    $postDBRows = $postDao->getPaged($siteId,$paginator); 
+    //to determine the edit link
+    $gNumPosts = sizeof($postDBRows);
+
 
     //data for paginator
     $startId = NULL ;
