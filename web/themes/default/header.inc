@@ -15,12 +15,7 @@
     
 ?>
 
-<header role="banner">
-    <hgroup>
-        <h1> <a href="/"> <?php echo $gSiteView->name ; ?></a> </h1>
-    </hgroup>
 
-</header>
 
 <div class="navbar">
     <div class="navbar-inner">
@@ -45,6 +40,14 @@
     </div>
 </div> <!-- site toolbar -->
 
+<header role="banner">
+    <hgroup>
+        <h1> <a href="/"> <?php echo $gSiteView->domain ; ?></a> </h1>
+    </hgroup>
+
+</header>
+ 
+ 
 <?php 
 
     if($gSiteView->isOwner) { 

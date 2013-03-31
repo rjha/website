@@ -96,12 +96,13 @@ namespace com\indigloo\wb\mysql {
 
                 $farm_domain = Config::getInstance()->get_value("system.farm.domain", "indigloo.com") ;
                 $canonical_domain = sprintf("%s.%s",$name,$farm_domain);
-                
+                $default_theme = AppConstants::DEFAULT_THEME_NAME ;
+
                 $stmt1 = $dbh->prepare($sql1);
                 $stmt1->bindParam(":name",$name) ;
                 $stmt1->bindParam(":farm_domain",$farm_domain) ;
                 $stmt1->bindParam(":canonical_domain",$canonical_domain) ;
-                $stmt1->bindParam(":theme",AppConstants::DEFAULT_THEME_NAME) ;
+                $stmt1->bindParam(":theme",$default_theme) ;
                 
                 $stmt1->execute();
                 $stmt1 = NULL ;

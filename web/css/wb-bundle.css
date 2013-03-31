@@ -5865,20 +5865,22 @@ a.badge:hover {
     }
 
     header {
-        background-color: #333;
+        background:rgba(255,255,255,0.9);
         margin: 0 ;
         border :0 ;
         padding-top:30px;
         padding-bottom: 30px;
-        padding-left:55px;
-        padding-right:55px;
-        color : #f7f7f7; 
+        padding-left:15px;
+        padding-right:15px;
         vertical-align: baseline ;
+        text-align: center ;
+        border-bottom: 1px solid #ccc ;
+        margin-bottom: 30px;
     }
 
     body>header h1 a, body>header h1 a:hover {
-        color: #f2f2f2 ;
-        font-family: "Lato","Verdana",sans-serif;
+        color:#222;
+        font-family: "Georgia", "Lato","Verdana",sans-serif;
     }
 
     a:hover { text-decoration:none ; }
@@ -6070,10 +6072,11 @@ a.badge:hover {
     }
 
     .post {
+        padding-top:15px;
         padding-left:15px;
         font-size: 18px;
         font-family: "Georgia","Times New Roman", arial,serif ;
-        line-height: 24px; 
+        line-height: 28px; 
     }
 
     .post p{
@@ -6587,7 +6590,7 @@ a.badge:hover {
         padding:0px;
         padding-left: 120px;
         background-color: #FEFFC5 ;
-        margin-top:-20px;
+        margin-top:-30px;
         margin-bottom:15px;
     }
 
@@ -6609,7 +6612,9 @@ a.badge:hover {
     .navbar-inner  {
         border :0 ;
         border-radius : 0 ;
-        border-bottom : 1px solid #d5d5d5;
+        border-bottom : 1px solid #ccc;
+        position: fixed ;
+        width:100%;
     }
 
     .navbar .brand {

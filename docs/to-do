@@ -1,21 +1,33 @@
 
++ templates for errros like no website_id in session
++ issue with session
+ - we log in at www.indigloo.com
+ - __BUG__ now we want to create a post at test1.indigloo.com
+ 	To do so we need to start a session for test1.indigloo.com
+ 	 How to automatically login for a domain?
+ 	 will  happen for 
+ 	 + first time org create.
+     + select a website from list 
+
+
 
 + counters : page.num_post (do not show edit when num_posts = 0)
-+ functionality: post delete 
 + post : add or do not add to a page ??
-+ fix post add and post delete pages.
 (if available then fine - else do not bother!)
 
-+ site create : get a tag line
+
 + site receipt : sign in link
-+ post to FB wall.
 + refactor - post dao and page dao
-+ email on site create
 + page rendering fixes
+
++ email on site create
++ facebook login
++ post to FB wall.
 
 --------------------------------------
 
-+ facebook integration?
++ site create : get a tag line
++ functionality: post delete
 + settings : add more domain
 + wmd editor
 + category and tags
