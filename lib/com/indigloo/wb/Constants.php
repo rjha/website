@@ -8,7 +8,7 @@ namespace com\indigloo\wb  {
 	    const WWW_LOGIN_URL = "/app/hack/login.php" ;
 	    const JUST_BORN_SITE_ID = "global.site.newborn.id";
 		const SITE_SESSION_VIEW ="site.session.view" ;
-		const SITE_HOST_DOMAIN = "site.host.domain" ;
+	   
 		const SITE_TOP_DOMAIN = "site.top.domain" ;
 		const DEFAULT_THEME_NAME = "default" ;
 

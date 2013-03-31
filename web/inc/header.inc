@@ -14,6 +14,23 @@
     $session_backend = Config::getInstance()->get_value("session.backend");
     $session_backend = empty($session_backend) ? "default" :  strtolower($session_backend);
 
+    // site domain check
+    // DB connx depends on top domain
+    // DB connx is needed for mysql session.
+    $domain = $_SERVER["HTTP_HOST"];
+    // @assumption
+    // crude hack
+    // a general scheme to get TLD from a host is surprisingly hard
+    // (e.g. res.in / co.uk schemes)
+    // here we assume that all our domains are of form x.y.z
+
+    $pos1 = strpos($domain,".");
+    $top_domain = substr($domain,$pos1 + 1);
+    
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gWeb->start();
+    $gWeb->setRequestAttribute(AppConstants::SITE_TOP_DOMAIN,$top_domain);
+
     switch($session_backend) {
         case "mysql" :
             include(APP_WEB_DIR . '/inc/mysql-session.inc');
@@ -24,7 +41,6 @@
     
     include(APP_WEB_DIR . '/inc/global-error.inc');
     
-    $gWeb = \com\indigloo\core\Web::getInstance();
-    $gWeb->start();
+    
     
 ?>

@@ -35,7 +35,6 @@
             <div class="nav-collapse">
                 <ul class="nav">
                     <li> <a href="/"><i class="icon icon-home"></i>&nbsp;Home</a></li>
-                    <li> <a href="/sitemap"><i class="icon icon-folder-open"></i>&nbsp;Sitemap</a></li>
                     <?php echo $loginUrl; ?>
                 </ul>
                 
@@ -58,7 +57,7 @@
             $newHref = \com\indigloo\Url::createUrl("/app/post/new.php",$params) ;
             $newUrl = str_replace(
                 array("{href}", "{name}"), 
-                array($newHref,"<i class=\"icon icon-pencil\"></i>&nbsp;New post"), 
+                array($newHref,"<i class=\"icon icon-plus\"></i>&nbsp;New post"), 
                 $listUrl);
             $editHref = ($gNumPosts > 0 ) ? \com\indigloo\Url::createUrl("/app/post/edit.php",$params) : '' ;
             
@@ -79,8 +78,7 @@
                 <?php echo $editUrl; ?>
                 <?php echo $newUrl; ?>
                 <li> <a href="/app/page/all.php"><i class="icon icon-list-alt"></i>&nbsp;Pages</a></li>
-                <li> <a href="#"><i class="icon icon-wrench"></i>&nbsp;Settings</a></li>
-                <li> <a href="#">&nbsp;Help</a></li>
+                
 
             </ul>
             <div class="clear"> </div>

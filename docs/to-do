@@ -1,82 +1,31 @@
 
-refactor - post dao and page dao
 
-+ show login/logout link
-+ show add website link (inside settings)
-+ create settings page 
-    - for ORG
-    - for Page
-+ Add meta title and header everywhere
-+ Admin toolbar rendering for owners only!
++ counters : page.num_post (do not show edit when num_posts = 0)
++ functionality: post delete 
++ post : add or do not add to a page ??
++ fix post add and post delete pages.
+(if available then fine - else do not bother!)
 
++ site create : get a tag line
++ site receipt : sign in link
++ post to FB wall.
++ refactor - post dao and page dao
++ email on site create
++ page rendering fixes
 
+--------------------------------------
 
-site receipt page
-------------------
-sign in link : read from config file
++ facebook integration?
++ settings : add more domain
++ wmd editor
++ category and tags
++ show category and tags for posts (if available)
 
-Post details page
--------------------
-post.tmpl
-Post controller
-
-
-
-start page
--------------
-+ Add page to do login
-
-
-wb_org
-------------
-    + Done on settings page
-    (do not do at time of creating an org.
-     take sensible defaults)
-
-    + Home style 
-        - Blog
-        - website
-        - pinterest 
-        - Let system decide
-        (this will determine the templates)
-
-    + URL scheme 
-    (include random keys + date for pages?)
-
-    + Description
-    + Meta tags and description
-    
-
-Refactoring
--------------
-+ common code into one place for pages (toolbar etc.)
-+ Admin toolbar injection based on actual login
-
-
-Page
----------
-+ Help message for empty pages
-+ Remove media information - All media belongs to posts
- + All media views work on posts directly
-+ meta tags and description
-+ Add category
-+ Add tags
-
-Templates
---------------
- + for different styles
- + put all css/js related to template in one place
-
-Search
----------
- + posts
- + pages
-
-Post
----------
-summary view for posts
-
-
++ page:posts : pagination
++ page/post/site : meta titles and description
++ Add new site link (?)
++ switch on amazon S3
++ merge indigloo buckets?
 
 
 

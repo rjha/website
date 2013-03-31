@@ -28,6 +28,11 @@ namespace com\indigloo\wb\dao {
             return $rows ;
         }
       
+        function getLatestTitles($siteId,$limit) {
+            $rows = mysql\Page::getLatestTitles($siteId,$limit);
+            return $rows ;
+        }
+
         function getOnId($siteId,$pageId) {
             $row = mysql\Page::getOnId($siteId,$pageId);
             return $row ;

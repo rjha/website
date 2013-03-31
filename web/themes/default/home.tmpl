@@ -3,6 +3,7 @@
     require_once (APP_WEB_DIR.'/inc/header.inc');
 
     use \com\indigloo\wb\Constants as AppConstants;
+    use \com\indigloo\wb\html\Application as AppHtml ;
     use \com\indigloo\Url ;
     
     $gWeb = \com\indigloo\core\Web::getInstance();
@@ -10,14 +11,30 @@
     $siteId = $gSiteView->id ;
     
    
-    //$seo_title = $router_params["token"];
+    // current page
     $seo_title = "home" ;
     $pageDao = new \com\indigloo\wb\dao\Page();
     $pageDBRow = $pageDao->getOnSeoTitle($siteId,$seo_title);
     $gPageId = $pageDBRow["id"];
+
+    // current page posts
     $postDBRows = $pageDao->getPostsOnId($siteId,$gPageId);
     //to determine the edit link
     $gNumPosts = sizeof($postDBRows);
+
+    // page title + links in menu
+    $menuDBRows = $pageDao->getLatestTitles($siteId,10);
+    $menuHtml = AppHtml::getDefaultMenu($menuDBRows);
+     
+    $pageHtml = "" ;
+    if($gNumPosts > 0) {
+        foreach($postDBRows as $postDBRow) {
+            $pageHtml .= AppHtml::getPost($postDBRow);
+        }
+    } else {
+        // help content
+        $pageHtml = AppHtml::getHelp("default.post.create");
+    }
 
     // show all admin toolbar buttons
     $G_FULL_ADMIN_TOOLBAR = true ;
@@ -42,21 +59,10 @@
 
              <div class="row">
                 <div class="span7 offset1">
-                    
-                    <div id="page-content">
-
-                       <?php
-                            foreach($postDBRows as $postDBRow) {
-                                $html = \com\indigloo\wb\html\Application::getPost($postDBRow);
-                                echo $html ;
-                            }
-                            
-                        ?>
-                    </div>
-
+                    <div id="page-content"> <?php echo $pageHtml; ?> </div>
                 </div>
                 <div class="span3 offset1">
-                   &nbsp;
+                  <?php echo $menuHtml ; ?>
                 </div>
 
             </div> <!-- row:content -->

@@ -97,6 +97,23 @@ namespace com\indigloo\wb\mysql {
             return $rows;
         }
 
+
+        static function getLatestTitles($siteId,$limit) {
+
+            $mysqli = WbConnection::getInstance()->getHandle();
+           
+            //input check
+            settype($limit, "integer");
+            settype($siteId, "integer");
+
+            // latest first
+            $sql = " select id,title,seo_title,random_key from wb_page ".
+                " where site_id = %d order by title  limit %d" ;
+            $sql = sprintf($sql,$siteId,$limit); 
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
         static function getOnSeoTitle($siteId,$hash) {
 
             $mysqli = WbConnection::getInstance()->getHandle();

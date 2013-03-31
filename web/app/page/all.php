@@ -120,7 +120,7 @@
                     <?php FormMessage::render(); ?>
                     <div id="user-menu">
                         <div class="item">
-                            <a href="#" class="open-panel" rel="create-form">Create </a>
+                            <a href="#" class="open-panel" rel="create-form">+&nbsp;New page </a>
                         </div>
                         <div class="item">
                             <a href="#" class="open-panel" rel="search-form">Search </a>

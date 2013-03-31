@@ -8,6 +8,52 @@ namespace com\indigloo\wb\html {
 
     class Application {
 
+     static function getHelp($key) {
+
+            $pos = \strpos($key,"/");
+
+            //bad key
+            if($pos !== false) {
+                $message = \sprintf("wrong format for help file key: {%s} ",$key) ;
+                throw new \Exception($message);
+            }
+
+            $name = \str_replace(".","/",$key);
+            $path = \sprintf("%s/fragments/help/%s.html",APP_WEB_DIR,$name) ;
+
+            if(!\file_exists($path)) {
+                $message = sprintf("unable to locate help file {%s}",$path);
+                throw new \Exception($message);
+            }
+
+            //get buffered output
+
+            \ob_start();
+            include ($path);
+            $buffer = \ob_get_contents();
+            \ob_end_clean();
+
+            return $buffer;
+        }
+        
+        static function getDefaultMenu($menuRows) {
+            $html = NULL ;
+            $template = "/fragments/generic/menu.tmpl" ;
+            
+            $view = new \stdClass ;
+            $view->rows = array();
+
+            foreach($menuRows as $menuRow) {
+                $row = array();
+                $row["name"] = $menuRow["title"];
+                $row["href"] = Url::base()."/".$menuRow["seo_title"];
+                $view->rows[] = $row;
+            }
+
+            $html = Template::render($template,$view); 
+            return $html ;
+        }
+
         static function getSiteReceipt($row,$pageId) {
             $html = NULL ;
             $template = "/fragments/site/receipt.tmpl" ;
@@ -21,8 +67,7 @@ namespace com\indigloo\wb\html {
             $baseUrl = $view->href."/app/post/new.php" ;
 
             $view->postUrl = Url::createUrl($baseUrl,$params) ;
-            $html = Template::render($template,$view);
-            
+            $html = Template::render($template,$view); 
             return $html ;
         }
 
