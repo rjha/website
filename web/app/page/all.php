@@ -91,7 +91,7 @@
                 <div class="span8 offset3">
                     <h3> Pages </h3>
                     <?php FormMessage::render(); ?>
-                    <div id="user-menu">
+                    <div class="user-menu">
                         <div class="item">
                             <a href="#" class="open-panel" rel="create-form">+&nbsp;New page </a>
                         </div>
@@ -103,7 +103,7 @@
                             <a href="/app/page/all.php">Show all</a>
                         </div>
 
-                    </div> <!-- page:actions -->
+                    </div> <!-- menu:actions -->
 
                     <div id="page-message" class="hide-me"> </div>
                     <div id="create-form" class="panel panel-form">

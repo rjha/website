@@ -24,11 +24,6 @@
     $fUrl = base64_encode(Url::current());
 
     $qPageId = Url::tryQueryParam("page_id");
-    
-    if(empty($qPageId)) {
-        echo " Error :: page_id is missing from request " ;
-        exit ;
-    }
 
     $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
     $siteId = $gSiteView->id ;
@@ -73,7 +68,12 @@
         
             <div class="row">
                 <div class="span3">
-                    <h4> New post </h4>
+                    <p>
+                       <?php echo $pageDBRow["title"]; ?> 
+                       <br>
+                        &nbsp;+&nbsp;Add post
+                    </p>
+
                 </div>
                 <div class="span8">
                     <?php FormMessage::render(); ?>
@@ -98,6 +98,7 @@
                                     
                                 </td>
                             </tr>
+
                             <tr>
                                 <td>
                                     <label>Title*</label>

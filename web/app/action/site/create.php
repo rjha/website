@@ -8,6 +8,7 @@
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger ;
+    use \com\indigloo\Configuration as Config;
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\exception\UIException as UIException;
@@ -44,9 +45,23 @@
 
         // success
         $gWeb->store(AppConstants::JUST_BORN_SITE_ID,$siteId);
-        $fwd = "/app/site/receipt.php" ;
-        header("Location: " .$fwd);
+
+        // @todo first forward to a page that is rendered using domain 
+        // of this site. That is needed to ensure that we get the
+        // session cookie from right domain (of newly created site)
         
+        $tmpl2 = "http://{name}.{farmDomain}/app/site/receipt.php" ;
+
+        $farmDomain= Config::getInstance()->get_value("system.farm.domain");
+        if(empty($farmDomain)) {
+            $message = "key system.farm.domain is missing in config file" ;
+            trigger_error($message,E_USER_ERROR);
+        }
+
+        $tokens = array("{name}" => $fvalues["name"], "{farmDomain}" => $farmDomain);
+        $fwd = str_replace(array_keys($tokens),array_values($tokens),$tmpl1);
+        
+        header("Location: " .$fwd);
 
     } catch(UIException $ex) {
     	 

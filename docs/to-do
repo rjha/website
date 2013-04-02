@@ -14,7 +14,8 @@
 + counters : page.num_post (do not show edit when num_posts = 0)
 + post : add or do not add to a page ??
 (if available then fine - else do not bother!)
-
++ Add / edit post : show page also (if available)
++ app pages : add breadcrumbs
 
 + site receipt : sign in link
 + refactor - post dao and page dao

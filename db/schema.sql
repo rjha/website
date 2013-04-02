@@ -99,6 +99,7 @@ CREATE TABLE  wb_page  (
    random_key varchar(16) not null,
    meta_title varchar(128),
    meta_description varchar(128),
+   num_posts int default 0,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)

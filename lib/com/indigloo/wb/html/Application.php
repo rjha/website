@@ -11,7 +11,6 @@ namespace com\indigloo\wb\html {
      static function getHelp($key) {
 
             $pos = \strpos($key,"/");
-
             //bad key
             if($pos !== false) {
                 $message = \sprintf("wrong format for help file key: {%s} ",$key) ;
@@ -36,6 +35,18 @@ namespace com\indigloo\wb\html {
             return $buffer;
         }
         
+        static function getBigError($message) {
+            $html = NULL ;
+            $template = "/fragments/generic/big-error.tmpl" ;
+
+            $view = new \stdClass;
+            $view->href = Url::base();
+            $view->message = $message ;
+
+            $html = Template::render($template,$view); 
+            return $html ;
+        }
+
         static function getDefaultMenu($menuRows) {
             $html = NULL ;
             $template = "/fragments/generic/menu.tmpl" ;

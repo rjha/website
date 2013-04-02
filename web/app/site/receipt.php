@@ -21,7 +21,8 @@
     $siteId = $gWeb->find(AppConstants::JUST_BORN_SITE_ID);
 
     if(empty($siteId)) {
-        echo "Error: no website_id in session " ;
+        $message = "Error: no website_id in session " ;
+        echo AppHtml::getBigError($message);
         exit ;
     }
 
@@ -30,7 +31,7 @@
 
     if(empty($siteDBRow)) {
         $message = sprintf("Error: website with id %d does not exists",$siteId) ;
-        echo $message ;
+        echo AppHtml::getBigError($message);
         exit ;
     }
 
@@ -41,7 +42,7 @@
 
     if(empty($pageDBRow)) {
         $message = "Error: Home page does not exists" ;
-        echo $message ;
+        echo AppHtml::getBigError($message);
         exit ;
     }
 

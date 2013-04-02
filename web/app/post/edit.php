@@ -92,6 +92,11 @@
              
             <div class="row">
                 <div class="span3">
+                <p>
+                    <?php echo $pageDBRow["title"]; ?> 
+                    <br>
+                    &nbsp;Edit post
+                </p>
                     <?php echo $postTabsHtml ; ?>
                 </div>
 

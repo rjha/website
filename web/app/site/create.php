@@ -21,10 +21,6 @@
     // encode qUrl param is part of fURL 
     $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = base64_encode(Url::current());
-    $loginId = Login::getLoginIdInSession() ;
-
-
-    
     
 
 ?>

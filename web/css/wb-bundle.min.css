@@ -939,7 +939,7 @@ to{background-position:0 0}
 .qq-progress-bar{background:-moz-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,rgba(30,87,153,1)),color-stop(50%,rgba(41,137,216,1)),color-stop(51%,rgba(32,124,202,1)),color-stop(100%,rgba(125,185,232,1)));background:-webkit-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:-o-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:-ms-linear-gradient(top,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);background:linear-gradient(to bottom,rgba(30,87,153,1) 0,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%);width:0;height:15px;border-radius:6px;margin-bottom:3px;display:none}
 body{font-size:13px;font-family:"HelveticaNeue","Helvetica Neue",Helvetica,Verdana,Arial,sans-serif;position:relative;background-color:white;padding-top:1px}
 header{background:rgba(255,255,255,0.9);margin:0;border:0;padding-top:30px;padding-bottom:30px;padding-left:15px;padding-right:15px;vertical-align:baseline;text-align:center;border-bottom:1px solid #ccc;margin-bottom:30px}
-body>header h1 a,body>header h1 a:hover{color:#222;font-family:"Georgia","Lato","Verdana",sans-serif}
+body>header h1 a,body>header h1 a:hover{color:#222;font-family:Georgia,"Times New Roman",Times,serif}
 a:hover{text-decoration:none}
 a img{border:0}
 form{margin:0;padding:0}
@@ -1036,14 +1036,14 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #overlay-message{background:none repeat scroll 0 0 #f9edbe;border-bottom:1px solid black;box-shadow:0 1px 15px #9c9c9c;font-size:16px;font-weight:bold;line-height:21px;left:0;opacity:0;padding:10px 10% 10px;position:fixed;top:60px;width:80%;z-index:1009;height:60px;text-align:center;opacity:1;display:block}
 #overlay-message a{color:#222;cursor:pointer;font-size:12px;font-weight:normal}
 .flickr-color{color:#fe63bb}
-#user-menu{height:40px;line-height:37px;padding:0;position:relative;z-index:102;background:white;margin-bottom:10px;border-bottom:1px solid #e5e5e5}
-#user-menu .item{float:left;border-bottom:2px solid #dd4b39;padding:0 4px;margin:1px 12px 0}
-#user-menu .item a{color:#333;text-decoration:none}
-#user-menu .item a:hover{color:#b1b1b1;text-decoration:none}
-.page-menu{line-height:37px;padding:0;padding-top:40px;z-index:102;background:white;margin-bottom:10px}
-.page-menu .item{border-bottom:2px solid #28C;padding:0 4px;margin:1px 12px 0}
-.page-menu .item a{font-size:17px;color:#333;text-decoration:none}
-.page-menu .item a:hover{color:#333;font-weight:bold;text-decoration:none}
+.user-menu{height:40px;line-height:37px;padding:0;position:relative;z-index:102;background:white;margin-bottom:10px;border-bottom:1px solid #e5e5e5}
+.user-menu .item{float:left;border-bottom:2px solid #dd4b39;padding:0 4px;margin:1px 12px 0}
+.user-menu .item a{color:#333;text-decoration:none}
+.user-menu .item a:hover{color:#b1b1b1;text-decoration:none}
+.page-menu{line-height:27px;padding:0;padding-top:40px;z-index:102;background:white;margin-bottom:10px;text-align:right}
+.page-menu .item{font-size:16px;padding:0 4px;margin:1px 12px 0;font-family:Georgia,"Times New Roman",Times,serif}
+.page-menu .item a{color:#333;text-decoration:none}
+.page-menu .item a:hover{font-weight:bold}
 .btn-flat{text-shadow:none;padding:4px 12px 4px 12px;color:#333;background:white;font-family:arial,sans-serif;font-size:13px;border:1px solid #cecece}
 .btn-flat:hover{background-color:#f7f7f7;color:#222;cursor:pointer}
 .section{min-height:40px;padding:20px 0 20px 0;border-bottom:1px solid #f1f1f1;overflow:hidden}
@@ -1077,7 +1077,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #admin-toolbar{padding:0;padding-left:120px;background-color:#feffc5;margin-top:-30px;margin-bottom:15px}
 #admin-toolbar a{color:#333;font-family:arial;font-size:13px}
 .beta{font-size:11px;vertical-align:sub}
-.navbar-inner{border:0;border-radius:0;border-bottom:1px solid #ccc;position:fixed;width:100%}
+.navbar-inner{border:0;border-radius:0;border-bottom:1px solid #ccc}
 .navbar .brand{padding:10px 20px 10px 80px}
 .page-header{padding-bottom:29px;border-bottom:0}
 .form-actions{background-color:#fff}

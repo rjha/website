@@ -1,18 +1,24 @@
 <?php
     // do we have login?
     use \com\indigloo\wb\auth\Login as Login;
+    use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\Url ;
+    use \com\indigloo\Util;
 
-    $listUrl = '<li> <a href="{href}">&nbsp;{name} </a></li>' ;
+    $tmplUrl = '<li> <a href="{href}">&nbsp;{name} </a></li>' ;
     $params = array();
     
-    if(Login::hasSession()) {
-        $params = array("{href}" => "/app/logout.php", "{name}" => "Logout") ;
-    } else {
-         $params = array("{href}" => "/app/hack/login.php", "{name}" => "Sign in") ;
-    }
+    $www_host = Config::getInstance()->get_value("www.host.name") ;
+    $signout_url = "http://".$www_host."/app/auth2/logout.php" ;
 
-    $loginUrl = str_replace(array_keys($params), array_values($params),$listUrl);
-    
+    if(Login::hasSession()) {
+        $params = array("{href}" => $signout_url, "{name}" => "Logout") ;
+    } else {
+         $params = array("{href}" => "/app/site/login.php", "{name}" => "Sign in") ;
+    }
+   
+    $loginUrl = str_replace(array_keys($params), array_values($params),$tmplUrl);
+  
 ?>
 
 
@@ -42,11 +48,10 @@
 
 <header role="banner">
     <hgroup>
-        <h1> <a href="/"> <?php echo $gSiteView->domain ; ?></a> </h1>
+        <h1> <a href="/"> <?php echo strtoupper($gSiteView->domain) ; ?></a> </h1>
     </hgroup>
 
 </header>
- 
  
 <?php 
 
