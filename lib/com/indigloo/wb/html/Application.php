@@ -70,14 +70,20 @@ namespace com\indigloo\wb\html {
             $template = "/fragments/site/receipt.tmpl" ;
 
             $view = new \stdClass ;
-            $view->href = "http://".$row["canonical_domain"];
+            $view->host = "http://".$row["canonical_domain"];
             $view->name = $row["name"] ;
 
-            $qUrl = base64_encode($view->href);
-            $params = array("q" => $qUrl, "page_id" => $pageId);
-            $baseUrl = $view->href."/app/post/new.php" ;
+            // post URL
+            $postUrl = $view->host."/app/post/new.php" ;
+            $params = array("page_id" => $pageId, "q" => base64_encode($view->host));
+            $postUrl = Url::createUrl($postUrl,$params);
 
-            $view->postUrl = Url::createUrl($baseUrl,$params) ;
+            // session Url
+            $fwd = $view->host."/app/account/site-session.php" ; 
+            $sessionId = session_id();
+            $params = array("session_id" => $sessionId, "q" => base64_encode($postUrl));
+            $view->fwdUrl = Url::createUrl($fwd,$params);
+
             $html = Template::render($template,$view); 
             return $html ;
         }
@@ -94,7 +100,12 @@ namespace com\indigloo\wb\html {
             $view->rows = array();
 
             foreach($rows as $row) {
-                $row["href"] = "http://".$row["canonical_domain"];
+                
+                $host =  "http://".$row["canonical_domain"] ;
+                $params = array("session_id" => session_id(),"q" => base64_encode($host));
+                $fwd = $host."/app/account/site-session.php" ;
+                $fwd = Url::createUrl($fwd,$params);
+                $row["href"] = $fwd;
                 $view->rows[] = $row ;
             }
 

@@ -1,16 +1,22 @@
 <?php
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
-    require_once (APP_WEB_DIR.'/app/inc/user.inc');
-
-    use com\indigloo\Util as Util;
-    use com\indigloo\util\StringUtil as StringUtil;
-    use com\indigloo\Url as Url;
-
-    use com\indigloo\Constants as Constants;    
+    
+    use \com\indigloo\Util as Util;
+    use \com\indigloo\Url as Url;
+    use \com\indigloo\Configuration as Config;
+ 
     use \com\indigloo\wb\auth\Login as Login ;
     use \com\indigloo\wb\html\Application as AppHtml;
     use \com\indigloo\wb\Constants as AppConstants ;
+    use \com\indigloo\Logger as Logger;
+
+    if(!Login::hasSession()) {
+        $www_host = Config::getInstance()->get_value("www.host.name") ;
+        $fwd = "http://".$www_host. "/app/account/login.php" ;
+        header('Location: '.$fwd);
+        exit ;
+    }
 
     $gWeb = \com\indigloo\core\Web::getInstance();
 

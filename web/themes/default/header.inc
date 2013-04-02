@@ -9,12 +9,20 @@
     $params = array();
     
     $www_host = Config::getInstance()->get_value("www.host.name") ;
-    $signout_url = "http://".$www_host."/app/auth2/logout.php" ;
+    $signout_url = "/app/account/logout.php" ;
+     
+    $sso_url = "http://".$www_host. "/app/account/sso.php" ;
+    $current_url = "http://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
+    
+    $params = array(
+        "q" =>  base64_encode($current_url), 
+        "domain" => base64_encode($_SERVER["HTTP_HOST"]));
+    $sso_url = Url::createUrl($sso_url,$params);
 
     if(Login::hasSession()) {
         $params = array("{href}" => $signout_url, "{name}" => "Logout") ;
     } else {
-         $params = array("{href}" => "/app/site/login.php", "{name}" => "Sign in") ;
+         $params = array("{href}" => $sso_url, "{name}" => "Sign in") ;
     }
    
     $loginUrl = str_replace(array_keys($params), array_values($params),$tmplUrl);
@@ -66,14 +74,14 @@
             $newUrl = str_replace(
                 array("{href}", "{name}"), 
                 array($newHref,"<i class=\"icon icon-plus\"></i>&nbsp;New post"), 
-                $listUrl);
+                $tmplUrl);
             $editHref = ($gNumPosts > 0 ) ? \com\indigloo\Url::createUrl("/app/post/edit.php",$params) : '' ;
             
             if(!empty($editHref)) {
                 $editUrl = str_replace(
                     array("{href}", "{name}"), 
                     array($editHref,"<i class=\"icon icon-edit\"></i>&nbsp;Edit"), 
-                    $listUrl);
+                    $tmplUrl);
             }
         }
 

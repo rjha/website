@@ -2,8 +2,7 @@
     
     include 'wb-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
-    include(APP_WEB_DIR . '/app/inc/user.inc');
-
+    
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
@@ -16,6 +15,13 @@
 
     use \com\indigloo\wb\auth\Login as Login ;
     use \com\indigloo\wb\Constants as AppConstants ;
+
+    if(!Login::hasSession()) {
+        $www_host = Config::getInstance()->get_value("www.host.name") ;
+        $fwd = "http://".$www_host. "/app/account/login.php" ;
+        header('Location: '.$fwd);
+        exit ;
+    }
 
     $gWeb = \com\indigloo\core\Web::getInstance();
     $loginId = Login::getLoginIdInSession(); 
@@ -45,22 +51,8 @@
 
         // success
         $gWeb->store(AppConstants::JUST_BORN_SITE_ID,$siteId);
-
-        // @todo first forward to a page that is rendered using domain 
-        // of this site. That is needed to ensure that we get the
-        // session cookie from right domain (of newly created site)
-        
-        $tmpl2 = "http://{name}.{farmDomain}/app/site/receipt.php" ;
-
-        $farmDomain= Config::getInstance()->get_value("system.farm.domain");
-        if(empty($farmDomain)) {
-            $message = "key system.farm.domain is missing in config file" ;
-            trigger_error($message,E_USER_ERROR);
-        }
-
-        $tokens = array("{name}" => $fvalues["name"], "{farmDomain}" => $farmDomain);
-        $fwd = str_replace(array_keys($tokens),array_values($tokens),$tmpl1);
-        
+        $www_host = Config::getInstance()->get_value("www.host.name");
+        $fwd = "http://".$www_host."/app/site/receipt.php" ;
         header("Location: " .$fwd);
 
     } catch(UIException $ex) {
