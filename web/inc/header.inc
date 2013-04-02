@@ -11,9 +11,6 @@
     use \com\indigloo\Configuration as Config  ;
     use \com\indigloo\wb\Constants as AppConstants;
 
-    $session_backend = Config::getInstance()->get_value("session.backend");
-    $session_backend = empty($session_backend) ? "default" :  strtolower($session_backend);
-
     // site domain check
     // DB connx depends on top domain
     // DB connx is needed for mysql session.
@@ -31,12 +28,17 @@
     $gWeb->start();
     $gWeb->setRequestAttribute(AppConstants::SITE_TOP_DOMAIN,$top_domain);
 
+
+    $session_backend = Config::getInstance()->get_value("session.backend");
+    $session_backend = empty($session_backend) ? "default" :  strtolower($session_backend);
+
     switch($session_backend) {
         case "mysql" :
             include(APP_WEB_DIR . '/inc/mysql-session.inc');
-        break ;
+            break ;
         default:
             include(APP_WEB_DIR . '/inc/session.inc');
+            break ;
     }
     
     include(APP_WEB_DIR . '/inc/global-error.inc');
