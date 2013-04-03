@@ -30,7 +30,7 @@ namespace com\indigloo\wb\core {
 		    $gSiteView->domain = $domain ;
 		    $gSiteView->name = $siteDBRow["name"];
 		    $gSiteView->id = $siteDBRow["id"] ;
-
+            
 		    $theme_name = empty($siteDBRow["theme_name"]) ? 
 		    	AppConstants::DEFAULT_THEME_NAME : $siteDBRow["theme_name"] ;
 		    

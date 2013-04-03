@@ -5,8 +5,10 @@
 settings
     - style : blog/masonry/normal
     - map extra domains 
-    
+
 + post delete
++ category/tags
+
 
 --------------------------------------
 

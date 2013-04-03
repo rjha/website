@@ -1,10 +1,35 @@
+<?php
+    // do we have login?
+    use \com\indigloo\wb\auth\Login as Login;
+    use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\Url ;
+    use \com\indigloo\Util;
 
-<header role="banner">
-    <hgroup>
-        <h1> <a href="/"> <?php echo $gSiteView->name ; ?></a> </h1>
-    </hgroup>
+    $tmplUrl = '<li> <a href="{href}">&nbsp;{name} </a></li>' ;
+    $params = array();
+    
+    $www_host = Config::getInstance()->get_value("www.host.name") ;
+    $signout_url = "/app/account/logout.php" ;
+     
+    $sso_url = "http://".$www_host. "/app/account/sso.php" ;
+    $current_url = "http://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
+    
+    $params = array(
+        "q" =>  base64_encode($current_url), 
+        "domain" => base64_encode($_SERVER["HTTP_HOST"]));
+    $sso_url = Url::createUrl($sso_url,$params);
 
-</header>
+    if(Login::hasSession()) {
+        $params = array("{href}" => $signout_url, "{name}" => "Logout") ;
+    } else {
+         $params = array("{href}" => $sso_url, "{name}" => "Sign in") ;
+    }
+   
+    $loginUrl = str_replace(array_keys($params), array_values($params),$tmplUrl);
+  
+?>
+
+
 
 <div class="navbar">
     <div class="navbar-inner">
@@ -19,8 +44,7 @@
             <div class="nav-collapse">
                 <ul class="nav">
                     <li> <a href="/"><i class="icon icon-home"></i>&nbsp;Home</a></li>
-                    <li> <a href="/sitemap"><i class="icon icon-folder-open"></i>&nbsp;All posts</a></li>
-                    
+                    <?php echo $loginUrl; ?>
                 </ul>
                 
             </div>
@@ -30,17 +54,50 @@
     </div>
 </div> <!-- site toolbar -->
 
-<?php if($gSiteView->isOwner) { ?>
-<div id="admin-toolbar">
-    <div>
-        <ul class="tools unstyled">
-            <li> <a id="page-popup" href="/app/page/all.php"><i class="icon icon-list-alt"></i>&nbsp;Pages</a></li>
-            <li> <a href="#"><i class="icon icon-wrench"></i>&nbsp;Settings</a></li>
-            <li> <a href="#">&nbsp;Help</a></li>
+<header role="banner">
+    <hgroup>
+        <h1> <a href="/"> <?php echo strtoupper($gSiteView->domain) ; ?></a> </h1>
+    </hgroup>
 
-        </ul>
-        <div class="clear"> </div>
+</header>
+ 
+<?php 
+
+    if($gSiteView->isOwner) { 
+        $editUrl = "" ;
+        $newUrl = "" ;
+        $qUrl = \com\indigloo\Url::current() ;
+        $params = array("q" => base64_encode($qUrl));
+
+        if($G_NEW_POST_TOOLBAR) {
+          
+            $newHref = \com\indigloo\Url::createUrl("/app/post/new.php",$params) ;
+            $newUrl = str_replace(
+                array("{href}", "{name}"), 
+                array($newHref,"<i class=\"icon icon-plus\"></i>&nbsp;New post"), 
+                $tmplUrl);
+        }
+
+        if($G_EDIT_POST_TOOLBAR) {
+            $editHref = \com\indigloo\Url::createUrl("/app/post/edit.php",$params) ;
+            $editUrl = str_replace(
+                array("{href}", "{name}"), 
+                array($editHref,"<i class=\"icon icon-edit\"></i>&nbsp;Edit post"), 
+                $tmplUrl);
+        }
+
+    ?>
+
+    <div id="admin-toolbar">
+        <div>
+            <ul class="tools unstyled">
+                
+                <?php echo $newUrl; ?>
+                <?php echo $editUrl; ?>
+
+            </ul>
+            <div class="clear"> </div>
+        </div>
     </div>
-</div>
 
 <?php } ?>

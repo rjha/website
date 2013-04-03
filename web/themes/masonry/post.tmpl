@@ -14,11 +14,12 @@
     $seo_title = $router_params["token"];
     $postId = $router_params["post_id"];
     $postDao = new \com\indigloo\wb\dao\Post();
-    $gMenuPosts = $postDao->getRandom($siteId,7);
     $postDBRow = $postDao->getOnId($siteId,$postId);
 
     $gSelfUrl = Url::base().$router_options["path"];
     
+    $G_NEW_POST_TOOLBAR = true ;
+    $G_EDIT_POST_TOOLBAR = true ;
 
 ?>
 
