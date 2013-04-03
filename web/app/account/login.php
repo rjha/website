@@ -12,6 +12,7 @@
     try{
 
         $access_token = NULL ;
+        $message ="" ;
 
         if(array_key_exists("token", $_POST)) {
             $access_token = $_POST["token"] ;
@@ -66,9 +67,9 @@
                     $domain = $siteDBRows[0]["canonical_domain"] ;
                     $host = "http://".$domain ;
                     $params = array("session_id" => session_id(),"q" => base64_encode($host));
-                    
                     $fwd = "http://".$domain."/app/account/site-session.php" ;
                     $fwd = Url::createUrl($fwd,$params);
+                    
                     header("Location: $fwd") ;
                     break ;
                 default :
@@ -77,21 +78,6 @@
                     break ;
                 }
 
-            if($num_sites == 0 ) {
-                $fwd = "/app/site/create.php" ;
-                header("Location: $fwd") ;
-            } else if($num_sites == 1 ) {
-                $domain = $siteDBRows[0]["canonical_domain"] ;
-                $fwd = "http://".$domain ;
-                header("Location: $fwd") ;
-
-            } else {
-                $fwd = "/app/site/list.php" ;
-                header("Location: $fwd") ;
-            }
-
-        } else {
-            $message = "No token : enter a token please!" ;
         }
 
         
@@ -126,7 +112,7 @@
                         <h2>Login Hack</h2>
                     </div>
                     <p class="comment-text"> <?php echo $message; ?> </p>
-                    <form action="/app/hack/login.php" method="POST">
+                    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                         Token : <input type="text" name ="token" value="" style="width:600px;"/>
                         <button class="btn" type="submit" name="submit" value="submit"> Submit</button>
                     </form>

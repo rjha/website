@@ -7,9 +7,9 @@
     $params = array();
     
     if(Login::hasSession()) {
-        $params = array("{href}" => "/app/logout.php", "{name}" => "Logout") ;
+        $params = array("{href}" => "/app/account/logout.php", "{name}" => "Logout") ;
     } else {
-         $params = array("{href}" => "/app/hack/login.php", "{name}" => "Sign in") ;
+         $params = array("{href}" => "/app/account/login.php", "{name}" => "Sign in") ;
     }
 
     $loginUrl = str_replace(array_keys($params), array_values($params),$listUrl);

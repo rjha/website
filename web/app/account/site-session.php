@@ -8,7 +8,6 @@
     
     if(isset($_REQUEST["session_id"]) && !empty($_REQUEST["session_id"])) {
         session_id($_REQUEST["session_id"]);
-
     }
 
     include(APP_WEB_DIR . '/inc/header.inc');
