@@ -1,58 +1,21 @@
 
-+ Big help page
-containing all Help topics
-+ editor - text box - pull down to reveal bigger size.
-+ Add an archive link like tumblr to display all the posts with pagination
-+ Archive link for all pages/posts (depending on the template)
-+ fix all pages
- + new page button
- + search (show when > pagesize pages)
- (show all link goes with the search box)
-+ Add post : do not assume page_id
-
-
-+ templates for errros like no website_id in session
-+ issue with session
- - we log in at www.indigloo.com
- - __BUG__ now we want to create a post at test1.indigloo.com
- 	To do so we need to start a session for test1.indigloo.com
- 	 How to automatically login for a domain?
- 	 will  happen for 
- 	 + first time org create.
-     + select a website from list 
-    - fix - did SSO fix.
-
-
-+ counters : page.num_post (do not show edit when num_posts = 0)
-+ post : add or do not add to a page ??
-(if available then fine - else do not bother!)
-+ Add / edit post : show page also (if available)
-+ app pages : add breadcrumbs
-
-+ site receipt : sign in link
-+ refactor - post dao and page dao
-+ page rendering fixes
-
-+ email on site create
++ automatically break very long texts - into paragraph
 + facebook login
-+ post to FB wall.
+
+settings
+    - style : blog/masonry/normal
+    - map extra domains 
+    
++ post delete
 
 --------------------------------------
 
-+ site create : get a tag line
-+ functionality: post delete
-+ settings : add more domain
++ Archive link for all pages/posts 
++ email on site create
++ post to FB wall.
++ toolbar styling
++ editor - text box - pull down to reveal bigger size.
++ site : Add a tag line
 + wmd editor
 + category and tags
-+ show category and tags for posts (if available)
-
-+ page:posts : pagination
-+ page/post/site : meta titles and description
-+ Add new site link (?)
-+ switch on amazon S3
-+ merge indigloo buckets?
-
-
-
-
-
++ meta titles and description

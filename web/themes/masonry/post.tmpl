@@ -13,10 +13,10 @@
 
     $seo_title = $router_params["token"];
     $postId = $router_params["post_id"];
+    $postDao = new \com\indigloo\wb\dao\Post();
+    $gMenuPosts = $postDao->getRandom($siteId,7);
+    $postDBRow = $postDao->getOnId($siteId,$postId);
 
-    $pageDao = new \com\indigloo\wb\dao\Page();
-    $gMenuPosts = $pageDao->getRandomPosts($siteId,7);
-    $postDBRow = $pageDao->getPostOnPostId($siteId,$postId);
     $gSelfUrl = Url::base().$router_options["path"];
     
 

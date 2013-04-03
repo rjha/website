@@ -14,11 +14,13 @@
    
     $seo_title = $router_params["token"];
     $pageDao = new \com\indigloo\wb\dao\Page();
+    $postDao = new \com\indigloo\wb\dao\Post();
+
     $pageDBRow = $pageDao->getOnSeoTitle($siteId,$seo_title);
     $gPageId = $pageDBRow["id"];
 
     // current page posts
-    $postDBRows = $pageDao->getPostsOnId($siteId,$gPageId);
+    $postDBRows = $postDao->getOnPageId($siteId,$gPageId);
     //to determine the edit link
     $gNumPosts = sizeof($postDBRows);
 

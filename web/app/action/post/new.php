@@ -2,10 +2,7 @@
     
     include 'wb-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
-    echo "before admin" ;
     include(APP_WEB_DIR . '/app/inc/admin.inc');
-
-    echo "after admin" ;
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
@@ -26,7 +23,6 @@
         $fhandler->addRule('title', 'Title', array('required' => 1));
         // _do_not_ escape the content
         $fhandler->addRule('content', 'Content', array('required' => 1, "rawData" => 1));
-        $fhandler->addRule('page_id', 'PageId', array('required' => 1));
        	$fhandler->addRule('media_json', 'media json', array('rawData' => 1));
 
         // get form values
@@ -40,8 +36,8 @@
         $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
         $siteId = $gSiteView->id ;
 
-        $pageDao = new \com\indigloo\wb\dao\Page();
-        $pageDao->addPost($siteId,$fvalues["page_id"],
+        $postDao = new \com\indigloo\wb\dao\Post();
+        $postDao->add($siteId,$fvalues["page_id"],
                             $fvalues["title"],
                             $fvalues["content"],
                             $fvalues["media_json"]);

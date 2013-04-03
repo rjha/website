@@ -39,8 +39,10 @@
     }
 
     $pageDao = new \com\indigloo\wb\dao\Page();
+    $postDao = new \com\indigloo\wb\dao\Post();
+
     $postDBRow = empty($qPostId) ? 
-        $pageDao->getLatestPost($siteId,$qPageId) :$pageDao->getPostOnPostId($siteId,$qPostId) ;
+        $postDao->getTheLatestOnPageId($siteId,$qPageId) : $postDao->getOnId($siteId,$qPostId) ;
 
     if(empty($postDBRow)) {
         echo " Error :: No post found for this page!" ;
@@ -55,12 +57,12 @@
     $strMediaJson = $sticky->get('media_json',$postDBRow['media_json']) ;
     $strMediaJson = Util::formSafeJson($strMediaJson);
 
-    $postTabRows = $pageDao->getPostsTitleOnId($siteId,$qPageId);
+    $postTabRows = $postDao->getTitlesOnPageId($siteId,$qPageId);
 
     $tabParams = $qparams ;
     unset($tabParams["tab_id"]);
     
-    $baseURI = Url::base()."/app/post/edit.php" ;
+    $baseURI = Url::base()."/app/page/edit.php" ;
     $postTabsHtml = AppHtml::getPostTabs($baseURI,$tabParams,$postDBRow["id"],$postTabRows);
 
 ?>

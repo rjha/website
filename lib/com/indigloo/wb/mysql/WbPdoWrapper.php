@@ -25,19 +25,11 @@ namespace com\indigloo\wb\mysql {
 
         static function getHandle() {
 
-            $gWeb = \com\indigloo\core\Web::getInstance();
-            // Top Level domain
-            $top_domain = $gWeb->getRequestAttribute(AppConstants::SITE_TOP_DOMAIN);
-            $key = sprintf("%s.%s",$top_domain,"dbstring");
-            $dbstring = Config::getInstance()->get_value($key);
+            
+            $dbstring = Config::getInstance()->get_value("system.dbstring");
 
             if(empty($dbstring)) {
-                $key = "system.dbstring" ;
-                $dbstring = Config::getInstance()->get_value($key);
-            }
-
-            if(empty($dbstring)) {
-                $message = sprintf("domain %s :: system.dbstring is missing in config",$top_domain);
+                $message = "system.dbstring is missing in config";
                 trigger_error($message,E_USER_ERROR);
             }
 

@@ -14,9 +14,8 @@
     $seo_title = $router_params["token"];
     $postId = $router_params["post_id"];
 
-    $pageDao = new \com\indigloo\wb\dao\Page();
-    $gMenuPosts = $pageDao->getRandomPosts($siteId,7);
-    $postDBRow = $pageDao->getPostOnPostId($siteId,$postId);
+    $postDao = new \com\indigloo\wb\dao\Post();
+    $postDBRow = $postDao->getOnId($siteId,$postId);
     
     // Do not show all admin toolbar buttons
     $G_FULL_ADMIN_TOOLBAR = false ;

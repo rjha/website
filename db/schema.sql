@@ -53,6 +53,7 @@ CREATE TABLE  wb_site  (
    canonical_domain varchar(128) not null,
    description varchar(128),
    theme_name varchar(16),
+   layout_name varchar(16),
    meta_title varchar(128),
    meta_description varchar(128),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -125,7 +126,6 @@ CREATE TABLE  wb_post  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
 
 
 DROP TABLE IF EXISTS  wb_media ;

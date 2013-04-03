@@ -27,7 +27,39 @@ namespace com\indigloo\wb\dao {
             $rows = mysql\Post::getLatest($siteId,$limit,$dbfilter);
             return $rows ;
         }
-      
+        
+        function getRandom($siteId,$limit) {
+            $rows = mysql\Post::getRandom($siteId,$limit);
+            return $rows ;
+        }
+
+        function update($siteId,$postId,$title,$content,$mediaJson) {
+            mysql\Post::update($siteId,$postId,$title,$content,$mediaJson) ;
+        }
+
+        function add($siteId,$pageId,$title,$content,$mediaJson) {
+            mysql\Post::add($siteId,$pageId,$title,$content,$mediaJson) ;
+        }
+
+        function getOnPageId($siteId,$pageId) {
+            $rows = mysql\Post::getOnPageId($siteId,$pageId);
+            return $rows ;
+        }
+
+        function getTitlesOnPageId($siteId,$pageId) {
+            $rows = mysql\Post::getTitlesOnPageId($siteId,$pageId);
+            return $rows ;
+        }
+
+        function getTheLatestOnPageId($siteId,$pageId) {
+            $row = mysql\Post::getTheLatestOnPageId($siteId,$pageId);
+            return $row ;
+        }
+         
+        function getOnId($siteId,$postId) {
+            $row = mysql\Post::getOnId($siteId,$postId);
+            return $row ;
+        }
                        
     }
 }

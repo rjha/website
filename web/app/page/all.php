@@ -96,15 +96,15 @@
                 <div class="span8">
                     <div class="toolbar">
                         <ul class="tools unstyled">
-                            <li> <a href="#" class="open-panel" rel="create-form"><i class="icon icon-file"></i>&nbsp;New page </a></li>
+                            <li> <a href="#" class="btn open-panel" rel="create-form"><i class="icon icon-plus"></i>&nbsp;New page </a></li>
                             <li>
                                 <div>
                                     <form  name="form2" action="/app/action/page/search.php"   method="POST">
+                                      
                                         <input type="text" class="required" name="token" value="<?php echo $_REQUEST['token'] ?>" />
-                                        &nbsp;
                                         <button class="btn btn-small" type="submit"><i class="icon icon-search"></i></button>
-                                        &nbsp;&nbsp;
-                                        <a href="/app/page/all.php">clear search?</a>
+                                        &nbsp;
+                                        <a href="/app/page/all.php">clear?</a>
                                       </form>
                               </div>
                             </li>
@@ -126,8 +126,8 @@
                                 <tr>
                                     <td>
                                         <div class="form-actions2">
-                                            <button class="btn btn-small" type="submit" name="save" value="Save">Create</button>
-                                            <a class="btn btn-small close-panel" rel="create-form" href="#">Cancel </a>
+                                            <button class="btn btn-small" type="submit" name="save" value="Save">create</button>
+                                            <a class="btn btn-small close-panel" rel="create-form" href="#">close</a>
                                         </div>
 
                                     </td>

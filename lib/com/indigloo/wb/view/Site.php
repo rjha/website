@@ -8,6 +8,7 @@ namespace com\indigloo\wb\view {
     	public $name ;
         public $admins ;
         public $theme ;
+        public $layout ;
         public $isOwner ;
     }
 

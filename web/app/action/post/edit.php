@@ -24,7 +24,6 @@
         // _do_not_ escape the content
         $fhandler->addRule('content', 'Content', array('required' => 1, "rawData" => 1));
         $fhandler->addRule('post_id', 'PostId', array('required' => 1));
-        $fhandler->addRule('page_id', 'PageId', array('required' => 1));
        	$fhandler->addRule('media_json', 'media json', array('rawData' => 1));
 
         // get form values
@@ -38,8 +37,8 @@
         $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
         $siteId = $gSiteView->id ;
         
-        $pageDao = new \com\indigloo\wb\dao\Page();
-        $pageDao->updatePost($siteId,$fvalues["page_id"],
+        $postDao = new \com\indigloo\wb\dao\Post();
+        $postDao->update($siteId,
         					$fvalues["post_id"],
                             $fvalues["title"],
                             $fvalues["content"],

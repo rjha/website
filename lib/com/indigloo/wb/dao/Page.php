@@ -44,39 +44,6 @@ namespace com\indigloo\wb\dao {
             return $row ;
         }
 
-        function getRandomPosts($siteId,$limit) {
-            $rows = mysql\Page::getRandomPosts($siteId,$limit);
-            return $rows ;
-        }
-
-        function updatePost($siteId,$pageId,$postId,$title,$content,$mediaJson) {
-            mysql\Page::updatePost($siteId,$pageId,$postId,$title,$content,$mediaJson) ;
-        }
-
-        function addPost($siteId,$pageId,$title,$content,$mediaJson) {
-            mysql\Page::addPost($siteId,$pageId,$title,$content,$mediaJson) ;
-        }
-
-        function getPostsOnId($siteId,$pageId) {
-            $rows = mysql\Page::getPostsOnId($siteId,$pageId);
-            return $rows ;
-        }
-
-        function getPostsTitleOnId($siteId,$pageId) {
-            $rows = mysql\Page::getPostsTitleOnId($siteId,$pageId);
-            return $rows ;
-        }
-
-        function getLatestPost($siteId,$pageId) {
-            $row = mysql\Page::getLatestPost($siteId,$pageId);
-            return $row ;
-        }
-
-        function getPostOnPostId($siteId,$postId) {
-            $row = mysql\Page::getPostOnPostId($siteId,$postId);
-            return $row ;
-        }
-
         function create($siteId,$title) {
             $pageId = mysql\Page::create($siteId,$title);
             return $pageId ;

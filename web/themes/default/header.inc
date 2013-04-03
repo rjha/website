@@ -88,9 +88,7 @@
         }
 
         $params = array("q" => base64_encode($qUrl));
-        $allPageUrl = \com\indigloo\Url::createUrl("/app/page/all.php",$params)
-
-
+        $allPageUrl = \com\indigloo\Url::createUrl("/app/page/all.php",$params);
 
     ?>
 
