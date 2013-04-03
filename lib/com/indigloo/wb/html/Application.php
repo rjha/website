@@ -125,9 +125,14 @@ namespace com\indigloo\wb\html {
             $view->rows = array();
 
             foreach($pageDBRows as $row) {
-                // @todo page URL would be different for different themes
-                
                 $row["href"] = Url::base()."/".$row["seo_title"];
+                // edit url and new post url should set q param
+                $qUrl = Url::current();
+                $params = array("q" => base64_encode($row["href"]), "page_id" => $row["id"]) ;
+                
+                $row["newHref"] = Url::createUrl("/app/post/new.php",$params);
+                $row["editHref"] =  Url::createUrl("/app/page/edit.php",$params) ;
+                $row["hasEdit"] = ($row["num_post"] > 0 ) ? true : false ;
                 $view->rows[] = $row ;
             }
 

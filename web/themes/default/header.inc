@@ -72,6 +72,7 @@
             
             $params = array("q" => base64_encode($qUrl), "page_id" => $gPageId);
             $newHref = \com\indigloo\Url::createUrl("/app/post/new.php",$params) ;
+            
             $newUrl = str_replace(
                 array("{href}", "{name}"), 
                 array($newHref,"<i class=\"icon icon-plus\"></i>&nbsp;New post"), 

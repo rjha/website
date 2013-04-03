@@ -24,8 +24,10 @@
                   </a>
                 <ul class="dropdown-menu">
                   <li> <a href="~~$row['href']~">&nbsp;open</a> </li>
-                  <li> <a href="/app/post/edit.php?page_id=~~$row['id']~">&nbsp;edit</a> </li>
-                  <li> <a href="/app/post/new.php?page_id=~~$row['id']~">&nbsp;+ add post</a> </li>
+                  ~if($row['hasEdit']) {~
+                  <li> <a href="~~$row['editHref']~">&nbsp;edit</a> </li>
+                  ~}~
+                  <li> <a href="~~$row['newHref']~">&nbsp;+ add post</a> </li>
                 </ul>
               </li>
             </ul>
