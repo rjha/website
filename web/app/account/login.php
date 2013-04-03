@@ -77,9 +77,7 @@
                     header("Location: $fwd") ;
                     break ;
                 }
-
         }
-
         
     } catch(\Exception $ex) {
         

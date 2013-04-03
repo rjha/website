@@ -69,7 +69,7 @@
 <html>
 
     <head>
-        <title> Edit <?php echo $pageDBRow["title"]; ?>  </title>
+        <title> Edit <?php echo $pageDBRow["title"]; ?> Page </title>
         <!-- meta tags -->
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
         <style>
@@ -92,15 +92,17 @@
              
             <div class="row">
                 <div class="span3">
-                <p>
-                    <?php echo $pageDBRow["title"]; ?> 
-                    <br>
-                    &nbsp;Edit post
-                </p>
+                    <div class="mb20">
+                       <a href="<?php echo base64_decode($qUrl) ?>"> &larr;&nbsp;Back</a>
+                    </div>
+                    <p>
+                        Edit <?php echo $pageDBRow["title"]; ?> 
+                    </p>
                     <?php echo $postTabsHtml ; ?>
                 </div>
 
                 <div class="span8">
+
                     <?php FormMessage::render(); ?>
                     <div class="toolbar">
                         <ul class="tools unstyled">

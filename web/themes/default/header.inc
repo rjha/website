@@ -66,16 +66,17 @@
     if($gSiteView->isOwner) { 
         $editUrl = "" ;
         $newUrl = "" ;
+        $qUrl = \com\indigloo\Url::current() ;
 
         if($G_FULL_ADMIN_TOOLBAR) {
-            $qUrl = \com\indigloo\Url::current() ;
+            
             $params = array("q" => base64_encode($qUrl), "page_id" => $gPageId);
             $newHref = \com\indigloo\Url::createUrl("/app/post/new.php",$params) ;
             $newUrl = str_replace(
                 array("{href}", "{name}"), 
                 array($newHref,"<i class=\"icon icon-plus\"></i>&nbsp;New post"), 
                 $tmplUrl);
-            $editHref = ($gNumPosts > 0 ) ? \com\indigloo\Url::createUrl("/app/post/edit.php",$params) : '' ;
+            $editHref = ($gNumPosts > 0 ) ? \com\indigloo\Url::createUrl("/app/page/edit.php",$params) : '' ;
             
             if(!empty($editHref)) {
                 $editUrl = str_replace(
@@ -85,6 +86,10 @@
             }
         }
 
+        $params = array("q" => base64_encode($qUrl));
+        $allPageUrl = \com\indigloo\Url::createUrl("/app/page/all.php",$params)
+
+
 
     ?>
 
@@ -93,7 +98,7 @@
             <ul class="tools unstyled">
                 <?php echo $editUrl; ?>
                 <?php echo $newUrl; ?>
-                <li> <a href="/app/page/all.php"><i class="icon icon-list-alt"></i>&nbsp;Pages</a></li>
+                <li> <a href="<?php echo $allPageUrl; ?>"><i class="icon icon-list-alt"></i>&nbsp;Pages</a></li>
                 
 
             </ul>

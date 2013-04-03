@@ -5856,14 +5856,6 @@ a.badge:hover {
 
     /* Global resets */
 
-    body {
-        font-size: 13px;
-        font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif ; 
-        position: relative;
-        background-color:white  ;
-        padding-top:1px;
-    }
-
     header {
         background:rgba(255,255,255,0.9);
         margin: 0 ;
@@ -6596,7 +6588,6 @@ a.badge:hover {
         font-family: arial ;
         font-size: 13px;
     }
-
 
     /* @imp : last section - override 3rd party libraries */
     /* bootstrap css */

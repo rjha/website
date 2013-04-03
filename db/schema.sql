@@ -99,7 +99,7 @@ CREATE TABLE  wb_page  (
    random_key varchar(16) not null,
    meta_title varchar(128),
    meta_description varchar(128),
-   num_posts int default 0,
+   num_post int default 0,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
@@ -146,3 +146,33 @@ CREATE TABLE  wb_media  (
    thumbnail  varchar(64) ,
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+DROP TRIGGER IF EXISTS  trg_page_add_post ;
+
+DELIMITER //
+CREATE  TRIGGER trg_page_add_post BEFORE INSERT ON wb_post
+   FOR EACH ROW
+   BEGIN
+   IF NEW.page_id is not null then
+    update wb_page set num_post = num_post +1 where id = NEW.page_id ;
+   END IF;
+  END //
+
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS  trg_page_del_post ;
+DELIMITER //
+CREATE  TRIGGER trg_page_del_post BEFORE DELETE ON wb_post
+   FOR EACH ROW
+   BEGIN
+   IF OLD.page_id is not null then
+    update wb_page set num_post = num_post - 1 where id = OLD.page_id ;
+   END IF;
+  END //
+
+DELIMITER ;
+
+

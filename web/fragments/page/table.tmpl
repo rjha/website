@@ -1,40 +1,42 @@
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>&nbsp;</th>
-    </tr>
-  </thead>
-  <tbody>
-  	~foreach($view->rows as $row){~
-  		<tr>
-	  		<td> ~~$row['title']~ </td>
-        <td>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>pages</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
 
-          <ul class="table-nav">
-            <li class="dropdown">
-              <a class="dropdown-toggle"
-                 data-toggle="dropdown"
-                 href="#">
-                  Actions
-                  <b class="caret"></b>
-                </a>
-              <ul class="dropdown-menu">
-                <li> <a href="~~$row['href']~">&nbsp;open</a> </li>
-                <li> <a href="/app/post/edit.php?page_id=~~$row['id']~">&nbsp;edit</a> </li>
-                <li> <a href="/app/post/new.php?page_id=~~$row['id']~">&nbsp;+ add post</a> </li>
-              </ul>
-            </li>
-          </ul>
-        </td>
-  		</tr>
+    <tbody>
+
+    	~foreach($view->rows as $row){~
+    		<tr>
+  	  		<td> ~~$row['title']~ </td>
+          <td>
+
+            <ul class="table-nav">
+              <li class="dropdown">
+                <a class="dropdown-toggle"
+                   data-toggle="dropdown"
+                   href="#">
+                    Actions
+                    <b class="caret"></b>
+                  </a>
+                <ul class="dropdown-menu">
+                  <li> <a href="~~$row['href']~">&nbsp;open</a> </li>
+                  <li> <a href="/app/post/edit.php?page_id=~~$row['id']~">&nbsp;edit</a> </li>
+                  <li> <a href="/app/post/new.php?page_id=~~$row['id']~">&nbsp;+ add post</a> </li>
+                </ul>
+              </li>
+            </ul>
+          </td>
+    		</tr>
 
 
-  	~}~
-   
-  </tbody>
-</table>
-
+    	~}~
+     
+    </tbody>
+  </table>
+ 
  
 

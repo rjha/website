@@ -20,8 +20,7 @@
     try{
         
         $fhandler = new Form\Handler('form1', $_POST);
-        $fhandler->addRule('token', 'Token', array('required' => 1));
-        
+         
         // get form values
         $fvalues = $fhandler->getValues();
         

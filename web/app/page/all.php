@@ -87,23 +87,32 @@
         <div class="container">
         
             <div class="row">
-                
-                <div class="span8 offset3">
-                    <h3> Pages </h3>
+                <div class="span3">
+                    <div class="mb20">
+                       <a href="<?php echo base64_decode($qUrl) ?>"> &larr;&nbsp;Back</a>
+                    </div>
+                    <p> All pages </p>
+                </div>
+                <div class="span8">
+                    <div class="toolbar">
+                        <ul class="tools unstyled">
+                            <li> <a href="#" class="open-panel" rel="create-form"><i class="icon icon-file"></i>&nbsp;New page </a></li>
+                            <li>
+                                <div>
+                                    <form  name="form2" action="/app/action/page/search.php"   method="POST">
+                                        <input type="text" class="required" name="token" value="<?php echo $_REQUEST['token'] ?>" />
+                                        &nbsp;
+                                        <button class="btn btn-small" type="submit"><i class="icon icon-search"></i></button>
+                                        &nbsp;&nbsp;
+                                        <a href="/app/page/all.php">clear search?</a>
+                                      </form>
+                              </div>
+                            </li>
+                        </ul>
+                        <div class="clear"> </div>
+                    </div> <!-- toolbar -->
+
                     <?php FormMessage::render(); ?>
-                    <div class="user-menu">
-                        <div class="item">
-                            <a href="#" class="open-panel" rel="create-form">+&nbsp;New page </a>
-                        </div>
-                        <div class="item">
-                            <a href="#" class="open-panel" rel="search-form">Search </a>
-                        </div>
-
-                        <div class="item">
-                            <a href="/app/page/all.php">Show all</a>
-                        </div>
-
-                    </div> <!-- menu:actions -->
 
                     <div id="page-message" class="hide-me"> </div>
                     <div id="create-form" class="panel panel-form">
@@ -130,40 +139,12 @@
                         </form>
                     </div> <!-- panel:1 -->
 
-                     <div id="search-form" class="panel panel-form">
-                        <div class="form-message"> </div>
-                        <form  id="form2"  name="form2" action="<?php echo Url::base() ?>/app/action/page/search.php" enctype="multipart/form-data"  method="POST">  
-                            <table class="form-table">
-                                <tr>  
-                                    <td> <input type="text" class="required" name="token" value="<?php echo $sticky->get('token'); ?>" /></td>
-                                </tr>
-                                 <tr>
-                                    <td>
-                                        <div class="form-actions2">
-                                            <button class="btn btn-small" type="submit" name="save" value="Save">Search</button>
-                                            <a class="btn btn-small close-panel" rel="search-form" href="#">Cancel </a>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                
-                            </table>
-                            
-                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
-                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
-                        </form>
-                    </div> <!-- panel:2 -->
-
+                     
+                    <div style="padding-top:20px;">&nbsp; </div>
+                    <?php echo $pageTable ; ?>
                 </div>
                 
             </div> <!-- row:1 -->
-
-            <div class="row">
-                <div class="span8 offset3">
-                    <?php echo $pageTable ; ?>
-                </div>
-
-            </div> <!-- row:2 -->
 
             <div class="pt10">
                 <?php $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>

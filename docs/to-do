@@ -1,4 +1,16 @@
 
++ Big help page
+containing all Help topics
++ editor - text box - pull down to reveal bigger size.
++ Add an archive link like tumblr to display all the posts with pagination
++ Archive link for all pages/posts (depending on the template)
++ fix all pages
+ + new page button
+ + search (show when > pagesize pages)
+ (show all link goes with the search box)
++ Add post : do not assume page_id
+
+
 + templates for errros like no website_id in session
 + issue with session
  - we log in at www.indigloo.com
@@ -8,7 +20,7 @@
  	 will  happen for 
  	 + first time org create.
      + select a website from list 
-
+    - fix - did SSO fix.
 
 
 + counters : page.num_post (do not show edit when num_posts = 0)

@@ -24,12 +24,8 @@
     $fUrl = base64_encode(Url::current());
 
     $qPageId = Url::tryQueryParam("page_id");
-
     $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
     $siteId = $gSiteView->id ;
-    
-    $pageDao = new \com\indigloo\wb\dao\Page();
-    $pageDBRow = $pageDao->getOnId($siteId,$qPageId);
     
     // @imp: why formSafeJson? we are enclosing the JSON string in single quotes
     // so the single quotes coming from DB should be escaped
@@ -44,7 +40,7 @@
 <html>
 
     <head>
-        <title> <?php echo $pageDBRow["title"]; ?> </title>
+        <title> Add a new post </title>
         <!-- meta tags -->
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
          <style>
@@ -68,11 +64,10 @@
         
             <div class="row">
                 <div class="span3">
-                    <p>
-                       <?php echo $pageDBRow["title"]; ?> 
-                       <br>
-                        &nbsp;+&nbsp;Add post
-                    </p>
+                    <div class="mb20">
+                       <a href="<?php echo base64_decode($qUrl) ?>"> &larr;&nbsp;Back</a>
+                    </div>
+                    <p> +Add a new post </p>
 
                 </div>
                 <div class="span8">
