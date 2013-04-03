@@ -213,7 +213,7 @@ namespace com\indigloo\wb\html {
                 }
             } 
 
-            $view->content = $postDBRow['post_html'];
+            $view->content = $postDBRow['html_content'];
             $view->title = $postDBRow['title'];
            
             $html = Template::render($template,$view);

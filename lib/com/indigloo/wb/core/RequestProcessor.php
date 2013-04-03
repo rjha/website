@@ -5,7 +5,7 @@ namespace com\indigloo\wb\core {
 
 	use \com\indigloo\wb\Constants as AppConstants;
 	use \com\indigloo\wb\auth\Login as Login ;
-
+    
     class RequestProcessor {
 
     	function __construct() { }
@@ -20,7 +20,7 @@ namespace com\indigloo\wb\core {
 		    $siteDBRow = $siteDao->getOnDomain($domain);
 			
 		    if(empty($siteDBRow)) {
-		        $message = sprintf("<h2> Unknown domain :: %s </h2> ",$domain) ;
+		        $message = sprintf(" <h1> Unknown domain :: %s </h1>",$domain) ;
 		        echo $message ;
 		        exit(1);
 		    }

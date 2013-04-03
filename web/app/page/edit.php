@@ -136,7 +136,7 @@
                             <tr>
                                 <td>
                                     <label>Content*</label>
-                                    <textarea name="content" class="required" cols="50" rows="4" ><?php echo $sticky->get('content',$postDBRow['post_html']); ?></textarea>
+                                    <textarea name="content" class="required" cols="50" rows="4" ><?php echo $sticky->get('content',$postDBRow['raw_content']); ?></textarea>
                                     
                                 </td>
                             </tr>

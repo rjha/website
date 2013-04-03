@@ -1,5 +1,8 @@
 
 + automatically break very long texts - into paragraph
+wordwrap
+nl2br
+(store formatted version in DB)
 + facebook login
 
 settings
@@ -8,7 +11,9 @@ settings
 
 + post delete
 + category/tags
-
++ Admin toolbar stuff 
+  + values via a bitmap
+  
 
 --------------------------------------
 
