@@ -105,7 +105,7 @@
                         <h2>Login Hack</h2>
                     </div>
                     <p class="comment-text"> <?php echo $message; ?> </p>
-                    <form action="/app/hack/login.php" method="POST">
+                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
                         Token : <input type="text" name ="token" value="" style="width:600px;"/>
                         <button class="btn" type="submit" name="submit" value="submit"> Submit</button>
                     </form>
