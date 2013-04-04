@@ -1,22 +1,25 @@
 
-+ automatically break very long texts - into paragraph
-wordwrap
-nl2br
-(store formatted version in DB)
+
++ name/canonical_domain/domain
+ - unique names should be stored in all lower case 
+ to avoid case confusion.
+
++ map extra domains
++ post delete / post edit page.
++ masonry style - post links - when page available?
+
++ wrap long lines
 + facebook login
-
-settings
-    - style : blog/masonry/normal
-    - map extra domains 
-
-+ post delete
-+ category/tags
-+ Admin toolbar stuff 
++ style settings : blog/pinterest/default
++ Admin toolbar buttons 
   + values via a bitmap
-  
+
 
 --------------------------------------
 
+
+
++ category/tags
 + Archive link for all pages/posts 
 + email on site create
 + post to FB wall.

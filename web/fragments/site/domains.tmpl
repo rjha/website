@@ -1,0 +1,21 @@
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Mapped Domains</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+  	~foreach($view->rows as $row){~
+  		<tr>
+        <td> ~~$row['domain']~ </td>
+	  		<td> <a href="~~$row['href']~"> remove </a> </td>
+      </tr>
+  	~}~
+   
+  </tbody>
+</table>
+
+ 
+

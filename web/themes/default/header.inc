@@ -89,6 +89,9 @@
 
         $params = array("q" => base64_encode($qUrl));
         $allPageUrl = \com\indigloo\Url::createUrl("/app/page/all.php",$params);
+        $settingsUrl = "http://".$gSiteView->canonical_domain ."/app/settings.php";
+        $settingsUrl = \com\indigloo\Url::createUrl($settingsUrl,$params);
+
 
     ?>
 
@@ -98,6 +101,7 @@
                 <?php echo $editUrl; ?>
                 <?php echo $newUrl; ?>
                 <li> <a href="<?php echo $allPageUrl; ?>"><i class="icon icon-list-alt"></i>&nbsp;Pages</a></li>
+                <li> <a href="<?php echo $settingsUrl; ?>"><i class="icon icon-cog"></i>&nbsp;Settings</a></li>
                 
 
             </ul>

@@ -113,6 +113,29 @@ namespace com\indigloo\wb\html {
             return $html ;
         }
 
+         static function getDomainsTable($siteId,$rows) {
+            if(empty($rows)) { return "" ; }
+
+            $html = NULL ;
+            $template = "/fragments/site/domains.tmpl" ;
+
+            $view = new \stdClass;
+            $view->rows = array();
+
+            foreach($rows as $row) {
+                $link = "/app/action/site/remove-domain.php" ;
+                $params = array(
+                    "q" => base64_encode(Url::current()), 
+                    "id" => $row["id"], 
+                    "site_id" =>$siteId ) ;
+                $row["href"] = Url::createUrl($link,$params);
+                $view->rows[] = $row ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
         static function getPageTable($pageDBRows) {
             if(empty($pageDBRows)) {
                 return "<div class=\"noresults\"> No pages found </div>" ;

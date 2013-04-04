@@ -50,10 +50,22 @@ namespace com\indigloo\wb\mysql {
                 
             $sql = sprintf($sql,$domain);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            
             return $row;
         }
 
+        static function getExtraDomains($siteId) {
+            $mysqli = WbConnection::getInstance()->getHandle();
+            // @input check
+            settype($siteId,"integer");
+            
+            $sql = " select * from wb_site_domain where site_id = %d ".
+                " and domain not in (select canonical_domain from wb_site where id = %d ) " ;
+            $sql = sprintf($sql,$siteId,$siteId);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
+        /*
         static function getDomainCount($loginId,$domain) {
             $mysqli = WbConnection::getInstance()->getHandle();
            
@@ -68,7 +80,7 @@ namespace com\indigloo\wb\mysql {
             $sql = sprintf($sql,$domain,$loginId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
-        }
+        }*/
 
         static function getSessionView($siteId) {
 
@@ -79,6 +91,92 @@ namespace com\indigloo\wb\mysql {
             $sql = sprintf($sql,$siteId);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
+        }
+        
+        static function addDomain($siteId,$domain) {
+            $dbh = NULL ;
+            
+            try {
+
+                $dbh =  WbPdoWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
+                $sql1 = "insert into wb_site_domain(site_id,domain,created_on) ".
+                    " values(:site_id, :domain, now())" ;
+
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":site_id",$siteId) ;
+                $stmt1->bindParam(":domain",$domain) ;
+                
+                $stmt1->execute();
+                $stmt1 = NULL ;
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($ex->getMessage(),$ex->getCode());
+            }
+
+        }
+
+        static function removeDomain($siteId,$domainId) {
+            $dbh = NULL ;
+            
+            try {
+
+                $dbh =  WbPdoWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
+                $sql1 = " delete from wb_site_domain where site_id = :site_id and id = :domain_id" ;
+
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":site_id",$siteId) ;
+                $stmt1->bindParam(":domain_id",$domainId) ;
+                
+                $stmt1->execute();
+                $stmt1 = NULL ;
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($ex->getMessage(),$ex->getCode());
+            }
+        }
+
+        static function updateTheme($siteId,$theme) {
+            $dbh = NULL ;
+            
+            try {
+
+                $dbh =  WbPdoWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
+                $sql1 = "update wb_site set theme_name = :theme where id = :site_id" ;
+
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":site_id",$siteId) ;
+                $stmt1->bindParam(":theme",$theme) ;
+                
+                $stmt1->execute();
+                $stmt1 = NULL ;
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($ex->getMessage(),$ex->getCode());
+            }
         }
 
         static function create($loginId, $name) {

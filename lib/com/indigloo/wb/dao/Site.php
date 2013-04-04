@@ -9,6 +9,8 @@ namespace com\indigloo\wb\dao {
     class Site {
 
         function create($loginId,$name) {
+            // avoid case confusion.
+            $name = strtolower($name);
             $siteId = mysql\Site::create($loginId,$name);
             return $siteId ;
         }
@@ -24,6 +26,7 @@ namespace com\indigloo\wb\dao {
         }
 
         function getOnDomain($domain) {
+            $domain = strtolower($domain);
             $row = mysql\Site::getOnDomain($domain);
             return $row ;
         }
@@ -42,6 +45,25 @@ namespace com\indigloo\wb\dao {
 
             return $view ;
         }
+
+        function getExtraDomains($siteId) {
+            $rows = mysql\Site::getExtraDomains($siteId);
+            return $rows ;
+        }
+
+        function addDomain($siteId,$domain) {
+            $domain = strtolower($domain);
+            mysql\Site::addDomain($siteId,$domain);
+        }
+
+        function removeDomain($siteId,$domainId) {
+            mysql\Site::removeDomain($siteId,$domainId);
+        }
+
+        function updateTheme($siteId,$theme) {
+            mysql\Site::updateTheme($siteId,$theme);
+        }
+
     }
 }
 
