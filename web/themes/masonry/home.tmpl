@@ -4,7 +4,8 @@
 
     use \com\indigloo\wb\Constants as AppConstants;
     use \com\indigloo\Url ;
-    
+    use \com\indigloo\wb\html\Application as AppHtml;
+
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
     $siteId = $gSiteView->id ;
@@ -32,8 +33,9 @@
         $endId =   $postDBRows[$gNumRecords-1]["id"] ;
     }
 
-    $G_NEW_POST_TOOLBAR = true ;
-    $G_EDIT_POST_TOOLBAR = false ;
+    $G_TOOLBAR = 
+    AppConstants::TOOLBAR_NEW_POST 
+    | AppConstants::TOOLBAR_SETTINGS ;
 
 ?>
 
@@ -50,7 +52,10 @@
 
      <body>
 
-       <?php include("header.inc") ?>
+       <?php echo AppHtml::getAppSiteToolbar() ?>
+       <?php echo AppHtml::getAppBanner($gSiteView) ?>
+       <?php echo AppHtml::getAppToolbar($gSiteView,$G_TOOLBAR) ?>
+
         <div class="container">
 
             <div class="row">

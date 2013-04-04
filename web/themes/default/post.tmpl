@@ -17,8 +17,11 @@
     $postDao = new \com\indigloo\wb\dao\Post();
     $postDBRow = $postDao->getOnId($siteId,$postId);
     
-    // Do not show all admin toolbar buttons
-    $G_FULL_ADMIN_TOOLBAR = false ;
+    $G_TOOLBAR = 
+    AppConstants::TOOLBAR_NEW_POST 
+    | AppConstants::TOOLBAR_SETTINGS 
+    | AppConstants::TOOLBAR_EDIT_POST ;
+
 
 
 ?>
@@ -36,7 +39,9 @@
 
      <body>
         
-        <?php include("header.inc") ?>
+        <?php echo AppHtml::getAppSiteToolbar() ?>
+        <?php echo AppHtml::getAppBanner($gSiteView) ?>
+        <?php echo AppHtml::getAppToolbar($gSiteView,$G_TOOLBAR) ?>
         
         <div class="container">
 

@@ -37,9 +37,12 @@
         // help content
         $pageHtml = AppHtml::getHelp("default.post.create");
     }
-
-    // show all admin toolbar buttons
-    $G_FULL_ADMIN_TOOLBAR = true ;
+    
+    $G_TOOLBAR = 
+        AppConstants::TOOLBAR_NEW_POST 
+        | AppConstants::TOOLBAR_SETTINGS 
+        | AppConstants::TOOLBAR_EDIT_PAGE
+        | AppConstants::TOOLBAR_ALL_PAGES;
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +58,10 @@
 
      <body>
         
-        <?php include("header.inc") ?>
+        <?php echo AppHtml::getAppSiteToolbar() ?>
+        <?php echo AppHtml::getAppBanner($gSiteView) ?>
+        <?php echo AppHtml::getAppToolbar($gSiteView,$G_TOOLBAR) ?>
+
         
         <div class="container">
             <div class="row">

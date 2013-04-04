@@ -1,12 +1,13 @@
 
 
 + name/canonical_domain/domain
- - unique names should be stored in all lower case 
+ - unique names should be in all lower case 
  to avoid case confusion.
 
 + map extra domains
 + post delete / post edit page.
 + masonry style - post links - when page available?
+
 
 + wrap long lines
 + facebook login

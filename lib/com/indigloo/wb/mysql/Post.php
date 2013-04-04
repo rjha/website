@@ -188,7 +188,6 @@ namespace com\indigloo\wb\mysql {
                  
                 $dbh =  WbPdoWrapper::getHandle();
                 
-                
                 //Tx start
                 $dbh->beginTransaction();
                 $sql1 = 
@@ -203,6 +202,7 @@ namespace com\indigloo\wb\mysql {
                 $stmt1->bindParam(":page_id", $pageId);
 
                 $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
+                
                 $stmt1->bindParam(":title", $title);
                 $stmt1->bindParam(":seo_title", $seo_title);
                 $stmt1->bindParam(":raw_content", $raw_content);

@@ -10,7 +10,11 @@ namespace com\indigloo\wb  {
 		const SITE_TOP_DOMAIN = "site.top.domain" ;
 		const DEFAULT_THEME_NAME = "default" ;
 
-
+        const TOOLBAR_NEW_POST = 1 ;
+        const TOOLBAR_ALL_PAGES = 2 ;
+        const TOOLBAR_EDIT_PAGE = 4 ;
+        const TOOLBAR_EDIT_POST = 8 ;
+        const TOOLBAR_SETTINGS = 16 ; 
     }
 
 }

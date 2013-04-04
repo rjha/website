@@ -2,17 +2,17 @@
     require_once ('wb-app.inc');
     require_once (APP_WEB_DIR.'/inc/header.inc');
 
+    use \com\indigloo\Url as Url ;
+    use \com\indigloo\util\StringUtil as StringUtil ;
     use \com\indigloo\wb\Constants as AppConstants;
     use \com\indigloo\wb\html\Application as AppHtml ;
-    use \com\indigloo\Url ;
-    
+
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
     $siteId = $gSiteView->id ;
     
    
-    // current page
-    $seo_title = "home" ;
+    $seo_title = $router_params["token"];
     $pageDao = new \com\indigloo\wb\dao\Page();
     $postDao = new \com\indigloo\wb\dao\Post();
 
@@ -38,12 +38,11 @@
         $pageHtml = AppHtml::getHelp("default.post.create");
     }
 
-   $G_TOOLBAR = 
+    $G_TOOLBAR = 
     AppConstants::TOOLBAR_NEW_POST 
     | AppConstants::TOOLBAR_SETTINGS 
     | AppConstants::TOOLBAR_EDIT_PAGE
     | AppConstants::TOOLBAR_ALL_PAGES;
-
 
 ?>
 
@@ -51,36 +50,30 @@
 <html>
 
     <head>
-        <title><?php echo $gSiteView->name ; ?></title>
+        <title> <?php echo $pageDBRow["title"] ?> </title>
         <?php include("meta.inc") ?>
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
 
     </head>
 
-     <body>
-
+    <body>
         <?php echo AppHtml::getAppSiteToolbar() ?>
         <?php echo AppHtml::getAppBanner($gSiteView) ?>
         <?php echo AppHtml::getAppToolbar($gSiteView,$G_TOOLBAR) ?>
 
         <div class="container">
-
-             <div class="row">
+            <div class="row">
                 <div class="span7 offset1">
-                    <div id="page-content"> <?php echo $pageHtml; ?> </div>
+                    <div id="page-content"> <?php echo $pageHtml ; ?> </div>
                 </div>
                 <div class="span3 offset1">
-                  <?php echo $menuHtml ; ?>
+                    <?php echo $menuHtml ; ?> 
                 </div>
 
             </div> <!-- row:content -->
 
         </div>   <!-- container -->
-
-         <div class="row">
-            <div class="span11 offset1" style="border-bottom:1px solid #d5d5d5;padding-bottom:20px;">&nbsp;</div>
-        </div>
 
     </body>
 </html>

@@ -6,6 +6,10 @@ namespace com\indigloo\wb\html {
     use \com\indigloo\Url ;
     use \com\indigloo\Util ;
 
+    use \com\indigloo\Configuration as Config;
+    use \com\indigloo\wb\auth\Login as Login ;
+    use \com\indigloo\wb\Constants as AppConstants;
+    
     class Application {
 
      static function getHelp($key) {
@@ -197,8 +201,13 @@ namespace com\indigloo\wb\html {
             $view->id = $postDBRow['id'] ;
              
           	$view->hasImage = false ;
-            $view->href= sprintf("%s/post/%d/%s",Url::base(),$postDBRow["id"],$postDBRow["seo_title"]);
-
+            // does the post belong to a page?
+            if(!empty($postDBRow["page_id"])) {
+                $view->href = Url::base()."/".$postDBRow["seo_title"] ; 
+            } else {
+                $view->href = Url::base()."/post/".$postDBRow["id"]."/".$postDBRow["seo_title"];
+            }
+            
             $strMediaJson = $postDBRow['media_json'];
             $mediaVO = json_decode($strMediaJson);
 
@@ -274,6 +283,109 @@ namespace com\indigloo\wb\html {
             
             $view->links = $links ;
             $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getAppToolbar($gSiteView,$options=0) {
+            if(!$gSiteView->isOwner) { return "" ;}
+
+            $html = NULL ;
+            $template = "/fragments/app/toolbar.tmpl" ;
+            $view = new \stdClass;
+            $tmplUrl = '<li> <a href="{href}">&nbsp;{name} </a></li>' ;
+
+            $view->editPageUrl = "" ;
+            $view->editPostUrl = "" ;
+            $view->newPostUrl = "" ;
+            $view->allPageUrl = "" ;
+            $view->settingsUrl = "" ;
+
+            $qUrl = Url::current() ;
+            $params = array("q" => base64_encode($qUrl));
+
+            if($options & AppConstants::TOOLBAR_NEW_POST) {
+                $href = Url::createUrl("/app/post/new.php",$params) ;
+                $view->newPostUrl = str_replace(
+                    array("{href}", "{name}"), 
+                    array($href,"<i class=\"icon icon-plus\"></i>&nbsp;new post"), 
+                    $tmplUrl);
+            }
+
+            if($options & AppConstants::TOOLBAR_EDIT_POST) {
+                $href = \com\indigloo\Url::createUrl("/app/post/edit.php",$params) ;
+                $view->editPostUrl = str_replace(
+                    array("{href}", "{name}"), 
+                    array($href,"<i class=\"icon icon-edit\"></i>&nbsp;edit post"), 
+                    $tmplUrl);
+            }
+
+            if($options & AppConstants::TOOLBAR_EDIT_PAGE) {
+                $href = \com\indigloo\Url::createUrl("/app/page/edit.php",$params) ;
+                $view->editPageUrl = str_replace(
+                    array("{href}", "{name}"), 
+                    array($href,"<i class=\"icon icon-edit\"></i>&nbsp;edit page"), 
+                    $tmplUrl);
+            }
+
+            if($options & AppConstants::TOOLBAR_SETTINGS) {
+                $href = "http://".$gSiteView->canonical_domain ."/app/settings.php";
+                $href = \com\indigloo\Url::createUrl($href,$params);
+                $view->settingsUrl = str_replace(
+                    array("{href}", "{name}"), 
+                    array($href,"<i class=\"icon icon-cog\"></i>&nbsp;settings"), 
+                    $tmplUrl);
+            }
+
+            if($options & AppConstants::TOOLBAR_ALL_PAGES) {
+                $params = array("q" => base64_encode($qUrl));
+                $href = \com\indigloo\Url::createUrl("/app/page/all.php",$params);
+                $view->allPageUrl = str_replace(
+                    array("{href}", "{name}"), 
+                    array($href,"<i class=\"icon icon-list-alt\"></i>&nbsp;pages"), 
+                    $tmplUrl);
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getAppSiteToolbar() {
+            $html = NULL ;
+            $template = "/fragments/app/site-toolbar.tmpl" ;
+            $view = new \stdClass;
+            
+            $tmplUrl = '<li> <a href="{href}">&nbsp;{name} </a></li>' ;
+            $params = array();
+            
+            $www_host = Config::getInstance()->get_value("www.host.name") ;
+            $signout_url = "/app/account/logout.php" ;
+             
+            $sso_url = "http://".$www_host. "/app/account/sso.php" ;
+            $current_url = "http://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
+            
+            $params = array(
+                "q" =>  base64_encode($current_url), 
+                "domain" => base64_encode($_SERVER["HTTP_HOST"]));
+            $sso_url = Url::createUrl($sso_url,$params);
+
+            if(Login::hasSession()) {
+                $params = array("{href}" => $signout_url, "{name}" => "Logout") ;
+            } else {
+                 $params = array("{href}" => $sso_url, "{name}" => "Sign in") ;
+            }
+           
+            $loginUrl = str_replace(array_keys($params), array_values($params),$tmplUrl);
+
+            $view->loginUrl = $loginUrl;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getAppBanner($gSiteView) {
+            $html = NULL ;
+            $template = "/fragments/app/banner.tmpl" ;
+            $html = Template::render($template,$gSiteView);
             return $html ;
         }
 
