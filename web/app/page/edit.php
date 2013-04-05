@@ -65,6 +65,9 @@
     $baseURI = Url::base()."/app/page/edit.php" ;
     $postTabsHtml = AppHtml::getPostTabs($baseURI,$tabParams,$postDBRow["id"],$postTabRows);
 
+     //post delete link
+    $params = array("q" => $qUrl, "post_id" => $postDBRow["id"]);
+    $postDeleteHref = Url::createUrl("/app/action/post/delete.php",$params);
 ?>
 
 <!DOCTYPE html>
@@ -104,11 +107,13 @@
                 </div>
 
                 <div class="span8">
-
+                    <div id="page-message" class="hide-me"> </div>
                     <?php FormMessage::render(); ?>
                     <div class="toolbar">
                         <ul class="tools unstyled">
                             <li> <a id="ful-open" href="#ful-container"><i class="icon icon-camera"></i>&nbsp;Add photo</a></li>
+                            <li> <a id="confirm-delete" href="<?php echo $postDeleteHref; ?>"><i class="icon icon-remove"></i>&nbsp;Delete post</a></li>
+
                         </ul>
                         <div class="clear"> </div>
                     </div> <!-- toolbar -->
@@ -173,6 +178,26 @@
         <script type="text/javascript">
 
             $(document).ready(function(){
+
+                $(".close-page-message").live("click",function(event) {
+                    $("#page-message").html("");
+                    $("#page-message").hide('slow');
+
+                });
+
+                $("#confirm-delete").click(function(event) {
+                    event.preventDefault();
+                    var data = {"deleteHref" : $(this).attr("href")} ;
+                    var links = 
+                        ' <div> <span> Really delete this post? </span> &nbsp;' +
+                        ' <a href="{deleteHref}">Yes</a> &nbsp;|&nbsp; ' +
+                        ' <a href="#" class="close-page-message">No,No,No</a> ' +
+                        ' <span> (i was kidding) </span> </div>' ;
+                    links = links.supplant(data) ;
+
+                    $("#page-message").html(links);
+                    $("#page-message").show('slow');
+                });
 
                 $("#form1").validate({
                     errorLabelContainer: $("#form-message"),
