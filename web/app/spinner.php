@@ -9,6 +9,7 @@
     $gWeb = \com\indigloo\core\Web::getInstance();
     $message = $gWeb->find("fs.router.message",true);
     $message = empty($message) ? "" : $message ;
+     
 ?>
 
 <!DOCTYPE html>
@@ -28,12 +29,14 @@
             <div class="row">
                 <div class="span8 offset1">
                     <div class="page-header">
-                        <h2>Redirecting. Please wait...</h2>
-                         <div> 
-                            <img src="/css/asset/fs/fb_loader.gif" alt="ajax loader" />
+                        <h2> <span class="text-info">  <?php echo $message; ?> </span></h2>
+                        <div class="ml20">
+                            <h3>Redirecting. Please wait...</h3>
+                             <div> 
+                                <img src="/css/asset/fs/fb_loader.gif" alt="ajax loader" />
+                            </div>
                         </div>
                     </div>
-                    <p class="text-error"> <h3> <?php echo $message; ?> </h3> </p>
                     
                 </div>
             </div>
