@@ -102,6 +102,7 @@ namespace com\indigloo\wb\mysql {
             
             $sql = " select * from wb_page where seo_title_hash = '%s' and site_id = %d " ;
             $sql = sprintf($sql,$hash,$siteId);
+            
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }

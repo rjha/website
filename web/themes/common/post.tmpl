@@ -5,6 +5,7 @@
     use \com\indigloo\Url as Url ;
     use \com\indigloo\util\StringUtil as StringUtil ;
     use \com\indigloo\wb\Constants as AppConstants;
+    use \com\indigloo\wb\html\Application as AppHtml ;
 
     // get site_id injected in request
     $gWeb = \com\indigloo\core\Web::getInstance();
@@ -13,16 +14,17 @@
 
     $seo_title = $router_params["token"];
     $postId = $router_params["post_id"];
-
     $postDao = new \com\indigloo\wb\dao\Post();
     $postDBRow = $postDao->getOnId($siteId,$postId);
+
+    $gSelfUrl = Url::base().$router_options["path"];
     
-    $G_TOOLBAR = 
+    $G_BUTTONS = 
     AppConstants::TOOLBAR_NEW_POST 
     | AppConstants::TOOLBAR_SETTINGS 
     | AppConstants::TOOLBAR_EDIT_POST ;
 
-
+    $toolbar_options = array("post_id" => $postId, "page_id" => $postDBRow["page_id"]);
 
 ?>
 
@@ -39,10 +41,10 @@
 
      <body>
         
-        <?php echo AppHtml::getAppSiteToolbar() ?>
-        <?php echo AppHtml::getAppBanner($gSiteView) ?>
-        <?php echo AppHtml::getAppToolbar($gSiteView,$G_TOOLBAR) ?>
-        
+        <?php echo AppHtml::getAppSiteToolbar(); ?>
+        <?php echo AppHtml::getAppBanner($gSiteView); ?>
+        <?php echo AppHtml::getAppToolbar($gSiteView,$G_BUTTONS,$toolbar_options); ?>
+
         <div class="container">
 
             <div class="row">
@@ -56,7 +58,6 @@
                             
                         ?>
                     </div>
-
                 </div>
                 <div class="span3 offset1">
                   &nbsp;

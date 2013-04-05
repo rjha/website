@@ -11,7 +11,7 @@
     $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
     $siteId = $gSiteView->id ;
     
-   
+    print_r($router_params);
     $seo_title = $router_params["token"];
     $pageDao = new \com\indigloo\wb\dao\Page();
     $postDao = new \com\indigloo\wb\dao\Post();
@@ -38,11 +38,14 @@
         $pageHtml = AppHtml::getHelp("default.post.create");
     }
 
-    $G_TOOLBAR = 
+    $G_BUTTONS = 
     AppConstants::TOOLBAR_NEW_POST 
     | AppConstants::TOOLBAR_SETTINGS 
     | AppConstants::TOOLBAR_EDIT_PAGE
     | AppConstants::TOOLBAR_ALL_PAGES;
+
+    $toolbar_options = array("page_id" => $gPageId);
+    
 
 ?>
 
@@ -58,9 +61,9 @@
     </head>
 
     <body>
-        <?php echo AppHtml::getAppSiteToolbar() ?>
-        <?php echo AppHtml::getAppBanner($gSiteView) ?>
-        <?php echo AppHtml::getAppToolbar($gSiteView,$G_TOOLBAR) ?>
+        <?php echo AppHtml::getAppSiteToolbar(); ?>
+        <?php echo AppHtml::getAppBanner($gSiteView); ?>
+        <?php echo AppHtml::getAppToolbar($gSiteView,$G_BUTTONS, $toolbar_options); ?>
 
         <div class="container">
             <div class="row">

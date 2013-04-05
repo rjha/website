@@ -33,7 +33,7 @@
         $endId =   $postDBRows[$gNumRecords-1]["id"] ;
     }
 
-    $G_TOOLBAR = 
+    $G_BUTTONS = 
     AppConstants::TOOLBAR_NEW_POST 
     | AppConstants::TOOLBAR_SETTINGS ;
 
@@ -44,7 +44,7 @@
 
     <head>
         <title><?php echo $gSiteView->name ; ?></title>
-        <?php include("meta.inc") ?>
+        <?php include(APP_WEB_DIR."/themes/common/meta.inc") ?>
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
 
@@ -54,7 +54,7 @@
 
        <?php echo AppHtml::getAppSiteToolbar() ?>
        <?php echo AppHtml::getAppBanner($gSiteView) ?>
-       <?php echo AppHtml::getAppToolbar($gSiteView,$G_TOOLBAR) ?>
+       <?php echo AppHtml::getAppToolbar($gSiteView,$G_BUTTONS) ?>
 
         <div class="container">
 

@@ -33,7 +33,7 @@
                             <img src="/css/asset/fs/fb_loader.gif" alt="ajax loader" />
                         </div>
                     </div>
-                    <p class="text-error"> <?php echo $message; ?></p>
+                    <p class="text-error"> <h3> <?php echo $message; ?> </h3> </p>
                     
                 </div>
             </div>

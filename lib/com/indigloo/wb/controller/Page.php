@@ -11,7 +11,7 @@ namespace com\indigloo\wb\controller{
         	$gWeb = \com\indigloo\core\Web::getInstance();
         	$gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW); 
     		
-            $view = APP_WEB_DIR. "/themes/".$gSiteView->theme."/page.tmpl" ;
+            $view = APP_WEB_DIR. "/themes/common/page.tmpl" ;
             include ($view);
         }
         

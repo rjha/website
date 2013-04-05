@@ -41,6 +41,10 @@ namespace com\indigloo\wb\dao {
             mysql\Post::add($siteId,$pageId,$title,$raw_content,$html_content,$mediaJson) ;
         }
 
+        function delete($siteId,$postId) {
+            mysql\Post::delete($siteId,$postId);
+        }
+
         function getOnPageId($siteId,$pageId) {
             $rows = mysql\Post::getOnPageId($siteId,$pageId);
             return $rows ;

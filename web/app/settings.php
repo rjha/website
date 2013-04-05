@@ -70,16 +70,18 @@
                 <div class="span8">
                     <?php FormMessage::render(); ?>
                      <div class="section">
-                        current style <b> <?php echo $siteDBRow["theme_name"]; ?> </b>
+                       
                         <p class="muted">
-                            Default style good for a small website. Masonry style is good for
-                            a website with lot of images. <br>Blog is suitable for magazines and
+                            Default style is good for a small website. Masonry style is good for
+                            image heavy websites. <br>Blog style is suitable for magazines and
                             personal blogs. 
                         </p>
                         <form  id="form2"  name="form2" action="<?php echo Url::base() ?>/app/action/site/update-theme.php"  method="POST">  
                             <table class="form-table">
                                 <tr>  
-                                    <td> <label>  change style</label>
+                                    <td> 
+                                        <label>
+                                        Set home page style (current :<b> <?php echo $siteDBRow["theme_name"]; ?> </b>)</label>
                                        <select name="theme">
                                         <option value="default">Default</option>
                                         <option value="masonry">Masonry</option>

@@ -1,16 +1,22 @@
 
++ style - Home page style
++ common templates into common/ folder
++ introduce Blog style
++ pump converse shoes data into new code
++ migrate 4bubbles.com data into new code.
+
+
++ post delete / post edit page.
++ facebook login
+
 
 + name/canonical_domain/domain
  - unique names should be in all lower case 
  to avoid case confusion.
 
 + map extra domains
-+ post delete / post edit page.
 + masonry style - post links - when page available?
-
-
 + wrap long lines
-+ facebook login
 + style settings : blog/pinterest/default
 + Admin toolbar buttons 
   + values via a bitmap

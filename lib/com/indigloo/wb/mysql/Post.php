@@ -227,6 +227,34 @@ namespace com\indigloo\wb\mysql {
             }
         }
 
+        static function delete($siteId,$postId) {
+            $dbh = NULL ;
+            
+            try {
+
+                $dbh =  WbPdoWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
+                $sql1 = " delete from wb_post where site_id = :site_id and id = :post_id" ;
+
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":site_id",$siteId) ;
+                $stmt1->bindParam(":post_id",$postId) ;
+                
+                $stmt1->execute();
+                $stmt1 = NULL ;
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($ex->getMessage(),$ex->getCode());
+            }
+        }
+
     }
 
 }

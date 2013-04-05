@@ -38,13 +38,13 @@
         $pageHtml = AppHtml::getHelp("default.post.create");
     }
 
-   $G_TOOLBAR = 
+   $G_BUTTONS = 
     AppConstants::TOOLBAR_NEW_POST 
     | AppConstants::TOOLBAR_SETTINGS 
     | AppConstants::TOOLBAR_EDIT_PAGE
     | AppConstants::TOOLBAR_ALL_PAGES;
 
-
+    $toolbar_options = array("page_id" => $gPageId)
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +52,7 @@
 
     <head>
         <title><?php echo $gSiteView->name ; ?></title>
-        <?php include("meta.inc") ?>
+        <?php include(APP_WEB_DIR."/themes/common/meta.inc") ?>
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
 
@@ -62,7 +62,7 @@
 
         <?php echo AppHtml::getAppSiteToolbar() ?>
         <?php echo AppHtml::getAppBanner($gSiteView) ?>
-        <?php echo AppHtml::getAppToolbar($gSiteView,$G_TOOLBAR) ?>
+        <?php echo AppHtml::getAppToolbar($gSiteView,$G_BUTTONS,$toolbar_options) ?>
 
         <div class="container">
 

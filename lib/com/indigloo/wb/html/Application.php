@@ -203,6 +203,7 @@ namespace com\indigloo\wb\html {
           	$view->hasImage = false ;
             // does the post belong to a page?
             if(!empty($postDBRow["page_id"])) {
+                // @todo @bug : this should be post.page.title
                 $view->href = Url::base()."/".$postDBRow["seo_title"] ; 
             } else {
                 $view->href = Url::base()."/post/".$postDBRow["id"]."/".$postDBRow["seo_title"];
@@ -286,7 +287,7 @@ namespace com\indigloo\wb\html {
             return $html ;
         }
 
-        static function getAppToolbar($gSiteView,$options=0) {
+        static function getAppToolbar($gSiteView,$buttons=0,$options=array()) {
             if(!$gSiteView->isOwner) { return "" ;}
 
             $html = NULL ;
@@ -303,7 +304,11 @@ namespace com\indigloo\wb\html {
             $qUrl = Url::current() ;
             $params = array("q" => base64_encode($qUrl));
 
-            if($options & AppConstants::TOOLBAR_NEW_POST) {
+            if($buttons & AppConstants::TOOLBAR_NEW_POST) {
+                if(isset($options["page_id"]) && !empty($options["page_id"])) {
+                    $params["page_id"] = $options["page_id"] ;
+                }
+
                 $href = Url::createUrl("/app/post/new.php",$params) ;
                 $view->newPostUrl = str_replace(
                     array("{href}", "{name}"), 
@@ -311,34 +316,46 @@ namespace com\indigloo\wb\html {
                     $tmplUrl);
             }
 
-            if($options & AppConstants::TOOLBAR_EDIT_POST) {
-                $href = \com\indigloo\Url::createUrl("/app/post/edit.php",$params) ;
+            if($buttons & AppConstants::TOOLBAR_EDIT_POST) {
+                if(!isset($options["post_id"]) || empty($options["post_id"])) {
+                    $message = "post_id is required for edit post toolbar button" ;
+                    trigger_error($message,E_USER_ERROR);
+                }
+
+                $params["post_id"] = $options["post_id"];
+                $href = Url::createUrl("/app/post/edit.php",$params) ;
                 $view->editPostUrl = str_replace(
                     array("{href}", "{name}"), 
                     array($href,"<i class=\"icon icon-edit\"></i>&nbsp;edit post"), 
                     $tmplUrl);
             }
 
-            if($options & AppConstants::TOOLBAR_EDIT_PAGE) {
-                $href = \com\indigloo\Url::createUrl("/app/page/edit.php",$params) ;
+            if($buttons & AppConstants::TOOLBAR_EDIT_PAGE) {
+                if(!isset($options["page_id"]) || empty($options["page_id"])) {
+                    $message = "page_id is required for edit page toolbar button" ;
+                    trigger_error($message,E_USER_ERROR);
+                }
+
+                $params["page_id"] = $options["page_id"] ;
+                $href = Url::createUrl("/app/page/edit.php",$params) ;
                 $view->editPageUrl = str_replace(
                     array("{href}", "{name}"), 
                     array($href,"<i class=\"icon icon-edit\"></i>&nbsp;edit page"), 
                     $tmplUrl);
             }
 
-            if($options & AppConstants::TOOLBAR_SETTINGS) {
+            if($buttons & AppConstants::TOOLBAR_SETTINGS) {
                 $href = "http://".$gSiteView->canonical_domain ."/app/settings.php";
-                $href = \com\indigloo\Url::createUrl($href,$params);
+                $href = Url::createUrl($href,$params);
                 $view->settingsUrl = str_replace(
                     array("{href}", "{name}"), 
                     array($href,"<i class=\"icon icon-cog\"></i>&nbsp;settings"), 
                     $tmplUrl);
             }
 
-            if($options & AppConstants::TOOLBAR_ALL_PAGES) {
+            if($buttons & AppConstants::TOOLBAR_ALL_PAGES) {
                 $params = array("q" => base64_encode($qUrl));
-                $href = \com\indigloo\Url::createUrl("/app/page/all.php",$params);
+                $href = Url::createUrl("/app/page/all.php",$params);
                 $view->allPageUrl = str_replace(
                     array("{href}", "{name}"), 
                     array($href,"<i class=\"icon icon-list-alt\"></i>&nbsp;pages"), 
