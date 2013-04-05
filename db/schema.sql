@@ -115,6 +115,7 @@ CREATE TABLE  wb_post  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    site_id int not null,
    page_id int ,
+   page_seo_title varchar(320),
    row_number int not null,
    title varchar(256) not null,
    seo_title varchar(320) not null,
@@ -151,22 +152,42 @@ CREATE TABLE  wb_media  (
 
 
 
-DROP TRIGGER IF EXISTS  trg_page_add_post ;
-
+DROP TRIGGER IF EXISTS  trg_add_post ;
 DELIMITER //
-CREATE  TRIGGER trg_page_add_post BEFORE INSERT ON wb_post
+CREATE  TRIGGER trg_add_post BEFORE INSERT ON wb_post
    FOR EACH ROW
    BEGIN
-   IF NEW.page_id is not null then
-    update wb_page set num_post = num_post +1 where id = NEW.page_id ;
-   END IF;
+     DECLARE p_seo_title  varchar(320) ;
+
+     IF NEW.page_id is not null then
+      update wb_page set num_post = num_post +1 where id = NEW.page_id ;
+      select seo_title into  p_seo_title from wb_page where id = NEW.page_id ;
+      set NEW.page_seo_title = p_seo_title ; 
+     END IF;
   END //
 
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS  trg_page_del_post ;
+DROP TRIGGER IF EXISTS  trg_update_post ;
+
 DELIMITER //
-CREATE  TRIGGER trg_page_del_post BEFORE DELETE ON wb_post
+CREATE  TRIGGER trg_update_post BEFORE UPDATE ON wb_post
+   FOR EACH ROW
+   BEGIN
+     DECLARE p_seo_title  varchar(320) ;
+
+     IF NEW.page_id is not null then
+      select seo_title into  p_seo_title from wb_page where id = NEW.page_id ;
+      set NEW.page_seo_title = p_seo_title ; 
+     END IF;
+  END //
+
+DELIMITER ;
+
+
+DROP TRIGGER IF EXISTS  trg_del_post ;
+DELIMITER //
+CREATE  TRIGGER trg_del_post BEFORE DELETE ON wb_post
    FOR EACH ROW
    BEGIN
    IF OLD.page_id is not null then

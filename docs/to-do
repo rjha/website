@@ -1,4 +1,8 @@
 
++ post edit - should change post_seo_title as well
++ post add/edit : copy page.seo_title into denorm_columns as well
++ page edit : add remove post link
+
 + style - Home page style
 + common templates into common/ folder
 + introduce Blog style

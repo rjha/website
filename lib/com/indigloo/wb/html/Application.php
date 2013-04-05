@@ -203,8 +203,8 @@ namespace com\indigloo\wb\html {
           	$view->hasImage = false ;
             // does the post belong to a page?
             if(!empty($postDBRow["page_id"])) {
-                // @todo @bug : this should be post.page.title
-                $view->href = Url::base()."/".$postDBRow["seo_title"] ; 
+                // this should be post.page.title
+                $view->href = Url::base()."/".$postDBRow["page_seo_title"] ; 
             } else {
                 $view->href = Url::base()."/post/".$postDBRow["id"]."/".$postDBRow["seo_title"];
             }

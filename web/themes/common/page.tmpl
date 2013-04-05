@@ -11,7 +11,6 @@
     $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
     $siteId = $gSiteView->id ;
     
-    print_r($router_params);
     $seo_title = $router_params["token"];
     $pageDao = new \com\indigloo\wb\dao\Page();
     $postDao = new \com\indigloo\wb\dao\Post();

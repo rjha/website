@@ -147,7 +147,7 @@ namespace com\indigloo\wb\mysql {
                 //Tx start
                 $dbh->beginTransaction();
                 
-                $sql1 = " update wb_post set title = :title, raw_content = :raw_content, ".
+                $sql1 = " update wb_post set title = :title, seo_title = :seo_title, raw_content = :raw_content, ".
                         " html_content = :html_content, has_media = :has_media, media_json = :media_json " .
                         " where id = :post_id and site_id = :site_id " ;
                 
@@ -156,7 +156,10 @@ namespace com\indigloo\wb\mysql {
                 $stmt1->bindParam(":post_id", $postId);
                 $stmt1->bindParam(":site_id", $siteId);
 
+                $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
                 $stmt1->bindParam(":title", $title);
+                $stmt1->bindParam(":seo_title", $seo_title);
+
                 $stmt1->bindParam(":raw_content", $raw_content);
                 $stmt1->bindParam(":html_content", $html_content);
 
