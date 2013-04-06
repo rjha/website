@@ -5,15 +5,16 @@
 
 + style - Home page style
 + common templates into common/ folder
+
+
 + introduce Blog style
 + pump converse shoes data into new code
 + migrate 4bubbles.com data into new code.
-
-
 + post delete / post edit page.
 + facebook login
 
 
++ keywords => Topic/Category
 + name/canonical_domain/domain
  - unique names should be in all lower case 
  to avoid case confusion.

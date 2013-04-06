@@ -51,7 +51,10 @@ namespace com\indigloo\wb\html {
             return $html ;
         }
 
-        static function getDefaultMenu($menuRows) {
+        static function getPageMenu($menuRows) {
+             
+            if(sizeof($menuRows) <= 1 ) {  return "" ;}
+            
             $html = NULL ;
             $template = "/fragments/generic/menu.tmpl" ;
             

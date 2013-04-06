@@ -1,8 +1,8 @@
-
+ 
 <div class="page-menu">
-	 
+	<div class="item"> <span class="faded-text">Pages</span> </div>
 	~foreach($view->rows as $row){~
- 	<div class="item"><a href="~~$row['href']~">&nbsp; ~~$row['name']~ </a></div>
+ 	<div class="item"><a href="~~$row['href']~">~~$row['name']~</a></div>
 
 	~ } ~
                           
