@@ -11,13 +11,11 @@
 
     error_reporting(-1);
     set_exception_handler('offline_exception_handler');
-
-     
+    
     function from_db_connection() {
         $connx = new \mysqli("127.0.0.1", "gloo", "osje8L", "gloodb") ;
         return $connx ;
     }
-
 
     function get_images($html) {
          
@@ -41,6 +39,24 @@
         return $images ;
     }
 
+    // @todo - this does not work!
+    function remove_script_tag($html) {
+        
+        $doc = new \DOMDocument();
+        @$doc->loadHTML($html);
+        $nodes = $doc->getElementsByTagName("script");
+
+        foreach($nodes  as $key=>$node) {
+            $node->parentNode->removeChild($node);
+        }
+        
+        $newHtml = '';
+        foreach ($doc->getElementsByTagName('body')->item(0)->childNodes as $child) {
+            $newHtml .= $doc->saveXML($child);
+        }
+
+        return $newHtml;
+    }
   
     function add_widget_to_page($newOrgId,$widget) {
 
@@ -54,6 +70,38 @@
         $media_json = "" ;
         $has_media = 0 ;
 
+        if(strcmp($widget["widget_type"],"IMAGE") == 0 ) {
+            
+            $elements = array();
+            $element = new \stdClass ;
+
+            $xmlDoc = new SimpleXMLElement($widget['widget_xml']);
+
+            $imageUrl = urldecode($xmlDoc->imageURI);
+            // s3 URL are of form http://xyz/storeName
+            //  find first slash after http:// in string
+            $pos1 = strpos($imageUrl,"/",8);
+            
+            $element->store = "s3" ;
+            $element->bucket = "media1.indigloo.net" ;
+            $element->type = "image" ;
+            $element->storeName = substr($imageUrl,$pos1+1);
+            $element->originalName = md5($element->storeName);
+
+            $element->width = sprintf("%s",$xmlDoc->width) ;
+            $element->height = sprintf("%s",$xmlDoc->height) ;
+            $element->size = sprintf("%s",$xmlDoc->size) ;
+            $element->mime = sprintf("%s",$xmlDoc->mime) ;
+
+            $elements[] = $element ;
+            
+            $media_json = json_encode($elements);
+            //remove escaping of solidus done by PHP 5.3 json_encode
+            $media_json = str_replace("\/","/",$media_json);
+            $html = $widget["widget_html"] ;
+
+        }
+
         if(strcmp($widget["widget_type"],"EMBED_CODE") == 0 ) {
             $html = $widget["widget_code"] ;
         }
@@ -66,7 +114,7 @@
             foreach($images as $image) {
                 $element = new \stdClass ;
                 $element->srcImage = $image ;
-                $element->store = "external" ;
+                $element->store = "inline" ;
                 $element->type = "image" ;
                 $elements[] = $element ;
             }
@@ -76,36 +124,19 @@
             //remove escaping of solidus done by PHP 5.3 json_encode
             $media_json = str_replace("\/","/",$media_json);
         }
-
-        //@todo : handle image content
-        /* 
-        <widget> 
-            <type>IMAGE</type>
-            <imageURI>http%3A%2F%2Fmedia1.indigloo.net.s3.amazonaws.com%2Fwww.mudroombenches.info%2F1ada9527263d066b_1294.jpg</imageURI>
-            <thumbnailURI>http%3A%2F%2Fwww.mudroombenches.info%2Fdata%2Fimage%2Fthumbnail.php%3Fid%3D1807</thumbnailURI>
-            <mime>image/jpeg</mime>
-            <width>619</width>
-            <height>199</height>
-            <size>22714</size>
-            <alignment>alignleft</alignment>
-            <scale>full</scale>
-            <customWidth>0</customWidth>
-            <customHeight>0</customHeight>
-        </widget>
-
-        */
-
+    
         if(empty($html) || empty($media_json)) {
             // nothing to add.
             return ;
         }
 
-         
         $postDao = new \com\indigloo\wb\dao\Post();
         $pageId = NULL ;
 
+        // $html = remove_script_tag($html) ;
+
         $raw_content = $html ;
-        $html_content = nl2br($raw_content);
+        $html_content = $html ;
         $permalink = NULL;
 
         $postDao->add($newOrgId,
@@ -116,16 +147,12 @@
             $media_json,
             $permalink);
 
-
     }
 
     function process_page($connx1,$oldOrgId,$newOrgId,$name,$key) {
 
         $name = $connx1->real_escape_string($name);
         $key = $connx1->real_escape_string($key);
-
-        // $pageDao = new \com\indigloo\wb\dao\Page();
-        // $newPageId = $pageDao->create($newOrgId,$name);
 
         $sql = " select * from gloo_block_data where org_id = %d and page_key = '%s'  ".
                 " order by block_no, ui_order " ;
@@ -141,7 +168,8 @@
 
 
     // start:script
-    $oldOrgIds = array(1231,1227, 1202,1229,1228,1200,1213,1193) ;
+    // $oldOrgIds = array(1231,1227, 1202,1229,1228,1200,1213,1193) ;
+    $oldOrgIds = array(1193) ;
     $connx1 = from_db_connection();
     // create a new ORG before running this script
     $newOrgId = 2 ;

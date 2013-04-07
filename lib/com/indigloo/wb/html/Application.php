@@ -220,12 +220,10 @@ namespace com\indigloo\wb\html {
             }
             
             $strMediaJson = $postDBRow['media_json'];
-            $mediaVO = json_decode($strMediaJson);
+            $imageObjs = json_decode($strMediaJson);
 
-            if(sizeof($mediaVO) > 0 ) {
-                $image = $mediaVO[0];
-                $imgv = self::convertImageJsonObj($image);
-                
+            if(sizeof($imageObjs) > 0 ) {
+                $imgv = self::convertImageJsonObj($imageObjs[0]);
                 $view->srcImage = $imgv["tsource"]; 
                 $view->hasImage = true ;
             }
@@ -248,14 +246,17 @@ namespace com\indigloo\wb\html {
             $images = json_decode($imagesJson);
 
             if(!empty($images) && (sizeof($images) > 0)) {
-                $view->hasImage = true ;
-                
+               
                 foreach($images as $image) {
-                    $imgv = self::convertImageJsonObj($image);
-                    array_push($view->images,$imgv);
+                    /* do not process inline images for post */
+                    if(strcmp($image->store,'inline') != 0 ) {
+                        $imgv = self::convertImageJsonObj($image);
+                        array_push($view->images,$imgv);
+                    }
                 }
             } 
-
+            
+            $view->hasImage = sizeof($view->images > 0 ) ? true : false ;
             $view->content = $postDBRow['html_content'];
             $view->title = $postDBRow['title'];
            
@@ -265,8 +266,8 @@ namespace com\indigloo\wb\html {
 
         static function convertImageJsonObj($jsonObj) {
             $imgv = array();
-
-            if($jsonObj->store == 'external') {
+            /* inline images are part of post content */
+            if($jsonObj->store == 'inline') {
                 $imgvname["name"] = $jsonObj->srcImage ;
                 $imgv["tname"] = $jsonObj->srcImage ;
                 $imgv["source"] = $jsonObj->srcImage ;
@@ -292,7 +293,7 @@ namespace com\indigloo\wb\html {
             $imgv["tsource"] = $prefix.$jsonObj->bucket.'/'.$tfile ;
             $imgv["width"] = $jsonObj->width ;
             $imgv["height"] = $jsonObj->height;
-            //@todo add thumbnail width and height?
+            
             return $imgv ;
         }
 
