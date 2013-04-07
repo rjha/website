@@ -5,11 +5,21 @@
     use \com\indigloo\Constants as Constants;
     use \com\indigloo\Logger as Logger;
     use \com\indigloo\Url;
+    use \com\indigloo\Configuration as Config ;
 
     use \com\indigloo\wb\auth\Login as Login ;
     use \com\indigloo\wb\mysql as mysql ;
     
     try{
+
+        $www_host = Config::getInstance()->get_value("www.host.name") ;
+
+        // login only works from www.host.name domain
+        if(strcmp($www_host,strtolower($_SERVER["HTTP_HOST"])) != 0 ) {
+            $fwd = "http://".$www_host. "/app/account/login.php" ;
+            header('Location: '.$fwd);
+            exit ;
+        }
 
         $access_token = NULL ;
         $message ="" ;

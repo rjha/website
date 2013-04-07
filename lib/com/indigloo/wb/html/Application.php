@@ -80,16 +80,23 @@ namespace com\indigloo\wb\html {
             $view->host = "http://".$row["canonical_domain"];
             $view->name = $row["name"] ;
 
-            // post URL
+            // postUrl - a new post
+            // homeUrl - home page of your site
+            // host - for display
+
             $postUrl = $view->host."/app/post/new.php" ;
             $params = array("page_id" => $pageId, "q" => base64_encode($view->host));
             $postUrl = Url::createUrl($postUrl,$params);
 
-            // session Url
+            // post button Url
             $fwd = $view->host."/app/account/site-session.php" ; 
             $sessionId = session_id();
             $params = array("session_id" => $sessionId, "q" => base64_encode($postUrl));
-            $view->fwdUrl = Url::createUrl($fwd,$params);
+            $view->postUrl = Url::createUrl($fwd,$params);
+            
+            // home button url
+            $params = array("session_id" => $sessionId, "q" => base64_encode($view->host));
+            $view->homeUrl = Url::createUrl($fwd,$params);
 
             $html = Template::render($template,$view); 
             return $html ;
@@ -205,9 +212,9 @@ namespace com\indigloo\wb\html {
              
           	$view->hasImage = false ;
             // does the post belong to a page?
-            if(!empty($postDBRow["page_id"])) {
+            if(!empty($postDBRow["permalink"])) {
                 // this should be post.page.title
-                $view->href = Url::base()."/".$postDBRow["page_seo_title"] ; 
+                $view->href = Url::base()."/".$postDBRow["permalink"] ; 
             } else {
                 $view->href = Url::base()."/post/".$postDBRow["id"]."/".$postDBRow["seo_title"];
             }
@@ -258,6 +265,15 @@ namespace com\indigloo\wb\html {
 
         static function convertImageJsonObj($jsonObj) {
             $imgv = array();
+
+            if($jsonObj->store == 'external') {
+                $imgvname["name"] = $jsonObj->srcImage ;
+                $imgv["tname"] = $jsonObj->srcImage ;
+                $imgv["source"] = $jsonObj->srcImage ;
+                $imgv["tsource"] = $jsonObj->srcImage ;
+
+                return $imgv ;
+            }
 
             $imgv["name"] = $jsonObj->originalName ;
             $prefix = ($jsonObj->store == 's3') ? 'http://' : Url::base().'/' ;

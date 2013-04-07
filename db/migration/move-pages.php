@@ -14,14 +14,10 @@
 
      
     function from_db_connection() {
-        $connx = new \mysqli("127.0.0.1", "gloo", "osje8L", "websitedb1") ;
+        $connx = new \mysqli("127.0.0.1", "gloo", "osje8L", "gloodb") ;
         return $connx ;
     }
 
-    function to_db_connection() {
-        $connx = new \mysqli("127.0.0.1", "gloo", "osje8L", "wbdb1") ;
-        return $connx ;
-    }
 
     function get_images($html) {
          
@@ -45,56 +41,12 @@
         return $images ;
     }
 
-    function create_page($connx2,$name) {
-        // @todo : fixed orgId
-        // needs to change after we plug in domain routing
-        $orgId = 1 ;
-        $title = $name ;
-        $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($name);
-
-        $seo_title_hash = md5($seo_title);
-        $random_key = Util::getRandomString(16);
-        
-        // insert into DB 
-        $sql = " insert into wb_page(org_id,title,seo_title,seo_title_hash,".
-                " random_key, created_on ) values (?,?,?,?,?,now()) " ;
-
-        $stmt = $connx2->prepare($sql);
-
-        if ($stmt) {
-            $stmt->bind_param("issss",
-                    $orgId,
-                    $title,
-                    $seo_title,
-                    $seo_title_hash,
-                    $random_key);
-
-
-            $stmt->execute();
-            $stmt->close();
-        } else {
-            trigger_error("problem creating statement",E_USER_ERROR);
-        }
-
-        $sql = " select last_insert_id() as page_id " ;
-        $row = MySQL\Helper::fetchRow($connx2,$sql);
-
-        $page_id = $row['page_id'];
-        return $page_id ;
-
-    }
-
-    function add_widget_to_page($connx2,$newPageId,$widget) {
-
-        // @todo : the fixed orgId need to change
-        $orgId = 1 ;
+  
+    function add_widget_to_page($newOrgId,$widget) {
 
         // insert page content
         $row_number = $widget['ui_order'];
-        // @imp fixed widget type for new schema
-        // everything is a post in current code 
-        // this may change in future
-        $widget_type = 1 ;
+        $post_type = 1 ;
         
         // find media json
         // get images out of this widget
@@ -113,8 +65,8 @@
 
             foreach($images as $image) {
                 $element = new \stdClass ;
-                $element->address = $image ;
-                $element->source = "external" ;
+                $element->srcImage = $image ;
+                $element->store = "external" ;
                 $element->type = "image" ;
                 $elements[] = $element ;
             }
@@ -125,57 +77,55 @@
             $media_json = str_replace("\/","/",$media_json);
         }
 
+        //@todo : handle image content
+        /* 
+        <widget> 
+            <type>IMAGE</type>
+            <imageURI>http%3A%2F%2Fmedia1.indigloo.net.s3.amazonaws.com%2Fwww.mudroombenches.info%2F1ada9527263d066b_1294.jpg</imageURI>
+            <thumbnailURI>http%3A%2F%2Fwww.mudroombenches.info%2Fdata%2Fimage%2Fthumbnail.php%3Fid%3D1807</thumbnailURI>
+            <mime>image/jpeg</mime>
+            <width>619</width>
+            <height>199</height>
+            <size>22714</size>
+            <alignment>alignleft</alignment>
+            <scale>full</scale>
+            <customWidth>0</customWidth>
+            <customHeight>0</customHeight>
+        </widget>
+
+        */
+
         if(empty($html) || empty($media_json)) {
             // nothing to add.
             return ;
         }
 
-        
-        $sql = " insert into wb_page_content(org_id,page_id,row_number, title,".
-                " widget_type, widget_html, created_on) ".
-                " values (?,?,?,?,?,?, now()) " ;
-
-        $stmt = $connx2->prepare($sql);
-
-        if ($stmt) {
-            $stmt->bind_param("iiisis",
-                    $orgId,
-                    $newPageId,
-                    $row_number,
-                    $widget['title'],
-                    $widget_type, 
-                    $widget['widget_html']);
-
-
-            $stmt->execute();
-            $stmt->close();
-        } else {
-            trigger_error("problem creating statement",E_USER_ERROR);
-        }
-
          
+        $postDao = new \com\indigloo\wb\dao\Post();
+        $pageId = NULL ;
 
-        $sql = " update wb_page set media_json = ?, has_media = ? where id  = ? ";
-        $stmt = $connx2->prepare($sql);
+        $raw_content = $html ;
+        $html_content = nl2br($raw_content);
+        $permalink = NULL;
 
-        if ($stmt) {
-            $stmt->bind_param("sii",$media_json, $has_media, $newPageId);
-            $stmt->execute();
-            $stmt->close();
-        } else {
-            trigger_error("problem creating statement",E_USER_ERROR);
-        }
-         
+        $postDao->add($newOrgId,
+            $pageId,
+            $widget["title"],
+            $raw_content,
+            $html_content,
+            $media_json,
+            $permalink);
+
 
     }
 
-    function process_page($connx1,$connx2,$oldOrgId,$name,$key) {
+    function process_page($connx1,$oldOrgId,$newOrgId,$name,$key) {
 
         $name = $connx1->real_escape_string($name);
         $key = $connx1->real_escape_string($key);
 
-        // create a page with this name
-        $newPageId = create_page($connx2,$name);
+        // $pageDao = new \com\indigloo\wb\dao\Page();
+        // $newPageId = $pageDao->create($newOrgId,$name);
 
         $sql = " select * from gloo_block_data where org_id = %d and page_key = '%s'  ".
                 " order by block_no, ui_order " ;
@@ -184,7 +134,7 @@
         $widgets = MySQL\Helper::fetchRows($connx1, $sql); 
         foreach($widgets as $widget) {
             // push this widget into new page
-            add_widget_to_page($connx2,$newPageId,$widget);
+            add_widget_to_page($newOrgId,$widget);
         }
 
     }
@@ -193,7 +143,8 @@
     // start:script
     $oldOrgIds = array(1231,1227, 1202,1229,1228,1200,1213,1193) ;
     $connx1 = from_db_connection();
-    $connx2 = to_db_connection();
+    // create a new ORG before running this script
+    $newOrgId = 2 ;
 
     // for each organization
     foreach($oldOrgIds as $oldOrgId) {
@@ -204,7 +155,7 @@
 
         foreach($pages as $page) {
             printf("org_id= %d, page= %s, key=%s \n ",$oldOrgId,$page['page_name'],$page['ident_key']);
-            process_page($connx1,$connx2,$oldOrgId,$page['page_name'],$page['ident_key']);
+            process_page($connx1,$oldOrgId,$newOrgId,$page['page_name'],$page['ident_key']);
         }
     }
 

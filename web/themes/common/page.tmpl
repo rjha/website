@@ -28,6 +28,7 @@
     $menuHtml = AppHtml::getPageMenu($menuDBRows);
      
     $pageHtml = "" ;
+    
     if($gNumPosts > 0) {
         foreach($postDBRows as $postDBRow) {
             $pageHtml .= AppHtml::getPost($postDBRow);
@@ -40,8 +41,11 @@
     $G_BUTTONS = 
     AppConstants::TOOLBAR_NEW_POST 
     | AppConstants::TOOLBAR_SETTINGS 
-    | AppConstants::TOOLBAR_EDIT_PAGE
     | AppConstants::TOOLBAR_ALL_PAGES;
+    
+    if($gNumPosts > 0 ) {
+        $G_BUTTONS = $G_BUTTONS | AppConstants::TOOLBAR_EDIT_PAGE ;
+    }
 
     $toolbar_options = array("page_id" => $gPageId);
     

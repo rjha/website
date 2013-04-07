@@ -12,8 +12,17 @@
     use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\wb\auth\Login as Login ;
 
+    
+    $www_host = Config::getInstance()->get_value("www.host.name") ;
+
+    // site create only works from www.host.name domain
+    if(strcmp($www_host,strtolower($_SERVER["HTTP_HOST"])) != 0 ) {
+        $fwd = "http://".$www_host. "/app/site/create.php" ;
+        header('Location: '.$fwd);
+        exit ;
+    }
+
     if(!Login::hasSession()) {
-        $www_host = Config::getInstance()->get_value("www.host.name") ;
         $fwd = "http://".$www_host. "/app/account/login.php" ;
         header('Location: '.$fwd);
         exit ;

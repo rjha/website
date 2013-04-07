@@ -18,21 +18,26 @@
     $paginator->setBaseConvert(false);
 
     $postDBRows = $postDao->getPaged($siteId,$paginator); 
-    //to determine the edit link
-    $gNumPosts = sizeof($postDBRows);
-
 
     //data for paginator
     $startId = NULL ;
     $endId = NULL ;
     $pageBaseUrl = "/" ;
     $gNumRecords = sizeof($postDBRows);
+    $pageHtml = "" ;
+    $helpHtml = "" ;
 
     if($gNumRecords > 0 ) {
         $startId = $postDBRows[0]["id"] ;
         $endId =   $postDBRows[$gNumRecords-1]["id"] ;
+        foreach($postDBRows as $postDBRow) {
+            $pageHtml .= AppHtml::getPostTile($postDBRow);
+        }
+    }else {
+        $helpHtml = AppHtml::getHelp("default.post.create");
     }
-
+    // @debug
+    // echo $pageHtml; exit ;
     $G_BUTTONS = 
     AppConstants::TOOLBAR_NEW_POST 
     | AppConstants::TOOLBAR_SETTINGS ;
@@ -60,13 +65,9 @@
 
             <div class="row">
                 <div class="span12">
+                    <?php echo $helpHtml ; ?>
                     <div id="tiles">
-                        <?php
-                            foreach($postDBRows as $postDBRow) {
-                                $html = \com\indigloo\wb\html\Application::getPostTile($postDBRow);
-                                echo $html ;
-                            }
-                        ?>
+                        <?php echo $pageHtml ; ?>
                     </div>
                 
                 </div>
@@ -91,7 +92,7 @@
                     $container.isotope({ itemSelector: '.tile', layoutMode: 'masonry'});
                 });
 
-                
+                /*
                 $container.infinitescroll(
                     {
                         navSelector     : '.pager',
@@ -120,7 +121,7 @@
                         });
 
                     }
-                ); 
+                ); */
 
             });
 

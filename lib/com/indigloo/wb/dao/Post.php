@@ -33,12 +33,12 @@ namespace com\indigloo\wb\dao {
             return $rows ;
         }
 
-        function update($siteId,$postId,$title,$raw_content,$html_content,$mediaJson) {
-            mysql\Post::update($siteId,$postId,$title,$raw_content,$html_content,$mediaJson) ;
+        function update($siteId,$postId,$title,$raw_content,$html_content,$mediaJson,$permalink=NULL) {
+            mysql\Post::update($siteId,$postId,$title,$raw_content,$html_content,$mediaJson,$permalink) ;
         }
 
-        function add($siteId,$pageId,$title,$raw_content,$html_content,$mediaJson) {
-            mysql\Post::add($siteId,$pageId,$title,$raw_content,$html_content,$mediaJson) ;
+        function add($siteId,$pageId,$title,$raw_content,$html_content,$mediaJson,$permalink=NULL) {
+            mysql\Post::add($siteId,$pageId,$title,$raw_content,$html_content,$mediaJson,$permalink) ;
         }
 
         function delete($siteId,$postId) {

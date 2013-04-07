@@ -136,7 +136,13 @@ namespace com\indigloo\wb\mysql {
             return $rows;
         }
 
-        static function update($siteId,$postId,$title,$raw_content,$html_content,$mediaJson) {
+        static function update($siteId,
+            $postId,
+            $title,
+            $raw_content,
+            $html_content,
+            $mediaJson,
+            $permalink) {
 
             $dbh = NULL ;
             
@@ -147,8 +153,9 @@ namespace com\indigloo\wb\mysql {
                 //Tx start
                 $dbh->beginTransaction();
                 
-                $sql1 = " update wb_post set title = :title, seo_title = :seo_title, raw_content = :raw_content, ".
-                        " html_content = :html_content, has_media = :has_media, media_json = :media_json " .
+                $sql1 = " update wb_post set title = :title, seo_title = :seo_title, ".
+                        " raw_content = :raw_content, html_content = :html_content, ".
+                        " has_media = :has_media, media_json = :media_json , permalink = :permalink" .
                         " where id = :post_id and site_id = :site_id " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
@@ -166,6 +173,7 @@ namespace com\indigloo\wb\mysql {
                 $has_media = (strcmp($mediaJson,'[]') == 0 ) ? 0 : 1 ;
                 $stmt1->bindParam(":has_media", $has_media);
                 $stmt1->bindParam(":media_json", $mediaJson);
+                $stmt1->bindParam(":permalink", $permalink);
 
                 $stmt1->execute();
                 $stmt1 = NULL ;
@@ -183,7 +191,13 @@ namespace com\indigloo\wb\mysql {
             }
         }
 
-        static function add($siteId,$pageId,$title,$raw_content,$html_content,$mediaJson) {
+        static function add($siteId,
+            $pageId,
+            $title,
+            $raw_content,
+            $html_content,
+            $mediaJson,
+            $permalink) {
 
             $dbh = NULL ;
 
@@ -195,9 +209,9 @@ namespace com\indigloo\wb\mysql {
                 $dbh->beginTransaction();
                 $sql1 = 
                     " insert into wb_post(site_id,page_id,title, seo_title,raw_content, ".
-                    " html_content,has_media,media_json) ".
+                    " html_content,has_media,media_json, permalink) ".
                     " values(:site_id,:page_id, :title, :seo_title,:raw_content, ".
-                    " :html_content, :has_media, :media_json) " ;
+                    " :html_content, :has_media, :media_json, :permalink) " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
 
@@ -214,6 +228,7 @@ namespace com\indigloo\wb\mysql {
                 $has_media = (strcmp($mediaJson,'[]') == 0 ) ? 0 : 1 ;
                 $stmt1->bindParam(":has_media", $has_media);
                 $stmt1->bindParam(":media_json", $mediaJson);
+                $stmt1->bindParam(":permalink", $permalink);
 
                 $stmt1->execute();
                 $stmt1 = NULL ;
