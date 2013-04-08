@@ -2,14 +2,17 @@
     // do we have login?
     use \com\indigloo\wb\auth\Login as Login;
     use \com\indigloo\wb\Constants as AppConstants;
+    use \com\indigloo\Configuration as Config;
+
+    $www_host = "http://".Config::getInstance()->get_value("www.host.name") ;
 
     $listUrl = '<li> <a href="{href}">&nbsp;{name} </a></li>' ;
     $params = array();
     
     if(Login::hasSession()) {
-        $params = array("{href}" => "/app/account/logout.php", "{name}" => "Logout") ;
+        $params = array("{href}" => $www_host."/app/account/logout.php", "{name}" => "Logout") ;
     } else {
-         $params = array("{href}" => "/app/account/login.php", "{name}" => "Sign in") ;
+         $params = array("{href}" => $www_host."/app/account/login.php", "{name}" => "Sign in") ;
     }
 
     $loginUrl = str_replace(array_keys($params), array_values($params),$listUrl);

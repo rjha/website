@@ -1,8 +1,8 @@
 <?php
 
 	// define constants
-	define("G_APP_NAME", "website builder");
-    define("G_APP_TAGLINE", "websites for everyone!");
+	define("G_APP_NAME", "indigloo website builder");
+    define("G_APP_TAGLINE", "indigloo - websites for everyone!");
     define("G_CODE_ROOT", "/Users/rjha/code/github");
 
 	define("APP_LIB_PATH", 
