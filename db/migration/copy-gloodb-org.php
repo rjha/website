@@ -6,7 +6,8 @@
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\Util as Util;
-    
+    use \com\indigloo\wb\Formatting ;
+
     use \com\indigloo\wb\dao as Dao ;
 
     error_reporting(-1);
@@ -39,26 +40,25 @@
         return $images ;
     }
 
-    // @todo - this does not work!
-    function remove_script_tag($html) {
-        
-        $doc = new \DOMDocument();
-        @$doc->loadHTML($html);
-        $nodes = $doc->getElementsByTagName("script");
+    function get_gloodb_page_seo_key($oldOrgId,$pageKey) {
+        $connx = from_db_connection();
 
-        foreach($nodes  as $key=>$node) {
-            $node->parentNode->removeChild($node);
-        }
-        
-        $newHtml = '';
-        foreach ($doc->getElementsByTagName('body')->item(0)->childNodes as $child) {
-            $newHtml .= $doc->saveXML($child);
-        }
+        // org_id required
+        // page_key is UNIQUE at org_id level only
+        $sql = "select seo_key from gloo_page where org_id = %d and ident_key = '%s' " ;
+        $sql = sprintf($sql,$oldOrgId,$pageKey);
+        echo " sql = $sql \n" ;
+        $row = MySQL\Helper::fetchRow($connx, $sql); 
 
-        return $newHtml;
+        $key = NULL ;
+        if(!empty($row)) {
+            $key = $row["seo_key"] ;
+        }
+        return $key;
+
     }
   
-    function add_widget_to_page($newOrgId,$widget) {
+    function add_widget_to_page($newOrgId,$widget,$permalink) {
 
         // insert page content
         $row_number = $widget['ui_order'];
@@ -133,23 +133,23 @@
         $postDao = new \com\indigloo\wb\dao\Post();
         $pageId = NULL ;
 
-        // $html = remove_script_tag($html) ;
-
-        $raw_content = $html ;
-        $html_content = $html ;
-        $permalink = NULL;
-
+        // remove script and style tags
+        // most likely script tags have been included
+        // for google adsense.
+        $html = Formatting::strip_script_style_tags($html) ;
+        
+        // do not add extra <BR> here
         $postDao->add($newOrgId,
             $pageId,
             $widget["title"],
-            $raw_content,
-            $html_content,
+            $html,
             $media_json,
-            $permalink);
+            $permalink,
+            false);
 
     }
 
-    function process_page($connx1,$oldOrgId,$newOrgId,$name,$key) {
+    function process_page($connx1,$oldOrgId,$newOrgId,$name,$key,$permalink) {
 
         $name = $connx1->real_escape_string($name);
         $key = $connx1->real_escape_string($key);
@@ -159,20 +159,20 @@
 
         $sql = sprintf($sql,$oldOrgId,$key);
         $widgets = MySQL\Helper::fetchRows($connx1, $sql); 
+        
         foreach($widgets as $widget) {
             // push this widget into new page
-            add_widget_to_page($newOrgId,$widget);
+            add_widget_to_page($newOrgId,$widget,$permalink);
         }
 
     }
 
-
     // start:script
-    // $oldOrgIds = array(1231,1227, 1202,1229,1228,1200,1213,1193) ;
-    $oldOrgIds = array(1193) ;
+    $oldOrgIds = array(1231,1227, 1202,1229,1228,1200,1213,1193) ;
+    // $oldOrgIds = array(1193) ;
     $connx1 = from_db_connection();
     // create a new ORG before running this script
-    $newOrgId = 2 ;
+    $newOrgId = 1 ;
 
     // for each organization
     foreach($oldOrgIds as $oldOrgId) {
@@ -182,8 +182,15 @@
         $pages =  MySQL\Helper::fetchRows($connx1, $sql1);
 
         foreach($pages as $page) {
-            printf("org_id= %d, page= %s, key=%s \n ",$oldOrgId,$page['page_name'],$page['ident_key']);
-            process_page($connx1,$oldOrgId,$newOrgId,$page['page_name'],$page['ident_key']);
+            printf("org_id= %d, page= %s, page_key=%s \n ",$oldOrgId,$page['page_name'],$page['ident_key']);
+            $permalink = NULL ;
+            $page_seo_key = $page["seo_key"] ;
+            if(!empty($page_seo_key) && (strcmp($page_seo_key,"home") != 0)) {
+                $permalink = $page_seo_key ;
+                printf("permalink =%s \n ",$permalink);
+            }
+
+            process_page($connx1,$oldOrgId,$newOrgId,$page['page_name'],$page['ident_key'],$permalink);
         }
     }
 

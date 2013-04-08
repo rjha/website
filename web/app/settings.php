@@ -72,16 +72,15 @@
                      <div class="section">
                        
                         <p class="muted">
-                            Default style is good for a small website. Masonry style is good for
-                            image heavy websites. <br>Blog style is suitable for magazines and
-                            personal blogs. 
+                            Select default for a small website. Masonry is good for image heavy websites
+                            <br>use Blog for magazines and personal blogs. 
                         </p>
                         <form  id="form2"  name="form2" action="<?php echo Url::base() ?>/app/action/site/update-theme.php"  method="POST">  
                             <table class="form-table">
                                 <tr>  
                                     <td> 
                                         <label>
-                                        Set home page style (current :<b> <?php echo $siteDBRow["theme_name"]; ?> </b>)</label>
+                                        Home page style (current :<b> <?php echo $siteDBRow["theme_name"]; ?> </b>)</label>
                                        <select name="theme">
                                         <option value="default">Default</option>
                                         <option value="masonry">Masonry</option>
@@ -105,8 +104,8 @@
                     </div>
                     <div class="section">
                         <p class="muted">
-                            To access this site from your own domain, you should 
-                            add your domain here. <br> You also have to point your DNS
+                            Need to access this site from your own domain?  
+                            Add it here. <br> You also have to point your DNS
                             records to our IP.
 
                         </p>

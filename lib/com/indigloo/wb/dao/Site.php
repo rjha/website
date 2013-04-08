@@ -8,10 +8,10 @@ namespace com\indigloo\wb\dao {
 
     class Site {
 
-        function create($loginId,$name) {
+        function create($loginId,$name,$theme) {
             // avoid case confusion.
             $name = strtolower($name);
-            $siteId = mysql\Site::create($loginId,$name);
+            $siteId = mysql\Site::create($loginId,$name,$theme);
             return $siteId ;
         }
 

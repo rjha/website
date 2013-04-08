@@ -1,0 +1,16 @@
+
+<div class="widget">
+   
+    <a href="~~$view->href~"><h3> ~~$view->title~ </h3> </a>
+         
+        ~if($view->hasImage) {~
+	    <div class="photo">
+	        <img src="~~$view->srcImage~" alt="~~$view->title~" />
+	    </div>
+        ~}~
+
+	    <div class="post">
+	    	~~$view->content~ 
+	    </div>
+	<div class="band" style="height:11px;background-color:white;"> &nbsp;</div>
+</div>

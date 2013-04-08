@@ -74,8 +74,9 @@
                             
                             <tr>
                                 <td>
-                                   <p class="muted">You need to provide the name of your website. <br>
-                                    Only letters and numbers are allowed. <br>
+                                   <p class="muted">
+
+                                    Only letters and numbers are allowed.
                                     This name should not be in use.
                                     </p>
                                 </td>
@@ -87,7 +88,24 @@
                                     <input type="text" class="required" name="name" value="<?php echo $sticky->get('name'); ?>" />
                                 </td>
                             </tr>
-                            
+
+                            <tr>
+                                <td>
+                                     <p class="muted">
+                                        Select default for a small website. Masonry is good for
+                                        image heavy websites.
+                                    </p>
+                                    <label> Home page style </label>
+                                    
+                                    <select name="theme">
+                                        <option value="default">Default</option>
+                                        <option value="masonry">Masonry</option>
+                                        <option value="blog">Blog</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+
                             <tr>
                                 <td>
                                     <div class="form-actions">

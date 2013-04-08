@@ -38,12 +38,10 @@
 
         $postDao = new \com\indigloo\wb\dao\Post();
         $raw_content = $fvalues["content"];
-        $html_content = nl2br($raw_content);
 
         $postDao->add($siteId,$fvalues["page_id"],
                             $fvalues["title"],
                             $raw_content,
-                            $html_content,
                             $fvalues["media_json"]);
 
          

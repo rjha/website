@@ -9,7 +9,7 @@ namespace com\indigloo\wb\html {
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\wb\auth\Login as Login ;
     use \com\indigloo\wb\Constants as AppConstants;
-    
+
     class Application {
 
      static function getHelp($key) {
@@ -127,7 +127,7 @@ namespace com\indigloo\wb\html {
             return $html ;
         }
 
-         static function getDomainsTable($siteId,$rows) {
+        static function getDomainsTable($siteId,$rows) {
             if(empty($rows)) { return "" ; }
 
             $html = NULL ;
@@ -211,9 +211,8 @@ namespace com\indigloo\wb\html {
             $view->id = $postDBRow['id'] ;
              
           	$view->hasImage = false ;
-            // does the post belong to a page?
+            
             if(!empty($postDBRow["permalink"])) {
-                // this should be post.page.title
                 $view->href = Url::base()."/".$postDBRow["permalink"] ; 
             } else {
                 $view->href = Url::base()."/post/".$postDBRow["id"]."/".$postDBRow["seo_title"];
@@ -228,7 +227,38 @@ namespace com\indigloo\wb\html {
                 $view->hasImage = true ;
             }
 
-            $template = ($view->hasImage) ? "/fragments/tiles/image.tmpl" : "/fragments/tiles/text.tmpl";
+            $template = ($view->hasImage) ? "/fragments/post/image-tile.tmpl" : "/fragments/post/text-tile.tmpl";
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getPostWidget($postDBRow) {
+
+            $html = NULL ;
+            $view = new \stdClass;
+
+            $view->title = $postDBRow['title'] ;
+            $view->id = $postDBRow['id'] ;
+            $view->content = $postDBRow["excerpt"];
+            $view->hasImage = false ;
+            
+            if(!empty($postDBRow["permalink"])) {
+                $view->href = Url::base()."/".$postDBRow["permalink"] ; 
+            } else {
+                $view->href = Url::base()."/post/".$postDBRow["id"]."/".$postDBRow["seo_title"];
+            }
+            
+            $strMediaJson = $postDBRow['media_json'];
+            $imageObjs = json_decode($strMediaJson);
+
+            if(sizeof($imageObjs) > 0 ) {
+                $imgv = self::convertImageJsonObj($imageObjs[0]);
+                $view->srcImage = $imgv["tsource"]; 
+                $view->hasImage = true ;
+            }
+
+            $template =  "/fragments/post/widget.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;
 
@@ -236,7 +266,7 @@ namespace com\indigloo\wb\html {
 
         static function getPost($postDBRow) {
             $html = NULL ;
-            $template = "/fragments/post/post.tmpl" ;
+            $template = "/fragments/post/full.tmpl" ;
             $view = new \stdClass;
             
             $view->hasImage = false ;

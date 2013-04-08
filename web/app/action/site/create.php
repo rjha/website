@@ -32,6 +32,8 @@
         
         $fhandler = new Form\Handler('form1', $_POST);
         $fhandler->addRule('name', 'Name', array('required' => 1));
+        $fhandler->addRule('theme', 'Home page style', array('required' => 1));
+
         
         // get form values
         $fvalues = $fhandler->getValues();
@@ -47,7 +49,7 @@
         }
 
         $siteDao = new \com\indigloo\wb\dao\Site();
-        $siteId = $siteDao->create($loginId,$fvalues["name"]) ;
+        $siteId = $siteDao->create($loginId,$fvalues["name"],$fvalues["theme"]) ;
 
         // success
         $gWeb->store(AppConstants::JUST_BORN_SITE_ID,$siteId);

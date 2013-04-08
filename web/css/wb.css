@@ -751,7 +751,22 @@
     
     /* bootstrap pager - make rectangular */
     
-    
+    .pager {
+        margin: 41px 0px 0px 0px;
+    }
+
+    .pager li { 
+        padding-right:20px;
+        line-height: 31px;
+    }
+
+    .pager a {
+        font-size:28px;
+        border-radius: 0px;
+        border:0 ;
+        padding:14px;
+    }
+
     .page-header {
         padding-bottom: 29px;
         border-bottom: 0;

@@ -110,6 +110,12 @@ alter table wb_page add constraint unique uniq_page_key(site_id,random_key);
 alter table wb_page add constraint unique uniq_page_name(site_id,seo_title_hash);
 
 
+--
+-- UNIQUE constraint on nullable columns have performance penalty
+-- if we wish to make permalink as unique then we need to insert 
+-- a unique value (perhaps post_id?) in default permalink column
+-- 
+
 DROP TABLE IF EXISTS  wb_post ;
 CREATE TABLE  wb_post  (
    id  int(11) NOT NULL AUTO_INCREMENT,
@@ -122,6 +128,7 @@ CREATE TABLE  wb_post  (
    post_type int not null,
    raw_content text,
    html_content text,
+   excerpt varchar(1024),
    has_media int default 0,
    media_json text ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -154,7 +161,7 @@ CREATE TABLE  wb_media  (
 
 DROP TRIGGER IF EXISTS  trg_add_post ;
 DELIMITER //
-CREATE  TRIGGER trg_add_post BEFORE INSERT ON wb_post
+CREATE  TRIGGER trg_add_post AFTER INSERT ON wb_post
    FOR EACH ROW
    BEGIN
      DECLARE p_seo_title  varchar(320) ;
@@ -162,6 +169,7 @@ CREATE  TRIGGER trg_add_post BEFORE INSERT ON wb_post
      IF NEW.page_id is not null then
       update wb_page set num_post = num_post +1 where id = NEW.page_id ;
      END IF;
+
   END //
 
 DELIMITER ;

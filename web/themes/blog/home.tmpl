@@ -13,7 +13,7 @@
     $postDao = new \com\indigloo\wb\dao\Post();
     $qparams = Url::getRequestQueryParams();
 
-    $pageSize = 20;
+    $pageSize = 11;
     $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $paginator->setBaseConvert(false);
 
@@ -31,7 +31,7 @@
         $startId = $postDBRows[0]["id"] ;
         $endId =   $postDBRows[$gNumRecords-1]["id"] ;
         foreach($postDBRows as $postDBRow) {
-            $pageHtml .= AppHtml::getPostTile($postDBRow);
+            $pageHtml .= AppHtml::getPostWidget($postDBRow);
         }
     }else {
         $helpHtml = AppHtml::getHelp("default.post.create");
@@ -63,68 +63,21 @@
         <div class="container">
 
             <div class="row">
-                <div class="span12">
+                <div class="span8 offset2">
                     <?php echo $helpHtml ; ?>
-                    <div id="tiles">
+                    <div id="posts">
                         <?php echo $pageHtml ; ?>
                     </div>
                 
                 </div>
             </div> <!-- row:1 -->
-            <div id="scroll-loading"> </div>
+            
 
         </div>   <!-- container -->
         
         <div class="pt20">
             <?php $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>
         </div>
-        
-
-        <?php echo \com\indigloo\wb\util\Asset::version("/js/wb-bundle.js"); ?>
-         <script type="text/javascript">
-
-            $(function(){
-
-                var $container = $('#tiles');
-
-                $container.imagesLoaded(function(){
-                    $container.isotope({ itemSelector: '.tile', layoutMode: 'masonry'});
-                });
-
-                /*
-                $container.infinitescroll(
-                    {
-                        navSelector     : '.pager',
-                        nextSelector    : '.pager a[rel="next"]',
-                        itemSelector : '.tile',
-                        bufferPx : 30,
-
-                        loading : {
-                            selector : "#scroll-loading",
-                            img : "/css/asset/wb/round_loader.gif",
-                            msgText: "<em>Please wait. Loading more items...</em>",
-                            finishedMsg : "<b> You have reached the end of this page </b>",
-                            speed: "slow"
-
-                        }
-
-                    },
-
-                    function( newElements ) {
-                         // hide new items while they are loading
-                        var $newElems = $(newElements).css({ opacity: 0 });
-                        $newElems.imagesLoaded(function(){
-                            $newElems.css({ opacity: 1 });
-                            $container.isotope('appended', $newElems);
-                            $("#infscr-loading").fadeOut("slow");
-                        });
-
-                    }
-                ); */
-
-            });
-
-        </script>
 
          <div class="row">
             <div class="span11 offset1" style="border-bottom:1px solid #d5d5d5;padding-bottom:20px;">&nbsp;</div>

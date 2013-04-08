@@ -5,6 +5,7 @@ namespace com\indigloo\wb\dao {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\wb\mysql as mysql;
+    use \com\indigloo\wb\Formatting as Formatting ;
 
     class Post {
 
@@ -33,12 +34,55 @@ namespace com\indigloo\wb\dao {
             return $rows ;
         }
 
-        function update($siteId,$postId,$title,$raw_content,$html_content,$mediaJson,$permalink=NULL) {
-            mysql\Post::update($siteId,$postId,$title,$raw_content,$html_content,$mediaJson,$permalink) ;
+        function update($siteId,
+            $postId,
+            $title,
+            $raw_content,
+            $mediaJson,
+            $brify=true) {
+
+            $html_content = ($brify === true) ? nl2br($raw_content) : $raw_content;
+            $excerpt = Formatting::wp_trim_words($html_content);
+
+            $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
+            $has_media = (strcmp($mediaJson,'[]') == 0 ) ? 0 : 1 ;
+            
+            mysql\Post::update($siteId,
+                $postId,
+                $title,
+                $seo_title,
+                $raw_content,
+                $html_content,
+                $excerpt,
+                $mediaJson,
+                $has_media) ;
         }
 
-        function add($siteId,$pageId,$title,$raw_content,$html_content,$mediaJson,$permalink=NULL) {
-            mysql\Post::add($siteId,$pageId,$title,$raw_content,$html_content,$mediaJson,$permalink) ;
+        function add($siteId,
+            $pageId,
+            $title,
+            $raw_content,
+            $mediaJson,
+            $permalink=NULL,
+            $brify=true) {
+
+            $html_content = ($brify === true) ? nl2br($raw_content) : $raw_content;
+            // 55 words excerpts for posts
+            $excerpt = Formatting::wp_trim_words($html_content);
+            
+            $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
+            $has_media = (strcmp($mediaJson,'[]') == 0 ) ? 0 : 1 ;
+            
+            mysql\Post::add($siteId,
+                $pageId,
+                $title,
+                $seo_title,
+                $raw_content,
+                $html_content,
+                $excerpt,
+                $mediaJson,
+                $has_media,
+                $permalink) ;
         }
 
         function delete($siteId,$postId) {
