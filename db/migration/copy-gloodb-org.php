@@ -9,6 +9,7 @@
     use \com\indigloo\wb\Formatting ;
 
     use \com\indigloo\wb\dao as Dao ;
+    use \com\indigloo\util\StringUtil ;
 
     error_reporting(-1);
     set_exception_handler('offline_exception_handler');
@@ -39,26 +40,8 @@
        
         return $images ;
     }
-
-    function get_gloodb_page_seo_key($oldOrgId,$pageKey) {
-        $connx = from_db_connection();
-
-        // org_id required
-        // page_key is UNIQUE at org_id level only
-        $sql = "select seo_key from gloo_page where org_id = %d and ident_key = '%s' " ;
-        $sql = sprintf($sql,$oldOrgId,$pageKey);
-        echo " sql = $sql \n" ;
-        $row = MySQL\Helper::fetchRow($connx, $sql); 
-
-        $key = NULL ;
-        if(!empty($row)) {
-            $key = $row["seo_key"] ;
-        }
-        return $key;
-
-    }
   
-    function add_widget_to_page($newOrgId,$widget,$permalink) {
+    function add_widget_to_page($newOrgId,$pageId,$widget,$permalink) {
 
         // insert page content
         $row_number = $widget['ui_order'];
@@ -131,13 +114,12 @@
         }
 
         $postDao = new \com\indigloo\wb\dao\Post();
-        $pageId = NULL ;
-
+        
         // remove script and style tags
         // most likely script tags have been included
         // for google adsense.
         $html = Formatting::strip_script_style_tags($html) ;
-        
+
         // do not add extra <BR> here
         $postDao->add($newOrgId,
             $pageId,
@@ -149,9 +131,8 @@
 
     }
 
-    function process_page($connx1,$oldOrgId,$newOrgId,$name,$key,$permalink) {
+    function process_page($connx1,$oldOrgId,$newOrgId,$key,$permalink) {
 
-        $name = $connx1->real_escape_string($name);
         $key = $connx1->real_escape_string($key);
 
         $sql = " select * from gloo_block_data where org_id = %d and page_key = '%s'  ".
@@ -160,13 +141,31 @@
         $sql = sprintf($sql,$oldOrgId,$key);
         $widgets = MySQL\Helper::fetchRows($connx1, $sql); 
         
+        // create a new page
+        $pageDao = new \com\indigloo\wb\dao\Page();
+        $pageId = NULL ;
+
+        if(!empty($permalink)) {
+            $page_title = StringUtil::convertKeyToName($permalink);
+            printf("create page with title = %s",$page_title);
+            flush();
+            $pageId = $pageDao->create($newOrgId,$page_title);
+        }
+
         foreach($widgets as $widget) {
             // push this widget into new page
-            add_widget_to_page($newOrgId,$widget,$permalink);
+            add_widget_to_page($newOrgId,$pageId,$widget,$permalink);
+            flush();
         }
 
     }
 
+    // prereq:
+    // 28863
+    // 28872
+    // 28858
+    // 28860
+    //
     // start:script
     $oldOrgIds = array(1231,1227, 1202,1229,1228,1200,1213,1193) ;
     // $oldOrgIds = array(1193) ;
@@ -190,7 +189,7 @@
                 printf("permalink =%s \n ",$permalink);
             }
 
-            process_page($connx1,$oldOrgId,$newOrgId,$page['page_name'],$page['ident_key'],$permalink);
+            process_page($connx1,$oldOrgId,$newOrgId,$page['ident_key'],$permalink);
         }
     }
 

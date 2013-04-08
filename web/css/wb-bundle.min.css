@@ -1039,8 +1039,8 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .user-menu .item{float:left;border-bottom:2px solid #dd4b39;padding:0 4px;margin:1px 12px 0}
 .user-menu .item a{color:#333;text-decoration:none}
 .user-menu .item a:hover{color:#b1b1b1;text-decoration:none}
-.page-menu{line-height:27px;padding:30px 10px 30px 20px;z-index:102;background:white}
-.page-menu .item{font-size:19px;padding:5px;margin:1px 12px 0;font-family:Georgia,"Times New Roman",Times,serif}
+.page-menu{line-height:22px;padding:30px 10px 30px 20px;z-index:102;background:white}
+.page-menu .item{padding:5px}
 .page-menu .item a{text-decoration:none}
 .page-menu .item a:hover{text-decoration:underline}
 .btn-flat{text-shadow:none;padding:4px 12px 4px 12px;color:#333;background:white;font-family:arial,sans-serif;font-size:13px;border:1px solid #cecece}

@@ -533,17 +533,14 @@
 
     /* default page menu */
     .page-menu {
-        line-height: 27px;
+        line-height: 22px;
         padding:30px 10px 30px 20px;
         z-index: 102;
         background: white;
     }
 
     .page-menu .item {
-        font-size:19px; 
-        padding: 5px;
-        margin: 1px 12px 0;
-        font-family: Georgia, "Times New Roman", Times, serif ;
+        padding: 5px; 
     }
 
     .page-menu .item a {
