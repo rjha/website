@@ -39,9 +39,11 @@ namespace com\indigloo\wb\dao {
             $title,
             $raw_content,
             $mediaJson,
-            $brify=true) {
-
-            $html_content = ($brify === true) ? nl2br($raw_content) : $raw_content;
+            $autop=true) {
+            
+            $html_content = 
+                ($autop === true) ? Formatting::autop($raw_content) : $raw_content;
+            
             $excerpt = Formatting::wp_trim_words($html_content);
 
             $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
@@ -64,9 +66,11 @@ namespace com\indigloo\wb\dao {
             $raw_content,
             $mediaJson,
             $permalink=NULL,
-            $brify=true) {
+            $autop=true) {
 
-            $html_content = ($brify === true) ? nl2br($raw_content) : $raw_content;
+             $html_content = 
+                ($autop === true) ? Formatting::autop($raw_content) : $raw_content;
+            
             // 55 words excerpts for posts
             $excerpt = Formatting::wp_trim_words($html_content);
             
