@@ -120,14 +120,14 @@
         // for google adsense.
         $html = Formatting::strip_script_style_tags($html) ;
 
-        // do not add extra <BR> here
+        // rawData = true 
         $postDao->add($newOrgId,
             $pageId,
             $widget["title"],
             $html,
             $media_json,
             $permalink,
-            false);
+            true);
 
     }
 

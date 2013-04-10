@@ -39,10 +39,11 @@ namespace com\indigloo\wb\dao {
             $title,
             $raw_content,
             $mediaJson,
-            $autop=true) {
+            $rawData=false) {
             
-            $html_content = 
-                ($autop === true) ? Formatting::autop($raw_content) : $raw_content;
+            $parser = new \Textile();
+            $html_content = ($rawData === true) ?  
+                $raw_content : Formatting::transform_content($raw_content);
             
             $excerpt = Formatting::wp_trim_words($html_content);
 
@@ -66,11 +67,11 @@ namespace com\indigloo\wb\dao {
             $raw_content,
             $mediaJson,
             $permalink=NULL,
-            $autop=true) {
-
-             $html_content = 
-                ($autop === true) ? Formatting::autop($raw_content) : $raw_content;
+            $rawData=false) {
             
+            $html_content = ($rawData === true) ?  
+                $raw_content : Formatting::transform_content($raw_content);
+           
             // 55 words excerpts for posts
             $excerpt = Formatting::wp_trim_words($html_content);
             

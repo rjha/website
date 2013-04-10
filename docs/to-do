@@ -1,17 +1,13 @@
 
-+ remove empty tags in text area
- - autop dependent on a checkbox (otherwise - get Raw)
-
 + 4bubbles.com data
++ dump old gloodb content on disk
++ script to dump wb_site data on disk
++ move all old s3 images to media1.indigloo.net bucket
 
 + category/tags
 + Archive link for all pages/posts 
 + email on site create
 + post to FB wall.
-
-+ toolbar styling
-
 + site : Add a tag line
 + meta titles and description
-
 + editor - text box - pull down to reveal bigger size.

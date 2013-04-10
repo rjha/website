@@ -13,6 +13,11 @@
     try{
 
         $www_host = Config::getInstance()->get_value("www.host.name") ;
+          
+        if(strcmp("127.0.0.1",$_SERVER["REMOTE_ADDR"]) != 0 ) {
+           echo "login hack only works from local machine" ;
+           exit ;
+        }
 
         // login only works from www.host.name domain
         if(strcmp($www_host,strtolower($_SERVER["HTTP_HOST"])) != 0 ) {

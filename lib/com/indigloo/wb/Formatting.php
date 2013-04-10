@@ -12,12 +12,28 @@ namespace com\indigloo\wb  {
 
     class Formatting {
 
-        static function autop($text) {
-            $text = self::wp_autop($text) ;
-            $text = self::wp_make_clickable($text);
 
+        static function transform_content($text) {
+
+            // look for __MAGIK_RAW__ in the beginning
+            $pos1 = strpos($text,"__") ;
+            if($pos1 !== false) {
+                $cookie = substr($text,$pos1,13);
+                if(strcmp($cookie,"__MAGIK_RAW__") == 0 ) {
+                    // do not do anything
+                    $text = substr($text,$pos1+13);
+                    return $text ;
+                }
+            }
+
+            // no magic cookie
+            // we allow textile markup in our content.
+            $text = self::wp_make_clickable($text);
+            $parser = new \Textile();
+            $text = $parser->textileThis($text);
             return $text ;
         }
+
         /*  
          * 
          * Replaces double line-breaks with paragraph elements. 
@@ -84,7 +100,7 @@ namespace com\indigloo\wb  {
             $pee = preg_replace('!<p>\s*(</?' . $allblocks . '[^>]*>)!', "$1", $pee);
             $pee = preg_replace('!(</?' . $allblocks . '[^>]*>)\s*</p>!', "$1", $pee);
             if ( $br ) {
-                $pee = preg_replace_callback('/<(script|style).*?<\/\\1>/s', array(self,'wp_autop_newline_preservation_helper'), $pee);
+                $pee = preg_replace_callback('/<(script|style).*?<\/\\1>/s', array('self','wp_autop_newline_preservation_helper'), $pee);
                 $pee = preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $pee); // optionally make line breaks
                 $pee = str_replace('<WPPreserveNewline />', "\n", $pee);
             }
@@ -192,8 +208,8 @@ namespace com\indigloo\wb  {
                     // The regex is a non-anchored pattern and does not have a single fixed starting character.
                     // Tell PCRE to spend more time optimizing since, when used on a page load, it will probably be used several times.
 
-                    $ret = preg_replace_callback($url_clickable, array(self,'wp_make_url_clickable_cb'), $ret );
-                    $ret = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', array(self,'wp_make_email_clickable_cb'), $ret );
+                    $ret = preg_replace_callback($url_clickable, array('self','wp_make_url_clickable_cb'), $ret );
+                    $ret = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', array('self','wp_make_email_clickable_cb'), $ret );
 
                     $ret = substr( $ret, 1, -1 ); // Remove our whitespace padding.
                     $r .= $ret;
