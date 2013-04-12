@@ -20,15 +20,21 @@
                
                 $originalURI = $_SERVER['REQUEST_URI'];
                 $requestURI = $originalURI ;
-
+                
                 $pos = strpos($originalURI, '?');
                 $qpart = NULL ;
-
+                
                 if($pos !== false) {
                     // remove the part after ? from Url
                     // routing does not depends on query parameters
                     $requestURI = substr($originalURI,0,$pos);
                     $qpart = substr($originalURI, $pos+1);
+                }
+
+                if((strlen($requestURI) > 1) 
+                    && (strcmp($requestURI[strlen($requestURI)-1], "/") == 0 )) {
+                    // remove trailing slash?
+                    $requestURI = rtrim($requestURI,"/") ;
                 }
 
                 $route = $this->getRoute($requestURI);
