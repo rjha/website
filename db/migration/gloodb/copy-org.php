@@ -18,7 +18,7 @@
         $connx = new \mysqli("127.0.0.1", "gloo", "osje8L", "gloodb") ;
         return $connx ;
     }
-
+    
     function get_images($html) {
          
         $doc = new \DOMDocument();
@@ -97,12 +97,12 @@
             foreach($images as $image) {
                 $element = new \stdClass ;
                 $element->srcImage = $image ;
-                $element->store = "inline" ;
+                $element->display = "inline" ;
+                $element->store = "external" ;
                 $element->type = "image" ;
                 $elements[] = $element ;
             }
             
-            $has_media = (sizeof($elements) > 0 ) ? 1 : 0 ;
             $media_json = json_encode($elements);
             //remove escaping of solidus done by PHP 5.3 json_encode
             $media_json = str_replace("\/","/",$media_json);
@@ -165,7 +165,11 @@
     // 28872
     // 28858
     // 28860
-    //
+    // before reloading...
+    // delete from wb_post where site_id = 1;
+    // delete from wb_page where site_id = 1 and seo_title <> 'home' ;
+    // 
+
     // start:script
     $oldOrgIds = array(1231,1227, 1202,1229,1228,1200,1213,1193) ;
     // $oldOrgIds = array(1193) ;
