@@ -168,7 +168,7 @@
                     uploadButtonText : 'Add photo', 
                     
                     onComplete: function(id, fileName, responseJSON) {
-                        webgloo.media.addImage(responseJSON.mediaVO);
+                        webgloo.media.addImage(responseJSON.mediaVO.id,responseJSON.mediaVO);
                     },  
 
                     showMessage: function(message){ 

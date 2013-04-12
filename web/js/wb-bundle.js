@@ -16549,7 +16549,7 @@ webgloo.media = {
         var strImagesJson = frm.media_json.value ;
         var images = JSON.parse(strImagesJson);
         for(i = 0 ;i < images.length ; i++) {
-            webgloo.media.addImage(images[i]);
+            webgloo.media.addImage(i,images[i]);
         }
 
     },
@@ -16586,9 +16586,7 @@ webgloo.media = {
         $("#image-"+id).remove();
     },
 
-    addImage : function(mediaVO) {
-        
-        webgloo.media.images[mediaVO.id] = mediaVO ;
+    addImage : function(index,mediaVO) {
 
         switch(mediaVO.store) {
 
@@ -16596,12 +16594,23 @@ webgloo.media = {
                 mediaVO.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
                 var buffer = webgloo.media.settings.imageDiv.supplant(mediaVO);
                 $(webgloo.media.settings.previewDiv).append(buffer);
+                webgloo.media.images[mediaVO.id] = mediaVO ;
+
                 break ;
 
+            case "external" :
+                mediaVO.srcImage = mediaVO.srcImage ;
+                mediaVO.id = index ;
+                var buffer = webgloo.media.settings.imageDiv.supplant(mediaVO);
+                $(webgloo.media.settings.previewDiv).append(buffer);
+                webgloo.media.images[mediaVO.id] = mediaVO ;
+                break ;
+                
             case "local" :
                 mediaVO.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
                 var buffer = webgloo.media.settings.imageDiv.supplant(mediaVO);
                 $(webgloo.media.settings.previewDiv).append(buffer);
+                webgloo.media.images[mediaVO.id] = mediaVO ;
                 break ;
 
             default:

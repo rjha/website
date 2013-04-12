@@ -279,7 +279,7 @@ namespace com\indigloo\wb\html {
                
                 foreach($images as $image) {
                     /* do not process inline images for post */
-                    if(strcmp($image->store,'inline') != 0 ) {
+                    if(strcmp($image->display,'inline') != 0 ) {
                         $imgv = self::convertImageJsonObj($image);
                         array_push($view->images,$imgv);
                     }
@@ -297,7 +297,7 @@ namespace com\indigloo\wb\html {
         static function convertImageJsonObj($jsonObj) {
             $imgv = array();
             /* inline images are part of post content */
-            if($jsonObj->store == 'inline') {
+            if($jsonObj->store == 'external') {
                 $imgvname["name"] = $jsonObj->srcImage ;
                 $imgv["tname"] = $jsonObj->srcImage ;
                 $imgv["source"] = $jsonObj->srcImage ;
