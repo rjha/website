@@ -16528,6 +16528,7 @@ webgloo.Ajax = {
 webgloo.media = {
     images : {} ,
     debug : false,
+    counter : 0 ,
 
     init : function (options) {
          /* @imp define all properties that we wish to override */
@@ -16549,7 +16550,7 @@ webgloo.media = {
         var strImagesJson = frm.media_json.value ;
         var images = JSON.parse(strImagesJson);
         for(i = 0 ;i < images.length ; i++) {
-            webgloo.media.addImage(i,images[i]);
+            webgloo.media.addImage(images[i]);
         }
 
     },
@@ -16584,13 +16585,15 @@ webgloo.media = {
         var id = $(linkObj).attr("id");
         var imageId = "#image-" +id ;
         $("#image-"+id).remove();
+        webgloo.media.counter-- ;
     },
 
-    addImage : function(index,mediaVO) {
+    addImage : function(mediaVO) {
 
         switch(mediaVO.store) {
 
             case "s3" :
+                webgloo.media.counter++ ;
                 mediaVO.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
                 var buffer = webgloo.media.settings.imageDiv.supplant(mediaVO);
                 $(webgloo.media.settings.previewDiv).append(buffer);
@@ -16599,14 +16602,16 @@ webgloo.media = {
                 break ;
 
             case "external" :
+                webgloo.media.counter++ ;
                 mediaVO.srcImage = mediaVO.srcImage ;
-                mediaVO.id = index ;
+                mediaVO.id = "ext-" + webgloo.media.counter ;
                 var buffer = webgloo.media.settings.imageDiv.supplant(mediaVO);
                 $(webgloo.media.settings.previewDiv).append(buffer);
                 webgloo.media.images[mediaVO.id] = mediaVO ;
                 break ;
                 
             case "local" :
+                webgloo.media.counter++ ;
                 mediaVO.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
                 var buffer = webgloo.media.settings.imageDiv.supplant(mediaVO);
                 $(webgloo.media.settings.previewDiv).append(buffer);
