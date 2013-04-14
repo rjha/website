@@ -83,7 +83,9 @@
 
 
     // start:script 
-
+    // delete from wb_post where site_id = 1;
+    // delete from wb_page where site_id = 1 and seo_title <> 'home' ;
+    
     $doc  = NULL ;
     $siteId = 2 ;
     $title = NULL ;

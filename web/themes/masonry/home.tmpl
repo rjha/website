@@ -13,7 +13,7 @@
     $postDao = new \com\indigloo\wb\dao\Post();
     $qparams = Url::getRequestQueryParams();
 
-    $pageSize = 20;
+    $pageSize = 29;
     $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $paginator->setBaseConvert(false);
 
@@ -96,12 +96,11 @@
                 $container.imagesLoaded(function(){
                     $container.isotope({ itemSelector: '.tile', layoutMode: 'masonry'});
                 });
-
                 /*
                 $container.infinitescroll(
                     {
                         navSelector     : '.pager',
-                        nextSelector    : '.pager a[rel="next"]',
+                        nextSelector    : '.pager a[rel*="next"]',
                         itemSelector : '.tile',
                         bufferPx : 30,
 

@@ -53,7 +53,7 @@ namespace com\indigloo\wb\html {
 
         static function getPageMenu($gSiteView,$menuRows) {
             
-            if(strcmp($gSiteView->theme,"blog") == 0 ) { return "" ;}
+            if(strcmp($gSiteView->theme,"default") != 0 ) { return "" ;}
             if(sizeof($menuRows) <= 1 ) {  return "" ;}
             
             $html = NULL ;
@@ -255,7 +255,7 @@ namespace com\indigloo\wb\html {
 
             if(sizeof($imageObjs) > 0 ) {
                 $imgv = self::convertImageJsonObj($imageObjs[0]);
-                $view->srcImage = $imgv["tsource"]; 
+                $view->srcImage = $imgv["source"]; 
                 $view->hasImage = true ;
             }
 
@@ -508,8 +508,9 @@ namespace com\indigloo\wb\html {
             $view->hasImage = false ;
 
             if(!empty($metaPostRow)) {
+                
                 $excerpt = $metaPostRow["excerpt"];
-                if(!empty($excerpt)) {
+                if(!Util::tryEmpty($excerpt)) {
                     $view->hasDescription = true ;
                     $excerpt = trim($excerpt);
                     $view->description = Util::abbreviate($excerpt,160) ;
@@ -539,7 +540,8 @@ namespace com\indigloo\wb\html {
 
             if(!empty($metaPostRow)) {
                 $excerpt = $metaPostRow["excerpt"];
-                if(!empty($excerpt)) {
+
+                if(!Util::tryEmpty($excerpt)) {
                     $view->hasDescription = true ;
                     $excerpt = trim($excerpt);
                     $view->description = Util::abbreviate($excerpt,160) ;

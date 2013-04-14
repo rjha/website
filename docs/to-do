@@ -1,14 +1,29 @@
 
 + 4bubbles.com data
++ meta titles and description
++ site : Add a tag line
++ post : custom meta description
++ page : custom meta description
+
++ fix bug : excerpt - should not contain html entities
++ add provision for : facebook comments on posts.
++ fix issue for : pagination + 2 parameters
+(ideally we should only have one called "gpage")
+(Q:add prev and next link everywhere?)
+(for the moment added nofollow to pagination links)
+
+
+
 + dump old gloodb content on disk
 + script to dump wb_site data on disk
 + move all old s3 images to media1.indigloo.net bucket
-+ meta titles and description
+
+
 
 + category/tags
 + Archive link for all pages/posts 
 + email on site create
 + post to FB wall.
-+ site : Add a tag line
+
 
 + editor - text box - pull down to reveal bigger size.
