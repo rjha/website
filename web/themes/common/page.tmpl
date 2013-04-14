@@ -24,15 +24,20 @@
     $gNumPosts = sizeof($postDBRows);
 
     // page title + links in menu
+
     $menuDBRows = $pageDao->getLatestTitles($siteId,10);
-    $menuHtml = AppHtml::getPageMenu($menuDBRows);
+    $menuHtml = AppHtml::getPageMenu($gSiteView,$menuDBRows);
      
     $pageHtml = "" ;
-    
+    $postExcerpt = NULL ;
+    $metaPostRow = NULL ;
+
     if($gNumPosts > 0) {
+        $metaPostRow = $postDBRows[0];
         foreach($postDBRows as $postDBRow) {
             $pageHtml .= AppHtml::getPost($postDBRow);
         }
+
     } else {
         // help content
         $pageHtml = AppHtml::getHelp("default.post.create");
@@ -49,7 +54,9 @@
 
     $toolbar_options = array("page_id" => $gPageId);
     
-
+    // meta tags
+    $metaHtml = AppHtml::getPageMetaData($pageDBRow,$metaPostRow);
+     
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +64,7 @@
 
     <head>
         <title> <?php echo $pageDBRow["title"] ?> </title>
-        <?php include("meta.inc") ?>
+        <?php echo $metaHtml; ?>
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
 

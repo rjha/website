@@ -41,6 +41,12 @@
     AppConstants::TOOLBAR_NEW_POST 
     | AppConstants::TOOLBAR_SETTINGS ;
 
+    // meta tags
+    $siteDao = new \com\indigloo\wb\dao\Site();
+    $siteDBRow = $siteDao->getOnId($siteId);
+    $metaHtml = AppHtml::getSiteMetaData($gSiteView,$siteDBRow);
+     
+
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +54,7 @@
 
     <head>
         <title><?php echo $gSiteView->name ; ?></title>
-        <?php include(APP_WEB_DIR."/themes/common/meta.inc") ?>
+        <?php echo $metaHtml; ?>
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
 

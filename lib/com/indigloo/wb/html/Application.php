@@ -51,8 +51,9 @@ namespace com\indigloo\wb\html {
             return $html ;
         }
 
-        static function getPageMenu($menuRows) {
-             
+        static function getPageMenu($gSiteView,$menuRows) {
+            
+            if(strcmp($gSiteView->theme,"blog") == 0 ) { return "" ;}
             if(sizeof($menuRows) <= 1 ) {  return "" ;}
             
             $html = NULL ;
@@ -278,8 +279,11 @@ namespace com\indigloo\wb\html {
             if(!empty($images) && (sizeof($images) > 0)) {
                
                 foreach($images as $image) {
+
                     /* do not process inline images for post */
-                    if(strcmp($image->display,'inline') != 0 ) {
+                    /* to exclude, display property is present and is equal to inline  */
+                    
+                    if(! (property_exists($image,'display') && (strcmp($image->display,'inline') == 0))) {
                         $imgv = self::convertImageJsonObj($image);
                         array_push($view->images,$imgv);
                     }
@@ -292,6 +296,22 @@ namespace com\indigloo\wb\html {
            
             $html = Template::render($template,$view);
             return $html ;
+        }
+
+        static function getPostMetaImage($postDBRow) {
+            // get media
+            $imagesJson = $postDBRow["media_json"];
+            $images = json_decode($imagesJson);
+            $imgv = array();
+
+            if(!empty($images) && (sizeof($images) > 0)) {
+                foreach($images as $image) {
+                    $imgv = self::convertImageJsonObj($image);
+                    break ;
+                }
+            }
+
+            return $imgv ; 
         }
 
         static function convertImageJsonObj($jsonObj) {
@@ -453,6 +473,86 @@ namespace com\indigloo\wb\html {
             $html = NULL ;
             $template = "/fragments/app/banner.tmpl" ;
             $html = Template::render($template,$gSiteView);
+            return $html ;
+        }
+
+        static function getSiteMetaData($gSiteView,$siteDBRow) {
+            $html = NULL ;
+            $view = new \stdClass ;
+            $template = "/fragments/generic/meta-tags.tmpl" ;
+            
+            $view->hasTitle = true ;
+            $view->hasDescription = false ;
+            $view->hasImage = false ;
+
+            $view->title = (empty($siteDBRow["meta_title"])) ? $gSiteView->name : $siteDBRow["meta_title"];
+
+            if(!empty($siteDBRow["meta_description"])) {
+                $view->hasDescription = true ;
+                $view->description = $siteDBRow["meta_description"] ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getPageMetaData($pageDBRow,$metaPostRow) {
+            $html = NULL ;
+            $view = new \stdClass ;
+            $template = "/fragments/generic/meta-tags.tmpl" ;
+
+            $view->hasTitle = true ;
+            $view->title = $pageDBRow["title"];
+
+            $view->hasDescription = false ;
+            $view->hasImage = false ;
+
+            if(!empty($metaPostRow)) {
+                $excerpt = $metaPostRow["excerpt"];
+                if(!empty($excerpt)) {
+                    $view->hasDescription = true ;
+                    $excerpt = trim($excerpt);
+                    $view->description = Util::abbreviate($excerpt,160) ;
+                }
+
+                $imgv = self::getPostMetaImage($metaPostRow);
+                if(!empty($imgv)) {
+                    $view->hasImage = true ;
+                    $view->image = $imgv["source"];
+                }
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getPostMetaData($metaPostRow) {
+            $html = NULL ;
+            $view = new \stdClass ;
+            $template = "/fragments/generic/meta-tags.tmpl" ;
+
+            $view->hasTitle = true ;
+            $view->title = $metaPostRow["title"];
+
+            $view->hasDescription = false ;
+            $view->hasImage = false ;
+
+            if(!empty($metaPostRow)) {
+                $excerpt = $metaPostRow["excerpt"];
+                if(!empty($excerpt)) {
+                    $view->hasDescription = true ;
+                    $excerpt = trim($excerpt);
+                    $view->description = Util::abbreviate($excerpt,160) ;
+                }
+
+                $imgv = self::getPostMetaImage($metaPostRow);
+                if(!empty($imgv)) {
+                    $view->hasImage = true ;
+                    $view->image = $imgv["source"];
+                }
+            }
+
+            $html = Template::render($template,$view);
             return $html ;
         }
 

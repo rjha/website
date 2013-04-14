@@ -25,6 +25,10 @@
     | AppConstants::TOOLBAR_EDIT_POST ;
 
     $toolbar_options = array("post_id" => $postId, "page_id" => $postDBRow["page_id"]);
+    
+    // meta tags
+    $metaHtml = AppHtml::getPostMetaData($PostDBRow);
+    
 
 ?>
 
@@ -33,7 +37,7 @@
 
     <head>
         <title> <?php echo $postDBRow["title"] ?> </title>
-        <?php include("meta.inc") ?>
+        <?php echo $metaHtml; ?>
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
 

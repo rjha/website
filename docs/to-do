@@ -3,11 +3,12 @@
 + dump old gloodb content on disk
 + script to dump wb_site data on disk
 + move all old s3 images to media1.indigloo.net bucket
++ meta titles and description
 
 + category/tags
 + Archive link for all pages/posts 
 + email on site create
 + post to FB wall.
 + site : Add a tag line
-+ meta titles and description
+
 + editor - text box - pull down to reveal bigger size.
