@@ -26,7 +26,7 @@
 
     // page title + links in menu
     $menuDBRows = $pageDao->getLatestTitles($siteId,10);
-    $menuHtml = AppHtml::getPageMenu($menuDBRows);
+    $menuHtml = AppHtml::getPageMenu($gSiteView,$menuDBRows);
      
     $pageHtml = "" ;
     if($gNumPosts > 0) {
