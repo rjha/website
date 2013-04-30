@@ -6073,7 +6073,7 @@ a.badge:hover {
 
     .post p{
         
-        text-align :justify ;
+        /* text-align :justify ;*/
         /* for a very long single word use word-wrap trick */
         /* word-wrap: break-word; */
         /* text-indent :20px; */

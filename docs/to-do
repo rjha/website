@@ -1,19 +1,14 @@
 
 + 4bubbles.com data
 
-+ custom meta description 
-+ custom og:image for posts
-+ custom excerpt for posts
 
-
++ post add : show preview and ask to edit excerpt / meta description.
 + fix bug : excerpt - should not contain html entities
 + add provision for : facebook comments on posts.
++ Add canonical URL to page,post and Home.
 
-
-+ fix issue for : pagination + 2 parameters
-(ideally we should only have one called "gpage")
-(Q:add prev and next link everywhere?)
-(for the moment added nofollow to pagination links)
++ pagination SEO issue (problem with 2 parameters)
+current fix: add rel=nofollow to pagination links like reddit does.
 
 
 
@@ -22,9 +17,7 @@
 + move all old s3 images to media1.indigloo.net bucket
 
 
-+ Add canonical URL to page,post and Home??
 + site : Add a tag line
-+ post : custom meta description
 + page : custom meta description
 + category/tags
 + Navigation link for all pages/posts 

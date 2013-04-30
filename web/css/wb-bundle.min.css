@@ -999,7 +999,6 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .widget a{text-decoration:none}
 .widget a:hover{text-decoration:underline}
 .post{padding-top:15px;padding-left:15px;font-size:18px;font-family:"Georgia","Times New Roman",arial,serif;line-height:28px}
-.post p{text-align:justify}
 #ful-container{padding-top:10px}
 #image-preview{padding-bottom:20px}
 #image-preview .container{position:relative;float:left;padding:7px;height:160px;width:190px;border:1px solid #d5d5d5;margin:4px}
