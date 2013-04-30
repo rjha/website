@@ -318,7 +318,7 @@ namespace com\indigloo\wb\html {
             $imgv = array();
             /* inline images are part of post content */
             if($jsonObj->store == 'external') {
-                $imgvname["name"] = $jsonObj->srcImage ;
+                $imgv["name"] = md5($jsonObj->srcImage) ;
                 $imgv["tname"] = $jsonObj->srcImage ;
                 $imgv["source"] = $jsonObj->srcImage ;
                 $imgv["tsource"] = $jsonObj->srcImage ;
