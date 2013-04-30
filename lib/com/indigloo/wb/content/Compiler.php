@@ -16,7 +16,7 @@ namespace com\indigloo\wb\content{
             $this->text = $text ;
             $this->mediaJson = $mediaJson;
             $this->imagesObj = json_decode($mediaJson);
-            
+
             foreach($this->imagesObj as $imageObj) {
                 $imageObj->display = "external" ;
             }
@@ -121,7 +121,7 @@ namespace com\indigloo\wb\content{
                             $imageObj = $this->imagesObj[$index] ;
                             // prepare substitution text
                             $imgv = AppHtml::convertImageJsonObj($imageObj);
-                            $text = ' <img src="'.$imgv["source"].'" /> ' ;
+                            $text = ' <div class="photo"> <img src="'.$imgv["source"].'" /> </div> ' ;
                             $imageObj->display = "inline" ;
                             $this->imagesObj[$index] = $imageObj;
                         }
