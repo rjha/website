@@ -82,7 +82,8 @@
             .form-table { width:95%;}
             .form-table input {width: 90%;}
             .form-table textarea { width:90%; height: 320px;}
-            
+            .form-table .small-textarea { width:90%; height: 90px;}
+           
             .page-header {
                 padding-bottom: 9px;
             }
@@ -146,7 +147,21 @@
                                 </td>
                             </tr>
                             
-                            
+                            <tr>
+                                <td> 
+                                    <label>Excerpt*</label>
+                                    <textarea name="excerpt" class="small-textarea required" cols="50" rows="2" ><?php echo $sticky->get('excerpt',$postDBRow['excerpt']); ?></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> 
+                                    <label>Meta Description* (max 160 chars)</label>
+                                    <textarea id="meta_description" maxlength="160" name="meta_description" class="required small-textarea" cols="10" rows="1" ><?php echo $sticky->get('meta_description',$postDBRow['meta_description']); ?></textarea>
+                                    <br>
+                                    <span id="meta_description_counter"></span>
+                                </td>
+                            </tr>
+
                             <tr>
                                 <td>
                                     <div class="form-actions">
@@ -204,14 +219,20 @@
                     onkeyup : false,
                     rules: {
                         title: {required: true } ,
-                        content: {required: true} 
+                        content: {required: true},
+                        excerpt: {required: true},
+                        meta_description: {required: true}
                         
                     },
                     messages: {
                         title: {required: "Title is required" },
-                        content: {required: "Content is required"}
+                        content: {required: "Content is required"},
+                        excerpt: {required: "Excerpt is required"},
+                        meta_description: {required: "Meta Description is required"}
                     }
                 });
+
+                webgloo.util.addTextCounter("#meta_description", "#meta_description_counter");
 
                 // use all default options
                 var media_options = {} ;

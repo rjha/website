@@ -43,10 +43,21 @@ namespace com\indigloo\wb\dao {
             $meta_description,
             $rawData=false) {
             
-            $parser = new \Textile();
-            $html_content = ($rawData === true) ?  
-                $raw_content : Formatting::transform_content($raw_content);
-            
+            $html_content = NULL ;
+
+            if(!$rawData) {
+
+                // compile and transform content
+                $compiler = new \com\indigloo\wb\content\Compiler($raw_content,$mediaJson) ;
+                $compiler->compile();
+                $html_content = $compiler->getText();
+                $mediaJson = $compiler->getMediaJson();
+                $html_content = Formatting::transform_content($html_content);
+
+            }else {
+                $html_content = $raw_content ;
+            }
+
             $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
             $has_media = (strcmp($mediaJson,'[]') == 0 ) ? 0 : 1 ;
             
@@ -70,12 +81,24 @@ namespace com\indigloo\wb\dao {
             $permalink=NULL,
             $rawData=false) {
             
-            $html_content = ($rawData === true) ?  
-                $raw_content : Formatting::transform_content($raw_content);
-           
+            $html_content = NULL ;
+
+            if(!$rawData) {
+                // compile and transform content
+                $compiler = new \com\indigloo\wb\content\Compiler($raw_content,$mediaJson) ;
+                $compiler->compile();
+                $html_content = $compiler->getText();
+                $mediaJson = $compiler->getMediaJson();
+                $html_content = Formatting::transform_content($html_content);
+
+            }else {
+                $html_content = $raw_content ;
+            }
+
             // 55 words excerpts for posts
             $excerpt = Formatting::wp_trim_words($html_content);
             // 160 char meta description from excerpt
+            // our abbreviate respects word boundaries
             $meta_description = Util::abbreviate($excerpt,160);
 
             $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);

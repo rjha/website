@@ -25,12 +25,15 @@ namespace com\indigloo\wb  {
                     return $text ;
                 }
             }
-
+              
             // no magic cookie
             // we allow textile markup in our content.
-            $text = self::wp_make_clickable($text);
+           
             $parser = new \Textile();
             $text = $parser->textileThis($text);
+
+            // convert links in text
+            $text = self::wp_make_clickable($text);
             return $text ;
         }
 
