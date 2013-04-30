@@ -23,6 +23,9 @@
         $fhandler->addRule('title', 'Title', array('required' => 1));
         // _do_not_ escape the content
         $fhandler->addRule('content', 'Content', array('required' => 1, "rawData" => 1));
+        $fhandler->addRule('excerpt', 'Excerpt', array('required' => 1, "rawData" => 1));
+        $fhandler->addRule('meta_description', 'Meta Description', array('required' => 1, "rawData" => 1));
+
         $fhandler->addRule('post_id', 'PostId', array('required' => 1));
        	$fhandler->addRule('media_json', 'media json', array('rawData' => 1));
 
@@ -45,7 +48,9 @@
         					$fvalues["post_id"],
                             $fvalues["title"],
                             $raw_content,
-                            $fvalues["media_json"]);
+                            $fvalues["media_json"],
+                            $fvalues["excerpt"],
+                            $fvalues["meta_description"]);
 
          
         //success - go to page

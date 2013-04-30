@@ -1,12 +1,15 @@
 
 + 4bubbles.com data
-+ meta titles and description
-+ site : Add a tag line
-+ post : custom meta description
-+ page : custom meta description
+
++ custom meta description 
++ custom og:image for posts
++ custom excerpt for posts
+
 
 + fix bug : excerpt - should not contain html entities
 + add provision for : facebook comments on posts.
+
+
 + fix issue for : pagination + 2 parameters
 (ideally we should only have one called "gpage")
 (Q:add prev and next link everywhere?)
@@ -19,11 +22,12 @@
 + move all old s3 images to media1.indigloo.net bucket
 
 
-
++ Add canonical URL to page,post and Home??
++ site : Add a tag line
++ post : custom meta description
++ page : custom meta description
 + category/tags
-+ Archive link for all pages/posts 
++ Navigation link for all pages/posts 
 + email on site create
 + post to FB wall.
-
-
 + editor - text box - pull down to reveal bigger size.

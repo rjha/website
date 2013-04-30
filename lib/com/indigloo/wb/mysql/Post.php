@@ -147,7 +147,8 @@ namespace com\indigloo\wb\mysql {
             $html_content,
             $excerpt,
             $mediaJson,
-            $has_media) {
+            $has_media,
+            $meta_description) {
 
             $dbh = NULL ;
             
@@ -161,7 +162,7 @@ namespace com\indigloo\wb\mysql {
                 $sql1 = 
                     " update wb_post set title = :title, seo_title = :seo_title, ".
                     " raw_content = :raw_content, html_content = :html_content, excerpt = :excerpt, ".
-                    " has_media = :has_media, media_json = :media_json" .
+                    " has_media = :has_media, media_json = :media_json, meta_description = :meta_description " .
                     " where id = :post_id and site_id = :site_id " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
@@ -174,6 +175,7 @@ namespace com\indigloo\wb\mysql {
                 $stmt1->bindParam(":raw_content", $raw_content);
                 $stmt1->bindParam(":html_content", $html_content);
                 $stmt1->bindParam(":excerpt", $excerpt);
+                $stmt1->bindParam(":meta_description", $meta_description);
 
                 $stmt1->bindParam(":has_media", $has_media);
                 $stmt1->bindParam(":media_json", $mediaJson);
@@ -203,7 +205,8 @@ namespace com\indigloo\wb\mysql {
             $excerpt,
             $mediaJson,
             $has_media,
-            $permalink) {
+            $permalink,
+            $meta_description) {
 
             $dbh = NULL ;
 
@@ -215,9 +218,9 @@ namespace com\indigloo\wb\mysql {
                 $dbh->beginTransaction();
                 $sql1 = 
                     " insert into wb_post(site_id,page_id,title, seo_title,raw_content, ".
-                    " html_content,excerpt,has_media,media_json, permalink) ".
+                    " html_content,excerpt,has_media,media_json, permalink,meta_description) ".
                     " values(:site_id,:page_id, :title, :seo_title,:raw_content, ".
-                    " :html_content, :excerpt, :has_media, :media_json, :permalink) " ;
+                    " :html_content, :excerpt, :has_media, :media_json, :permalink,:meta_description) " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
 
@@ -230,6 +233,7 @@ namespace com\indigloo\wb\mysql {
                 $stmt1->bindParam(":raw_content", $raw_content);
                 $stmt1->bindParam(":html_content", $html_content);
                 $stmt1->bindParam(":excerpt", $excerpt);
+                $stmt1->bindParam(":meta_description", $meta_description);
 
                 $stmt1->bindParam(":has_media", $has_media);
                 $stmt1->bindParam(":media_json", $mediaJson);

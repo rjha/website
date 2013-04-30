@@ -99,7 +99,7 @@ CREATE TABLE  wb_page  (
    seo_title_hash varchar(32) not null,
    random_key varchar(16) not null,
    meta_title varchar(128),
-   meta_description varchar(128),
+   meta_description varchar(160),
    num_post int default 0,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -129,6 +129,7 @@ CREATE TABLE  wb_post  (
    raw_content text,
    html_content text,
    excerpt varchar(1024),
+   meta_description varchar(160),
    has_media int default 0,
    media_json text ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -187,4 +188,14 @@ CREATE  TRIGGER trg_del_post BEFORE DELETE ON wb_post
 
 DELIMITER ;
 
+
+-- 
+-- patch : 30-04-2013
+--
+alter table wb_page modify column meta_description varchar(160);
+alter table wb_post add column meta_description varchar(160);
+-- 
+-- first cut: meta description derives from post.excerpt
+-- 
+update wb_post set meta_description = substr(excerpt,1,160);
 

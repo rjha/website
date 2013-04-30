@@ -42,6 +42,7 @@ if (!window.JSON) {
 webgloo = window.webgloo || {};
 webgloo.wb = webgloo.wb || {};
 
+
 webgloo.message = {
     get : function(key,data) {
         var buffer = '' ;
@@ -55,6 +56,32 @@ webgloo.message = {
 
 webgloo.message.SPINNER = '<div> <img src="/css/asset/fs/fb_loader.gif" alt="spinner"/></div>' ;
 webgloo.message.IS_REQUIRED = 'This is required!' ;
+
+
+webgloo.util = {
+    addTextCounter: function(inputId,counterId,options) {
+
+         /* @imp define all properties that we wish to override */
+        var defaults = { show_counter : true } ;
+        webgloo.util.settings = $.extend({}, defaults, options);
+
+        $(inputId).keydown (function () {
+          webgloo.util.displayTextCounter(inputId,counterId);
+        });
+
+        if(webgloo.util.settings.show_counter) {
+            webgloo.util.displayTextCounter(inputId,counterId);
+        }
+    },
+    displayTextCounter : function(inputId,counterId) {
+        var max = $(inputId).attr("maxlength");
+        var text = $(inputId).val();
+        var current = text.length;
+        $(counterId).text(current + "/" + max);
+    }
+
+}
+
 
 
 /* +ajax wrapper */

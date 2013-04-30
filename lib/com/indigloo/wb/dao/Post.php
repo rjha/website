@@ -39,14 +39,14 @@ namespace com\indigloo\wb\dao {
             $title,
             $raw_content,
             $mediaJson,
+            $excerpt,
+            $meta_description,
             $rawData=false) {
             
             $parser = new \Textile();
             $html_content = ($rawData === true) ?  
                 $raw_content : Formatting::transform_content($raw_content);
             
-            $excerpt = Formatting::wp_trim_words($html_content);
-
             $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
             $has_media = (strcmp($mediaJson,'[]') == 0 ) ? 0 : 1 ;
             
@@ -58,7 +58,8 @@ namespace com\indigloo\wb\dao {
                 $html_content,
                 $excerpt,
                 $mediaJson,
-                $has_media) ;
+                $has_media,
+                $meta_description) ;
         }
 
         function add($siteId,
@@ -74,7 +75,9 @@ namespace com\indigloo\wb\dao {
            
             // 55 words excerpts for posts
             $excerpt = Formatting::wp_trim_words($html_content);
-            
+            // 160 char meta description from excerpt
+            $meta_description = Util::abbreviate($excerpt,160);
+
             $seo_title = \com\indigloo\util\StringUtil::convertNameToKey($title);
             $has_media = (strcmp($mediaJson,'[]') == 0 ) ? 0 : 1 ;
             
@@ -87,7 +90,8 @@ namespace com\indigloo\wb\dao {
                 $excerpt,
                 $mediaJson,
                 $has_media,
-                $permalink) ;
+                $permalink,
+                $meta_description) ;
         }
 
         function delete($siteId,$postId) {

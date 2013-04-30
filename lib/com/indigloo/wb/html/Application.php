@@ -509,11 +509,10 @@ namespace com\indigloo\wb\html {
 
             if(!empty($metaPostRow)) {
                 
-                $excerpt = $metaPostRow["excerpt"];
-                if(!Util::tryEmpty($excerpt)) {
+                $meta_description = $metaPostRow["meta_description"];
+                if(!Util::tryEmpty($meta_description)) {
                     $view->hasDescription = true ;
-                    $excerpt = trim($excerpt);
-                    $view->description = Util::abbreviate($excerpt,160) ;
+                    $view->description = $meta_description ;
                 }
 
                 $imgv = self::getPostMetaImage($metaPostRow);
@@ -539,12 +538,11 @@ namespace com\indigloo\wb\html {
             $view->hasImage = false ;
 
             if(!empty($metaPostRow)) {
-                $excerpt = $metaPostRow["excerpt"];
+                $meta_description = $metaPostRow["meta_description"];
 
-                if(!Util::tryEmpty($excerpt)) {
+                if(!Util::tryEmpty($meta_description)) {
                     $view->hasDescription = true ;
-                    $excerpt = trim($excerpt);
-                    $view->description = Util::abbreviate($excerpt,160) ;
+                    $view->description = $meta_description ;
                 }
 
                 $imgv = self::getPostMetaImage($metaPostRow);
