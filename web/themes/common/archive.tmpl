@@ -1,0 +1,81 @@
+<?php
+    require_once ('wb-app.inc');
+    require_once (APP_WEB_DIR.'/inc/header.inc');
+
+    use \com\indigloo\wb\Constants as AppConstants;
+    use \com\indigloo\Url ;
+    use \com\indigloo\wb\html\Application as AppHtml;
+
+    
+    //data for paginator
+    $startId = NULL ;
+    $endId = NULL ;
+    $pageBaseUrl = "/" ;
+    $gNumRecords = sizeof($postDBRows);
+    $pageHtml = "" ;
+    $helpHtml = "" ;
+
+    if($gNumRecords > 0 ) {
+        $startId = $postDBRows[0]["id"] ;
+        $endId =   $postDBRows[$gNumRecords-1]["id"] ;
+        foreach($postDBRows as $postDBRow) {
+            $pageHtml .= AppHtml::getPostWidget($postDBRow);
+        }
+    }else {
+        $message = "No posts found!" ;
+        $helpHtml = AppHtml::getBigError($message) ;
+    }
+    
+    $G_BUTTONS = 
+    AppConstants::TOOLBAR_NEW_POST 
+    | AppConstants::TOOLBAR_SETTINGS ;
+
+    // meta tags
+    // @todo
+    $metaHtml = "" ;
+            
+
+?>
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title><?php echo $gSiteView->name ; ?></title>
+        <?php echo $metaHtml; ?>
+        <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
+
+
+    </head>
+
+     <body>
+
+       <?php echo AppHtml::getAppSiteToolbar() ?>
+       <?php echo AppHtml::getAppBanner($gSiteView) ?>
+       <?php echo AppHtml::getAppToolbar($gSiteView,$G_BUTTONS) ?>
+
+        <div class="container">
+
+            <div class="row">
+                <div class="span8 offset2">
+                    <?php echo $helpHtml ; ?>
+                    <div id="posts">
+                        <?php echo $pageHtml ; ?>
+                    </div>
+                
+                </div>
+            </div> <!-- row:1 -->
+            
+
+        </div>   <!-- container -->
+        
+        <div class="pt20">
+            <?php $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>
+        </div>
+
+         <div class="row">
+            <div class="span11 offset1" style="border-bottom:1px solid #d5d5d5;padding-bottom:20px;">&nbsp;</div>
+        </div>
+
+    </body>
+</html>

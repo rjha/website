@@ -95,7 +95,32 @@ namespace com\indigloo\wb\mysql {
 
         }
 
-		static function getLatest($siteId,$limit) {
+        static function getFilter($dbfilter) {
+            if(empty($dbfilter)) { return "" ;}
+            
+            $predicate = "" ;
+
+            if(isset($dbfilter["year"]) && !empty($dbfilter["year"])) {
+                $predicate = " and year(created_on) = ".$dbfilter["year"] ;
+            }
+
+            if(isset($dbfilter["month"]) && !empty($dbfilter["month"])) {
+                $predicate = " and month(created_on) = ".$dbfilter["month"] ;
+            }
+
+            if(isset($dbfilter["tag"]) && !empty($dbfilter["tag"])) {
+                $predicate = " and tags like '%%".$dbfilter["tag"]."%%' " ;
+            }
+
+            if(isset($dbfilter["category"]) && !empty($dbfilter["category"])) {
+                $predicate = " and groups like '%%".$dbfilter["category"]."%%' " ;
+            }
+
+            return $predicate ;
+
+        }
+
+		static function getLatest($siteId,$limit,$dbfilter) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
            
@@ -104,8 +129,11 @@ namespace com\indigloo\wb\mysql {
             settype($siteId, "integer");
 
             // latest first
-            $sql = " select * from wb_post where site_id = %d  order by id desc limit %d " ;
+            $sql = " select * from wb_post where site_id = %d  " ;
+            $sql .= self::getFilter($dbfilter) ;
+            $sql .= " order by id desc limit %d " ;
             $sql = sprintf($sql,$siteId,$limit); 
+ 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
@@ -122,6 +150,7 @@ namespace com\indigloo\wb\mysql {
             $direction = $mysqli->real_escape_string($direction);
 
             $sql = " select * from wb_post where site_id = %d " ;
+            $sql .= self::getFilter($dbfilter) ;
             $sql = sprintf($sql,$siteId); 
 
             $q = new MySQL\Query($mysqli);
@@ -163,7 +192,7 @@ namespace com\indigloo\wb\mysql {
                     " update wb_post set title = :title, seo_title = :seo_title, ".
                     " raw_content = :raw_content, html_content = :html_content, excerpt = :excerpt, ".
                     " has_media = :has_media, media_json = :media_json, meta_description = :meta_description " .
-                    " where id = :post_id and site_id = :site_id " ;
+                    " where id = :post_id and site_id = :site_id, updated_on = now() " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
 
@@ -218,9 +247,9 @@ namespace com\indigloo\wb\mysql {
                 $dbh->beginTransaction();
                 $sql1 = 
                     " insert into wb_post(site_id,page_id,title, seo_title,raw_content, ".
-                    " html_content,excerpt,has_media,media_json, permalink,meta_description) ".
+                    " html_content,excerpt,has_media,media_json, permalink,meta_description,created_on) ".
                     " values(:site_id,:page_id, :title, :seo_title,:raw_content, ".
-                    " :html_content, :excerpt, :has_media, :media_json, :permalink,:meta_description) " ;
+                    " :html_content, :excerpt, :has_media, :media_json, :permalink,:meta_description, now()) " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
 

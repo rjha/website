@@ -10,10 +10,15 @@
             function __construct() {
                 // construct routing table
                 $this->createRule('^/$', 'com\indigloo\wb\controller\Home');
-                $this->createRule('^(?P<token>[-\w]+)$','com\indigloo\wb\controller\Page');
-                $this->createRule('^(?P<randomKey>[\w]+)/(?P<token>[-\w]+)$','com\indigloo\wb\controller\Page');
-                $this->createRule('^sitemap$', 'com\indigloo\wb\controller\Home');
+                $this->createRule('^(?P<year>[\d]{4})/(?P<month>[\d]{2})/$','com\indigloo\wb\controller\Archive');
+                $this->createRule('^tag/(?P<tag>[\w]+)/$','com\indigloo\wb\controller\Tag');
+
+                $this->createRule('^category/(?P<category>[\w]+)/$','com\indigloo\wb\controller\Category');
                 $this->createRule('^post/(?P<post_id>\d+)/(?P<token>[-\w]+)$','com\indigloo\wb\controller\Post');
+                $this->createRule('^(?P<token>[-\w]+)$','com\indigloo\wb\controller\Page');
+                // for historical reasons only!
+                $this->createRule('^(?P<token>[-\w]+)/$','com\indigloo\wb\controller\Page');
+            
             }
 
             function route() {
@@ -31,11 +36,14 @@
                     $qpart = substr($originalURI, $pos+1);
                 }
 
+                /*
                 if((strlen($requestURI) > 1) 
                     && (strcmp($requestURI[strlen($requestURI)-1], "/") == 0 )) {
                     // remove trailing slash?
+                    // remove trailing slash has implications for
+                    // router rules.
                     $requestURI = rtrim($requestURI,"/") ;
-                }
+                } */
 
                 $route = $this->getRoute($requestURI);
 

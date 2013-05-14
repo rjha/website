@@ -137,6 +137,11 @@ CREATE TABLE  wb_post  (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+--
+--
+-- key is site_id:tag:tag_text
+--
+--
 
 DROP TABLE IF EXISTS  wb_media ;
 CREATE TABLE  wb_media  (
@@ -199,3 +204,10 @@ alter table wb_post add column meta_description varchar(160);
 -- 
 update wb_post set meta_description = substr(excerpt,1,160);
 
+
+--
+-- patch - 14 May 2013
+--
+
+alter table wb_post add column tags varchar(64) ;
+alter table wb_post add column groups varchar(64)  ;
