@@ -1,5 +1,11 @@
 
 + 4bubbles.com data
++ archive to show all possible links
+
+- date archive (min date - max date YYYY-MM format)
+- category archive (categories master table)
+- Tags archive (Tags master table)
+(imp:: Here pagination should use only one variable - page#)
 
 
 + post add : show preview and ask to edit excerpt / meta description.
