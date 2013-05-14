@@ -1,5 +1,5 @@
 <?php
-
+     
     namespace com\indigloo\wb\router {
         
         use \com\indigloo\Configuration as Config ;
@@ -11,9 +11,9 @@
                 // construct routing table
                 $this->createRule('^/$', 'com\indigloo\wb\controller\Home');
                 $this->createRule('^(?P<year>[\d]{4})/(?P<month>[\d]{2})/$','com\indigloo\wb\controller\Archive');
-                $this->createRule('^tag/(?P<tag>[\w]+)/$','com\indigloo\wb\controller\Tag');
+                $this->createRule('^tag/(?P<tag>[-\w]+)/$','com\indigloo\wb\controller\Tag');
 
-                $this->createRule('^category/(?P<category>[\w]+)/$','com\indigloo\wb\controller\Category');
+                $this->createRule('^category/(?P<category>[-\w]+)/$','com\indigloo\wb\controller\Category');
                 $this->createRule('^post/(?P<post_id>\d+)/(?P<token>[-\w]+)$','com\indigloo\wb\controller\Post');
                 $this->createRule('^(?P<token>[-\w]+)$','com\indigloo\wb\controller\Page');
                 // for historical reasons only!

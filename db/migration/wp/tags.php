@@ -1,12 +1,51 @@
 <?php 
 
+    include('wb-app.inc');
+    include (APP_CLASS_LOADER);
+
     error_reporting(-1);
     libxml_use_internal_errors(true);
 
-    function process_post($title,$category,$tags,$createdOn) {
-        if(empty($content)) { return ; }
-        // process post
+    use \com\indigloo\wb\mysql\WbPdoWrapper ;
 
+    function process_post($title,$category,$tags,$createdOn) {
+        
+        // update post
+        $dbh = NULL ;
+            
+        try {
+            
+            $dbh =  WbPdoWrapper::getHandle();
+            
+            //Tx start
+            $dbh->beginTransaction();
+            
+            $sql1 = 
+                " update wb_post set tags = :tags, groups = :groups, created_on = :created_on ".
+                " where md5(title) = :hash " ;
+            
+            $hash = md5($title) ;
+            $stmt1 = $dbh->prepare($sql1);
+
+            $stmt1->bindParam(":tags", $tags);
+            $stmt1->bindParam(":groups", $category);
+            $stmt1->bindParam(":created_on", $createdOn);
+            $stmt1->bindParam(":hash", $hash);
+
+            $stmt1->execute(); 
+            $stmt1 = NULL ;
+
+            //Tx end
+            $dbh->commit();
+            $dbh = null;
+
+
+        } catch(\Exception $ex) {
+            $dbh->rollBack();
+            $dbh = null;
+            $message = $ex->getMessage();
+            throw new DBException($message);
+        }
     }
 
 

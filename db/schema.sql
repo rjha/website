@@ -209,5 +209,5 @@ update wb_post set meta_description = substr(excerpt,1,160);
 -- patch - 14 May 2013
 --
 
-alter table wb_post add column tags varchar(64) ;
+alter table wb_post add column tags varchar(128) ;
 alter table wb_post add column groups varchar(64)  ;
