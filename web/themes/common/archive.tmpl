@@ -30,9 +30,15 @@
     AppConstants::TOOLBAR_NEW_POST 
     | AppConstants::TOOLBAR_SETTINGS ;
 
-    // meta tags
-    // @todo
-    $metaHtml = "" ;
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gSiteView = $gWeb->getRequestAttribute(AppConstants::SITE_SESSION_VIEW);
+    $siteId = $gSiteView->id ;
+   
+
+    $siteDao = new \com\indigloo\wb\dao\Site();
+    $siteDBRow = $siteDao->getOnId($siteId);
+    $siteHeader = AppHtml::getSiteHeader($gSiteView,$siteDBRow["page_header"]);
+    $siteFooter = AppHtml::getSiteFooter($gSiteView,$siteDBRow["page_footer"]);
             
 
 ?>
@@ -42,7 +48,7 @@
 
     <head>
         <title><?php echo $gSiteView->name ; ?></title>
-        <?php echo $metaHtml; ?>
+        <?php echo $siteHeader; ?>
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
 
@@ -76,6 +82,6 @@
          <div class="row">
             <div class="span11 offset1" style="border-bottom:1px solid #d5d5d5;padding-bottom:20px;">&nbsp;</div>
         </div>
-
+        <?php echo $siteFooter; ?>
     </body>
 </html>

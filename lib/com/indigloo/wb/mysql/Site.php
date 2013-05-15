@@ -65,23 +65,6 @@ namespace com\indigloo\wb\mysql {
             return $rows;
         }
 
-        /*
-        static function getDomainCount($loginId,$domain) {
-            $mysqli = WbConnection::getInstance()->getHandle();
-           
-            //input check
-            settype($loginId,"integer");
-            $domain = $mysqli->real_escape_string($domain);
-            
-            $sql = " select count(d.id) from wb_site_domain d,  wb_site o, wb_site_admin a ".
-                " where d.domain = '%s' and d.site_id = o.id and o.id = a.site_id ".
-                " and a.login_id = %d " ;
-
-            $sql = sprintf($sql,$domain,$loginId);
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }*/
-
         static function getSessionView($siteId) {
 
             $mysqli = WbConnection::getInstance()->getHandle();
@@ -246,6 +229,36 @@ namespace com\indigloo\wb\mysql {
                 $dbh = null;
 
                 return $siteId ;
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($ex->getMessage(),$ex->getCode());
+            }
+        }
+
+        static function updateHeaderFooter($siteId,$header,$footer) {
+            $dbh = NULL ;
+            
+            try {
+
+                $dbh =  WbPdoWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
+                $sql1 = "update wb_site set page_header = :header, page_footer = :footer ".
+                    " where id = :site_id" ;
+
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":site_id",$siteId) ;
+                $stmt1->bindParam(":header",$header) ;
+                $stmt1->bindParam(":footer",$footer) ;
+                
+                $stmt1->execute();
+                $stmt1 = NULL ;
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
 
             } catch(\Exception $ex) {
                 $dbh->rollBack();

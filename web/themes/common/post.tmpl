@@ -26,9 +26,11 @@
 
     $toolbar_options = array("post_id" => $postId, "page_id" => $postDBRow["page_id"]);
     
-    // meta tags
-    $metaHtml = AppHtml::getPostMetaData($postDBRow);
-    
+    $siteDao = new \com\indigloo\wb\dao\Site();
+    $siteDBRow = $siteDao->getOnId($siteId);
+    $siteHeader = AppHtml::getSiteHeader($gSiteView,$siteDBRow["page_header"]);
+    $siteFooter = AppHtml::getSiteFooter($gSiteView,$siteDBRow["page_footer"]);
+    $pageHeader = AppHtml::getPostHeader($postDBRow);
 
 ?>
 
@@ -37,7 +39,8 @@
 
     <head>
         <title> <?php echo $postDBRow["title"] ?> </title>
-        <?php echo $metaHtml; ?>
+        <?php echo $siteHeader; ?>
+        <?php echo $pageHeader; ?>
         <?php echo \com\indigloo\wb\util\Asset::version("/css/wb-bundle.css"); ?>
 
 
@@ -71,5 +74,6 @@
 
         </div>   <!-- container -->
 
+        <?php echo $siteFooter; ?>
     </body>
 </html>

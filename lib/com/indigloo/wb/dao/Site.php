@@ -64,6 +64,10 @@ namespace com\indigloo\wb\dao {
             mysql\Site::updateTheme($siteId,$theme);
         }
 
+        function updateHeaderFooter($siteId,$header,$footer) {
+             mysql\Site::updateHeaderFooter($siteId,$header,$footer);
+        }
+
     }
 }
 

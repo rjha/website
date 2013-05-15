@@ -54,6 +54,8 @@
                 list-style: none ;
             }
 
+            .form-table .w600 { width : 600px;}
+
         </style>
 
         <?php include(APP_WEB_DIR."/app/inc/banner.inc"); ?>
@@ -130,10 +132,41 @@
                             <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         </form>
                     </div>
-                    <div class="section">
+                    <div class="section1">
                         <?php echo $domainsTableHtml ; ?>
                     </div>
                    
+                    <div class="section">
+                        <p class="muted"> 
+                            site header and footer will be included on every page.
+                        </p>
+                        <form  id="form3"  name="form3" action="<?php echo Url::base() ?>/app/action/site/hf.php"  method="POST">  
+                            <table class="form-table">
+                                <tr>  
+                                    <td> <label>Site Header</label>
+                                        <textarea name="page_header" class="w600" ><?php echo $sticky->get('page_header',$siteDBRow["page_header"]); ?></textarea>
+                                    </td>
+                                </tr>
+                                <tr>  
+                                    <td> <label>Footer</label>
+                                        <textarea name="page_footer" class="w600"><?php echo $sticky->get('page_footer',$siteDBRow["page_footer"]); ?></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-actions2">
+                                            <button class="btn btn-small" type="submit" name="save" value="Save">Save</button>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                
+                            </table>
+
+                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
+                        </form>
+                    </div>
 
                 </div>
                      

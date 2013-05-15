@@ -211,3 +211,14 @@ update wb_post set meta_description = substr(excerpt,1,160);
 
 alter table wb_post add column tags varchar(128) ;
 alter table wb_post add column groups varchar(64)  ;
+
+-- 
+-- patch 15 may 2013
+--
+
+alter table wb_site drop column meta_title ;
+alter table wb_site drop column meta_description ;
+
+alter table wb_site add column page_header text ;
+alter table wb_site add column page_footer text ;
+

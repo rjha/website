@@ -475,31 +475,32 @@ namespace com\indigloo\wb\html {
             $html = Template::render($template,$gSiteView);
             return $html ;
         }
-
-        static function getSiteMetaData($gSiteView,$siteDBRow) {
+        
+        /* @todo change to getSiteHeader and getSiteFooter */
+        static function getSiteHeader($gSiteView,$header) {
             $html = NULL ;
             $view = new \stdClass ;
-            $template = "/fragments/generic/meta-tags.tmpl" ;
-            
-            $view->hasTitle = true ;
-            $view->hasDescription = false ;
-            $view->hasImage = false ;
-
-            $view->title = (empty($siteDBRow["meta_title"])) ? $gSiteView->name : $siteDBRow["meta_title"];
-
-            if(!empty($siteDBRow["meta_description"])) {
-                $view->hasDescription = true ;
-                $view->description = $siteDBRow["meta_description"] ;
-            }
+            $template = "/fragments/generic/site-header.tmpl" ;
+            $view->content = empty($header) ? "" : $header ;
 
             $html = Template::render($template,$view);
             return $html ;
         }
 
-        static function getPageMetaData($pageDBRow,$metaPostRow) {
+        static function getSiteFooter($gSiteView,$footer) {
             $html = NULL ;
             $view = new \stdClass ;
-            $template = "/fragments/generic/meta-tags.tmpl" ;
+            $template = "/fragments/generic/site-footer.tmpl" ;
+            $view->content = empty($footer) ? "" : $footer ;
+            
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getPageHeader($pageDBRow,$metaPostRow) {
+            $html = NULL ;
+            $view = new \stdClass ;
+            $template = "/fragments/generic/page-header.tmpl" ;
 
             $view->hasTitle = true ;
             $view->title = $pageDBRow["title"];
@@ -526,10 +527,10 @@ namespace com\indigloo\wb\html {
             return $html ;
         }
 
-        static function getPostMetaData($metaPostRow) {
+        static function getPostHeader($metaPostRow) {
             $html = NULL ;
             $view = new \stdClass ;
-            $template = "/fragments/generic/meta-tags.tmpl" ;
+            $template = "/fragments/generic/page-header.tmpl" ;
 
             $view->hasTitle = true ;
             $view->title = $metaPostRow["title"];
