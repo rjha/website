@@ -191,8 +191,8 @@ namespace com\indigloo\wb\mysql {
                 $sql1 = 
                     " update wb_post set title = :title, seo_title = :seo_title, ".
                     " raw_content = :raw_content, html_content = :html_content, excerpt = :excerpt, ".
-                    " has_media = :has_media, media_json = :media_json, meta_description = :meta_description " .
-                    " where id = :post_id and site_id = :site_id, updated_on = now() " ;
+                    " has_media = :has_media, media_json = :media_json, meta_description = :meta_description, " .
+                    " updated_on = now()where id = :post_id and site_id = :site_id " ;
                 
                 $stmt1 = $dbh->prepare($sql1);
 
